@@ -1,0 +1,3811 @@
+{
+  "last_updated": "2025-06-06 14:58:17",
+  "language": "pt_BR",
+  "total_quests": 17,
+  "quests": [
+    {
+      "name": "O Inimigo Bate à Porta",
+      "act": "Act 1",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Impacto Sísmico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Vulcânico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Esmagar Escudos",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Pulso Congelante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bola de Magma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tentáculos Relampejantes",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Evocar Zumbi",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Infestação",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tiro Cinético",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Golpe Vulcânico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flecha Dividida",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tentáculos Relampejantes",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Aço Violento",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Flecha Dividida",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tiro Gélido",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lâminas Gélidas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flecha Galvânica",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flecha Cáustica",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Cutilada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Vulcânico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flecha Galvânica",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Perfurar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Aço Violento",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Pulso Congelante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadilha Explosiva",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Mina da Tormenta Explosiva",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Facas Etéreas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Infestação",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Chicote de Cobra",
+            "color": "gem_green"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Castigo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Disparo Congelante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bola de Magma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tentáculos Relampejantes",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Vulcânico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Chama Purificadora",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Quebrando Alguns Ovos",
+      "act": "Act 1",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Totem Chamariz",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Pele de Aço",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Vigilante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Punho Esmagador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Investida com Escudo",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Bomba Congelante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Orbe Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Espírito Furioso",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Contagiar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Detonar Morto",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Parede Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Teleporte Gélido",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Bomba Congelante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadilha de Urso",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Totem Chamariz",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Vigilante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Investida com Escudo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Teleporte Gélido",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Marca do Atirador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadilha de Urso",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Punctura",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Balista Estilhaçante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Marca do Atirador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Totem Chamariz",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Punctura",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Vigilante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Estandarte da Guerra",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sangue e Areia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Punho Esmagador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Investida com Escudo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Armadilha de Urso",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Orbe Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Contagiar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Detonar Morto",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Teleporte Gélido",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Bomba Congelante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Relíquia Sagrada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Totem Flamejante Sagrado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Vigilante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Parede Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Investida com Escudo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Teleporte Gélido",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "O Bruto Enjaulado",
+      "act": "Act 1",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Suporte: Ataques Acelerados",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Propagar Dano",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Adicional de Fogo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fonte de Vida",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Chuva Ardente",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Salto Impactante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vitalidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clamor Fortalecedor",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clamor Intimidador",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Suporte: Dano Adicional de Raio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano do Lacaio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Manipulação do Vácuo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Afecções Libertas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Combustão",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Legião Infernal",
+            "color": "gem_red"
+          },
+          {
+            "name": "Suporte: Eficácia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Devorar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clareza",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Esqueleto",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Teleporte Relampejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço Ardente",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Definhar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Troca de Corpos",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Suporte: Ataques Acelerados",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Adicional de Gelo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Adicional de Raio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Adicional de Fogo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Propagar Dano",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Múltiplos Menor",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Afecções Libertas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fonte de Vida",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço Ardente",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flecha Ilusória",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Salto Impactante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Passo Definhante",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Suporte: Ataques Acelerados",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Múltiplos Menor",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Adicional de Gelo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Propagar Dano",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Manipulação do Vácuo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Nova de Flechas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Flecha Forjada com Mana",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lâminas Giratórias",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flecha Ilusória",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Mina de Fumaça",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Precisão",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Suporte: Ataques Acelerados",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Adicional de Fogo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Propagar Dano",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Múltiplos Menor",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Mutilação",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fonte de Vida",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flecha Ilusória",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Salto Impactante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lâminas Giratórias",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Precisão",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vitalidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clamor Fortalecedor",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clamor Intimidador",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Suporte: Ataques Acelerados",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Adicional de Gelo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Adicional de Raio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Múltiplos Menor",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Manipulação do Vácuo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Múltiplas Armadilhas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clareza",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Precisão",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço Ardente",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lâminas Giratórias",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Mina de Fumaça",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Passo Definhante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Desenterrar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadilha Sifão de Gelo",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Suporte: Dano Adicional de Fogo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Adicional de Raio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Propagar Dano",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Combustão",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fonte de Vida",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço Ardente",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clareza",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vitalidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Salto Impactante",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "O Canto da Sereia",
+      "act": "Act 1",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Golpe Infernal",
+            "color": "gem_red"
+          },
+          {
+            "name": "Golpe Estático",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arrastão",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ruptura",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Corrente com Gancho",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Destroçador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fissura Vulcânica",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Nova Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Salva Ardente",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arco Elétrico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Oferenda Carnal",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Drenar Essência",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Raio Escaldante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Morto Volátil",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Geada Rastejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vínculo de Mana",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Golpe Estático",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Chuva de Flechas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Nova Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vórtice de Lâminas",
+            "color": "gem_green"
+          },
+          {
+            "name": "Raio Escaldante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tormenta Explosiva",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ensanguentar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Hélice Espectral",
+            "color": "gem_green"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Chuva Tóxica",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Chuva de Flechas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flecha Relampejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Devastar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Balista de Cerco",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Acerto Elemental",
+            "color": "gem_green"
+          },
+          {
+            "name": "Composto Venenoso",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Dilacerar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arrastão",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Chuva de Flechas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Aço Estraçalhador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Destroçador",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Devastar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Explosão Voltáxica",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Mina Congelante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadilha Relampejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadilha Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vórtice de Lâminas",
+            "color": "gem_green"
+          },
+          {
+            "name": "Drenar Essência",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Morto Volátil",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Espiral Venenosa",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Golpe Estático",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Nova Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Salva Ardente",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Invocar Tormenta",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vínculo Cauterizador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Raio Escaldante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Runa Tempestuosa",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tormenta Explosiva",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Runa da Maré Invernal",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Absolvição",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vínculo de Mana",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Invasores de Preto",
+      "act": "Act 2",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Marca do Comandante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clamor Ancestral",
+            "color": "gem_red"
+          },
+          {
+            "name": "Clamor Sísmico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Febre Corrompedora",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Eviscerar",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Arauto Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Profanar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadura Ártica",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Estalo Gélido",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Manto Arcano",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Campo Galvânico",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Arauto Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frenesi",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadura Ártica",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Febre Corrompedora",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Marca do Larápio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Agonizante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frenesi",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadura Ártica",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fúria Sangrenta",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flecha Aprisionadora",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Marca do Larápio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Marca do Comandante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frenesi",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Carne e Pedra",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fúria Sangrenta",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clamor Ancestral",
+            "color": "gem_red"
+          },
+          {
+            "name": "Clamor Sísmico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Febre Corrompedora",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Estandarte Desafiador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Eviscerar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tormenta de Espadas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Corte do Escudo Glacial",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Marca do Assassino",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Agonizante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Explosão de Lâminas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadura Ártica",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Estalo Gélido",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Robôs Rastejantes",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fúria Sangrenta",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Manto Arcano",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Arauto da Pureza",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arauto Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Runas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Onda de Convicção",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Manto Arcano",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Retribuição Divina",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Afiado e Cruel",
+      "act": "Act 2",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Suporte: Dano Físico Corpo a Corpo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Elemental com Ataques",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Onda de Choque",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Combate Próximo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fúria",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Crueldade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Volatilidade",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Suporte: Conjuração Acelerada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Velocidade do Lacaio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Efeito: Concentrado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Destruição Controlada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Foco Elemental",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Predador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte Trindade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Crueldade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Sobrecarga",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Carne Fresca",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Espíritos Sagrados",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Suporte: Dano Físico Corpo a Corpo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Elemental com Ataques",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Conjuração Acelerada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Efeito: Concentrado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Perigosos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Afecções Mortais",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Crueldade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Sadismo",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Suporte: Projéteis Perigosos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Elemental com Ataques",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Combate Próximo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte Trindade",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Suporte: Dano Físico Corpo a Corpo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Elemental com Ataques",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Projéteis Perigosos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Combate Próximo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fúria",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Crueldade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Sadismo",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Suporte: Conjuração Acelerada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Físico Corpo a Corpo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano de Armadilha e Mina",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Foco Elemental",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Afecções Mortais",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Lâmina Noturna",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte Trindade",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Suporte: Conjuração Acelerada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Efeito: Concentrado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Elemental com Ataques",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Dano Físico Corpo a Corpo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Destruição Controlada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Foco Elemental",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Onda de Choque",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Crueldade",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "A Raiz do Problema",
+      "act": "Act 2",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Fissura Vulcânica",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Elemental com Ataques",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Projéteis Perigosos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fonte de Vida",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Runa da Maré Invernal",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Destruição Controlada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Eficácia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fúria Arcana",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Absolvição",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Adicional de Raio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fúria Arcana",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano do Lacaio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Estático",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Elemental com Ataques",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Dano Físico Corpo a Corpo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fonte de Vida",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Perdidamente Apaixonados",
+      "act": "Act 3",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Cólera",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Determinação",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Castigo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vulnerabilidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Orgulho",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clamor Infernal",
+            "color": "gem_red"
+          },
+          {
+            "name": "Clamor do General",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sangue Petrificado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clamor Vingativo",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Flamabilidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Condutividade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Congelabilidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fraqueza Elemental",
+            "color": "gem_green"
+          },
+          {
+            "name": "Desespero",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Debilitar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Grilhões Temporais",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Disciplina",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Pureza Elementar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Malevolência",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fanatismo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Banir",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Feiticeiro",
+            "color": "gem_green"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Flamabilidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Condutividade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Congelabilidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fraqueza Elemental",
+            "color": "gem_green"
+          },
+          {
+            "name": "Vulnerabilidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Grilhões Temporais",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Castigo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cólera",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ira",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ódio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Banir",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Malevolência",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fanatismo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sangue Petrificado",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Ódio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Graça",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Desespero",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Marca do Alquimista",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Ódio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Graça",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Estandarte Horrendo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Orgulho",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clamor Agrupador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sangue Petrificado",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Flamabilidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Condutividade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Congelabilidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fraqueza Elemental",
+            "color": "gem_green"
+          },
+          {
+            "name": "Desespero",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Debilitar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Grilhões Temporais",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ira",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ódio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Banir",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Malevolência",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Infestador",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Flamabilidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Condutividade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Congelabilidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fraqueza Elemental",
+            "color": "gem_green"
+          },
+          {
+            "name": "Vulnerabilidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Debilitar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Castigo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fanatismo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clamor do Mago de Batalha",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Corte a Mão Direita",
+      "act": "Act 3",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Ciclone",
+            "color": "gem_green"
+          },
+          {
+            "name": "Pancada Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Terremoto",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Impacto Tectônico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vórtice Furioso",
+            "color": "gem_green"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Cascata Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Explosão Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tormenta Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Esfera Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lança Crepitante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Evocar Espectro",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Explosão Cinética",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cremação",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Rasgalma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vínculo Tempestuoso",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Feitiço Explosivo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Ceifador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Olho Invernal",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Condutor Elétrico",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Ciclone",
+            "color": "gem_green"
+          },
+          {
+            "name": "Tiro Tornado",
+            "color": "gem_green"
+          },
+          {
+            "name": "Explosão Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Chuva de Lâminas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Rajada de Lâminas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço Fantasma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Impacto Tectônico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ira Divina",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Rasgalma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Feitiço Explosivo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ceifar",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Flecha Virulenta",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tiro Tornado",
+            "color": "gem_green"
+          },
+          {
+            "name": "Chuva Explosiva",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Selvagem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Rajada de Lâminas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço Fantasma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Balista de Artilharia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Chuva Tempestuosa",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Composto Explosivo",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Ciclone",
+            "color": "gem_green"
+          },
+          {
+            "name": "Pancada Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Chuva Explosiva",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço Fantasma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Aço Perfurador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tempestade de Lâminas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arremesso de Escudo Espectral",
+            "color": "gem_green"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Mina Explosiva de Fogo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Esfera Trovejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadilha Lança-Chamas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadilha Espiral Relampejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armadilha Císmica",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Chuva de Lâminas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Rajada de Lâminas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Avanço Fantasma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cremação",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Rasgalma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Pestilento",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Feitiço Explosivo",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Pancada Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vínculo Tempestuoso",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Explosão Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tormenta Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Nova Elétrica",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Totem Sísmico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Caminho Sagrado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Golpe Dominador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Runa do Armagedom",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ira Divina",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Runa da Penitência",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Um Acerto do Destino",
+      "act": "Act 3",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Suporte: Dreno de Vida",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fortificar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Arrogância",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Mais Duração",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Pulverizar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Empalar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ordens Urgentes",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Sede de Sangue",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Clamor Corrompedor",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Incêndio Controlado",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Suporte: Penetração de Fogo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Penetração de Gelo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Penetração de Raio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Incendiário",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Blasfêmia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Sofrimento Veloz",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dreno de Energia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Intensificar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Localizar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Frenesi Faminto",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Escudo de Carne",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Arquimago",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Destruição Iminente",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Sacrificar",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Suporte: Penetração de Fogo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Penetração de Gelo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Penetração de Raio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dreno de Vida",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fortificar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Mordida Congelante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Inervação",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dreno de Energia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Intensificar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Destruição Iminente",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Arrogância",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Sede de Sangue",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Suporte: Dreno de Vida",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Difundir",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fortificar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Hipotermia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Mordida Congelante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Aflição dos Golpes Críticos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Empalar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Segunda Ventania",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Balista Focada",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Suporte: Dreno de Vida",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fortificar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Arrogância",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Hipotermia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Pulverizar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Empalar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ordens Urgentes",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Sede de Sangue",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Clamor Corrompedor",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Perito em Retaliação",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Suporte: Segunda Ventania",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Penetração de Gelo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Penetração de Raio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Rápidos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Mordida Congelante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Inervação",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Aflição dos Golpes Críticos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Sofrimento Veloz",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Armadilhas Carregadas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Mina de Alto Impacto",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dreno de Energia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Minas Carregadas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Arquimago",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Destruição Iminente",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Localizar",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Suporte: Penetração de Fogo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Penetração de Gelo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Penetração de Raio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Fortificar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dano Incendiário",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Blasfêmia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Dreno de Energia",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Intensificar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Pulverizar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Arquimago",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Runa Repentina",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Arrogância",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Bênção do Guardião",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "O Eterno Pesadelo",
+      "act": "Act 4",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Suporte: Eco Mágico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ataques Múltiplos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Múltiplos Melhorado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ricochete",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Área de Efeito Aumentada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Brutalidade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Totens Múltiplos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Punho da Guerra",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Decapitar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Bênção Eterna",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Traumatismo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Esforço Excessivo",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Suporte: Eco Mágico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ataques Múltiplos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Múltiplos Melhorado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ricochete",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Área de Efeito Aumentada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Decadência",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Imolação",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte Resfriamento Ósseo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Propagar Feitiço",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Libertar",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Suporte: Eco Mágico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ataques Múltiplos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Múltiplos Melhorado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ricochete",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Área de Efeito Aumentada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Decadência",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Imolação",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Libertar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Grande Rajada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Barragem",
+            "color": "gem_red"
+          },
+          {
+            "name": "Suporte: Projéteis Retornados",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Vínculo Frígido",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Suporte: Eco Mágico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ataques Múltiplos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Múltiplos Melhorado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ricochete",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Área de Efeito Aumentada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte Toque Definhador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Grande Rajada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Barragem",
+            "color": "gem_red"
+          },
+          {
+            "name": "Suporte: Projéteis Retornados",
+            "color": "gem_green"
+          },
+          {
+            "name": "Suporte: Rompimento",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Suporte: Eco Mágico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ataques Múltiplos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Múltiplos Melhorado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ricochete",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Área de Efeito Aumentada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Grande Rajada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Barragem",
+            "color": "gem_red"
+          },
+          {
+            "name": "Suporte: Punho da Guerra",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Decapitar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Traumatismo",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Suporte: Eco Mágico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ataques Múltiplos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Múltiplos Melhorado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ricochete",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Área de Efeito Aumentada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Toxinas Letais",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte Toque Definhador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte Resfriamento Ósseo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Grupo de Armadilhas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Campo Minado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Libertar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Grande Rajada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Barragem",
+            "color": "gem_red"
+          },
+          {
+            "name": "Suporte: Projéteis Retornados",
+            "color": "gem_green"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Suporte: Eco Mágico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ataques Múltiplos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Projéteis Múltiplos Melhorado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Ricochete",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Área de Efeito Aumentada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Proliferação de Incêndio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Totens Múltiplos",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Libertar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Runa Arcanista",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Punho da Guerra",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Vínculo Frígido",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Suporte: Lâmina Mágica",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Quebrando o Selo",
+      "act": "Act 4",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Convocar Golem Caótico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Pedregulho",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Relampejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Berserk",
+            "color": "gem_red"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Convocar Golem Caótico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Pedregulho",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Relampejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem da Carniça",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Emblema do Poder",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Esfera do Vácuo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Gélido",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Hidroesfera",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Convocar Golem Caótico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Pedregulho",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Relampejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Esfera do Vácuo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Gélido",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vínculo D'Alma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vínculo Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vínculo Intuitivo",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Convocar Golem Caótico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Pedregulho",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Relampejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tornado",
+            "color": "gem_green"
+          },
+          {
+            "name": "Atirar",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Convocar Golem Caótico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Pedregulho",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Relampejante",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Convocar Golem Caótico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Pedregulho",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Relampejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fenda Temporal",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Esfera do Vácuo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Gélido",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tornado",
+            "color": "gem_green"
+          },
+          {
+            "name": "Emboscada",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Convocar Golem Caótico",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Glacial",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Flamejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Pedregulho",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem Relampejante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Convocar Golem da Carniça",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Emblema do Poder",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Esfera do Vácuo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Gélido",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Hidroesfera",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Legião Congelada",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Banquete do Rei",
+      "act": "Act 5",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Tomahawk",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Machado do Carrasco",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Maça Farpada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cabeça-de-Aço",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Facão",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Torre Pintado",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Varinha Enrolada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cajado Militar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sekhem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Faca do Açougueiro",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cinzel",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Espiritual de Nogueira",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Cajado Militar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Varinha Enrolada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tomahawk",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lâmina das Terras Altas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arco Curvo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Aljava de Flechas Cegas",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Arco Curvo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Aljava de Flechas Cegas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Florete Polido",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Faca do Açougueiro",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Facão",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Broquel de Carvalho",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Arco Curvo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Facão",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lâmina das Terras Altas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Maça Farpada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tomahawk",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Redondo de Bordo",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Cinzel",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Faca do Açougueiro",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Varinha Enrolada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arco Curvo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Aljava de Flechas Cegas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Cravado de Pau-Brasil",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Cajado Militar",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sekhem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Maça Farpada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cabeça-de-Aço",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Varinha Enrolada",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Triangular Gravado",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Essência de Umbra",
+      "act": "Act 6",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Elmo de Cerco",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elmo do Zelote",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elmo de Esgrimista",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Tiara de Aço",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Máscara Insensível",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elmo do Zelote",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Elmo de Cerco",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tricorne Nobre",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tiara de Aço",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elmo de Esgrimista",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elmo do Zelote",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Máscara Insensível",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Tricorne Nobre",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elmo de Esgrimista",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Máscara Insensível",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Elmo de Cerco",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tricorne Nobre",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elmo de Esgrimista",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Tricorne Nobre",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tiara de Aço",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Máscara Insensível",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Elmo de Cerco",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elmo do Zelote",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tiara de Aço",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Essência do Artista",
+      "act": "Act 7",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Grevas de Golias",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas do Soldado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas de Escamas de Wyrm",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Botas do Conjurador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas Carnais",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas do Soldado",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Grevas de Golias",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas de Chagrém",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas do Conjurador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas de Escamas de Wyrm",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas do Soldado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas Carnais",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Botas de Chagrém",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas Carnais",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas de Escamas de Wyrm",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Grevas de Golias",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas de Escamas de Wyrm",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas de Chagrém",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Botas de Chagrém",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas Carnais",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas do Conjurador",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Grevas de Golias",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas do Soldado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Botas do Conjurador",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "A Lâmina da Tempestade",
+      "act": "Act 9",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Machado do Assolador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Machado Desmembrador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Martelo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Macetadora",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Gládio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Torre de Ébano",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Varinha Imbuída",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lathi",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cetro de Opala",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Emboscador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fura-Goela",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Espiritual Fossilizado",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Lathi",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Varinha Imbuída",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Machado do Assolador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lâmina Ezomita",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arco da Caçadora",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Aljava de Flechas Pontudas",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Arco da Caçadora",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Aljava de Flechas Pontudas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Florete Temperado",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Emboscador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Gládio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Broquel Laqueado",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Arco da Caçadora",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Gládio",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lâmina Ezomita",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Martelo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Machado do Assolador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Redondo de Teca",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Fura-Goela",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Emboscador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Varinha Imbuída",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arco da Caçadora",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Aljava de Flechas Pontudas",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Cravado do Amieiro",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Lathi",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cetro de Opala",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Martelo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Macetadora",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Varinha Imbuída",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Escudo Triangular Marcado",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Morte e Ressurreição",
+      "act": "Act 10",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Placas do Gladiador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cota de Placas do General",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cota de Anéis Elegante",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Robe da Viúva da Seda",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cota de Anéis Elegante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vestes Sangrentas",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Placas do Gladiador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Couraça do Zodíaco",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Robe da Viúva da Seda",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cota de Placas do General",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cota de Anéis Elegante",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vestes Sangrentas",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Couraça do Zodíaco",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cota de Placas do General",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vestes Sangrentas",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Placas do Gladiador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Couraça do Zodíaco",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cota de Placas do General",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Couraça do Zodíaco",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Robe da Viúva da Seda",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vestes Sangrentas",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Placas do Gladiador",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Robe da Viúva da Seda",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cota de Anéis Elegante",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -13,12 +13,14 @@ import os
 import subprocess
 from config_manager import ConfigManager
 from language_manager import LanguageManager
+from quest_reward_crawler import QuestRewardCrawler
 
 
 class PoEOverlay:
     def __init__(self):
         self.config_manager = ConfigManager()
         self.language_manager = LanguageManager(self.config_manager)
+        self.quest_crawler = QuestRewardCrawler()
         
         # Create a hidden root window
         self.root = tk.Tk()
@@ -38,6 +40,29 @@ class PoEOverlay:
         
         # Update initial text
         self.text_label.config(text=self.original_text)
+        
+        # Initialize quest data in background
+        self.initialize_quest_data()
+        
+    def initialize_quest_data(self):
+        """Initialize quest data in background thread"""
+        def update_quest_data():
+            try:
+                print("Initializing quest reward data...")
+                current_lang = self.language_manager.get_current_language()
+                success = self.quest_crawler.update_quest_data(current_lang)
+                
+                if success:
+                    print("Quest reward data initialized successfully")
+                else:
+                    print("Failed to initialize quest reward data")
+                    
+            except Exception as e:
+                print(f"Error initializing quest data: {e}")
+        
+        # Start background thread
+        thread = threading.Thread(target=update_quest_data, daemon=True)
+        thread.start()
         
     def setup_window(self):
         """Configure the overlay window properties"""

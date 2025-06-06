@@ -1,0 +1,3811 @@
+{
+  "last_updated": "2025-06-06 14:58:14",
+  "language": "en_US",
+  "total_quests": 17,
+  "quests": [
+    {
+      "name": "Enemy at the Gate",
+      "act": "Act 1",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Ground Slam",
+            "color": "gem_red"
+          },
+          {
+            "name": "Molten Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Shield Crush",
+            "color": "gem_red"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Freezing Pulse",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Rolling Magma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lightning Tendrils",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Raise Zombie",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Blight",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Kinetic Bolt",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Molten Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Split Arrow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Lightning Tendrils",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Splitting Steel",
+            "color": "gem_green"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Split Arrow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Ice Shot",
+            "color": "gem_green"
+          },
+          {
+            "name": "Frost Blades",
+            "color": "gem_green"
+          },
+          {
+            "name": "Galvanic Arrow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Caustic Arrow",
+            "color": "gem_green"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Cleave",
+            "color": "gem_red"
+          },
+          {
+            "name": "Molten Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Galvanic Arrow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Perforate",
+            "color": "gem_red"
+          },
+          {
+            "name": "Splitting Steel",
+            "color": "gem_green"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Freezing Pulse",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Explosive Trap",
+            "color": "gem_green"
+          },
+          {
+            "name": "Stormblast Mine",
+            "color": "gem_green"
+          },
+          {
+            "name": "Ethereal Knives",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blight",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cobra Lash",
+            "color": "gem_green"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Smite",
+            "color": "gem_red"
+          },
+          {
+            "name": "Frostbolt",
+            "color": "gem_green"
+          },
+          {
+            "name": "Rolling Magma",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lightning Tendrils",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Molten Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Purifying Flame",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Breaking Some Eggs",
+      "act": "Act 1",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Decoy Totem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Steelskin",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vigilant Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Crushing Fist",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Shield Charge",
+            "color": "gem_red"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Frost Bomb",
+            "color": "gem_green"
+          },
+          {
+            "name": "Orb of Storms",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Raging Spirit",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Contagion",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Detonate Dead",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flame Wall",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frostblink",
+            "color": "gem_green"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Frost Bomb",
+            "color": "gem_green"
+          },
+          {
+            "name": "Bear Trap",
+            "color": "gem_green"
+          },
+          {
+            "name": "Decoy Totem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vigilant Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Shield Charge",
+            "color": "gem_red"
+          },
+          {
+            "name": "Dash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frostblink",
+            "color": "gem_green"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Sniper's Mark",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bear Trap",
+            "color": "gem_green"
+          },
+          {
+            "name": "Puncture",
+            "color": "gem_green"
+          },
+          {
+            "name": "Shrapnel Ballista",
+            "color": "gem_green"
+          },
+          {
+            "name": "Dash",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Sniper's Mark",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Decoy Totem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Puncture",
+            "color": "gem_green"
+          },
+          {
+            "name": "Vigilant Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "War Banner",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Blood and Sand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Crushing Fist",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Shield Charge",
+            "color": "gem_red"
+          },
+          {
+            "name": "Dash",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Bear Trap",
+            "color": "gem_green"
+          },
+          {
+            "name": "Orb of Storms",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Contagion",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Detonate Dead",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Dash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frostblink",
+            "color": "gem_green"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Frost Bomb",
+            "color": "gem_green"
+          },
+          {
+            "name": "Summon Holy Relic",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Holy Flame Totem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vigilant Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Flame Wall",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Shield Charge",
+            "color": "gem_red"
+          },
+          {
+            "name": "Frostblink",
+            "color": "gem_green"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Caged Brute",
+      "act": "Act 1",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Faster Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Melee Splash Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Added Fire Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Lifetap Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flamewood Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Leap Slam",
+            "color": "gem_red"
+          },
+          {
+            "name": "Vitality",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Enduring Cry",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Intimidating Cry",
+            "color": "gem_red"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Added Lightning Damage Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Minion Damage Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Void Manipulation Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Unbound Ailments Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Combustion Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Infernal Legion Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Efficacy Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Devour Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clarity",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Skeletons",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lightning Warp",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flame Dash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Wither",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bodyswap",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Faster Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Added Cold Damage Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Added Lightning Damage Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Added Fire Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Melee Splash Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Lesser Multiple Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Unbound Ailments Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lifetap Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flame Dash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Blink Arrow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Leap Slam",
+            "color": "gem_red"
+          },
+          {
+            "name": "Withering Step",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Faster Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Lesser Multiple Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Added Cold Damage Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Melee Splash Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Void Manipulation Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arrow Nova Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Manaforged Arrows Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Whirling Blades",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blink Arrow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Smoke Mine",
+            "color": "gem_green"
+          },
+          {
+            "name": "Precision",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Faster Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Added Fire Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Melee Splash Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Lesser Multiple Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Maim Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lifetap Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Blink Arrow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Leap Slam",
+            "color": "gem_red"
+          },
+          {
+            "name": "Whirling Blades",
+            "color": "gem_green"
+          },
+          {
+            "name": "Precision",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vitality",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Enduring Cry",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Intimidating Cry",
+            "color": "gem_red"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Faster Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Added Cold Damage Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Added Lightning Damage Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lesser Multiple Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Void Manipulation Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Multiple Traps Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Clarity",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Precision",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flame Dash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Whirling Blades",
+            "color": "gem_green"
+          },
+          {
+            "name": "Smoke Mine",
+            "color": "gem_green"
+          },
+          {
+            "name": "Withering Step",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Unearth",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Siphoning Trap",
+            "color": "gem_green"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Added Fire Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Added Lightning Damage Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Melee Splash Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Combustion Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Lifetap Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flame Dash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Clarity",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vitality",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Leap Slam",
+            "color": "gem_red"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Siren's Cadence",
+      "act": "Act 1",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Infernal Blow",
+            "color": "gem_red"
+          },
+          {
+            "name": "Static Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Sweep",
+            "color": "gem_red"
+          },
+          {
+            "name": "Sunder",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Chain Hook",
+            "color": "gem_green"
+          },
+          {
+            "name": "Earthshatter",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Volcanic Fissure",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Ice Nova",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blazing Salvo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arc",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flesh Offering",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Essence Drain",
+            "color": "gem_green"
+          },
+          {
+            "name": "Scorching Ray",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Volatile Dead",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Creeping Frost",
+            "color": "gem_green"
+          },
+          {
+            "name": "Manabond",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Static Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Rain of Arrows",
+            "color": "gem_green"
+          },
+          {
+            "name": "Ice Nova",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blade Vortex",
+            "color": "gem_green"
+          },
+          {
+            "name": "Scorching Ray",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Storm Burst",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Exsanguinate",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Spectral Helix",
+            "color": "gem_green"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Toxic Rain",
+            "color": "gem_green"
+          },
+          {
+            "name": "Rain of Arrows",
+            "color": "gem_green"
+          },
+          {
+            "name": "Lightning Arrow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Reave",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lightning Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Siege Ballista",
+            "color": "gem_green"
+          },
+          {
+            "name": "Elemental Hit",
+            "color": "gem_green"
+          },
+          {
+            "name": "Poisonous Concoction",
+            "color": "gem_green"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Lacerate",
+            "color": "gem_green"
+          },
+          {
+            "name": "Sweep",
+            "color": "gem_red"
+          },
+          {
+            "name": "Rain of Arrows",
+            "color": "gem_green"
+          },
+          {
+            "name": "Shattering Steel",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Earthshatter",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Reave",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Voltaxic Burst",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Icicle Mine",
+            "color": "gem_green"
+          },
+          {
+            "name": "Lightning Trap",
+            "color": "gem_green"
+          },
+          {
+            "name": "Fire Trap",
+            "color": "gem_red"
+          },
+          {
+            "name": "Blade Vortex",
+            "color": "gem_green"
+          },
+          {
+            "name": "Essence Drain",
+            "color": "gem_green"
+          },
+          {
+            "name": "Volatile Dead",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Venom Gyre",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Static Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Ice Nova",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blazing Salvo",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Storm Call",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Searing Bond",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Scorching Ray",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Storm Brand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Storm Burst",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Wintertide Brand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Absolution",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Manabond",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Intruders in Black",
+      "act": "Act 2",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Warlord's Mark",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Thunder",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ice",
+            "color": "gem_green"
+          },
+          {
+            "name": "Ancestral Cry",
+            "color": "gem_red"
+          },
+          {
+            "name": "Seismic Cry",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Corrupting Fever",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Molten Shell",
+            "color": "gem_red"
+          },
+          {
+            "name": "Eviscerate",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Herald of Ash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Thunder",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ice",
+            "color": "gem_green"
+          },
+          {
+            "name": "Desecrate",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arctic Armour",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cold Snap",
+            "color": "gem_green"
+          },
+          {
+            "name": "Arcane Cloak",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Galvanic Field",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Herald of Ash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ice",
+            "color": "gem_green"
+          },
+          {
+            "name": "Herald of Thunder",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frenzy",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arctic Armour",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Corrupting Fever",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Poacher's Mark",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Agony",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ice",
+            "color": "gem_green"
+          },
+          {
+            "name": "Herald of Thunder",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frenzy",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arctic Armour",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Blood Rage",
+            "color": "gem_red"
+          },
+          {
+            "name": "Ensnaring Arrow",
+            "color": "gem_green"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Poacher's Mark",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Warlord's Mark",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ice",
+            "color": "gem_green"
+          },
+          {
+            "name": "Frenzy",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Thunder",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flesh and Stone",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Blood Rage",
+            "color": "gem_red"
+          },
+          {
+            "name": "Ancestral Cry",
+            "color": "gem_red"
+          },
+          {
+            "name": "Seismic Cry",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Corrupting Fever",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Defiance Banner",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Eviscerate",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Swordstorm",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Glacial Shield Swipe",
+            "color": "gem_red"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Assassin's Mark",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Agony",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Thunder",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ice",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blade Blast",
+            "color": "gem_green"
+          },
+          {
+            "name": "Arctic Armour",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cold Snap",
+            "color": "gem_green"
+          },
+          {
+            "name": "Summon Skitterbots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Blood Rage",
+            "color": "gem_red"
+          },
+          {
+            "name": "Arcane Cloak",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Herald of Purity",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Thunder",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Herald of Ice",
+            "color": "gem_green"
+          },
+          {
+            "name": "Brand Recall",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Wave of Conviction",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arcane Cloak",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Divine Retribution",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sharp and Cruel",
+      "act": "Act 2",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Melee Physical Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Elemental Damage with Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Shockwave Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Close Combat Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Rage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Cruelty Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Volatility Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Faster Casting Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Minion Speed Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Concentrated Effect Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Controlled Destruction Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elemental Focus Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Predator Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Trinity Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cruelty Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Overcharge Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fresh Meat Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sacred Wisps Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Melee Physical Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Elemental Damage with Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Faster Casting Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Concentrated Effect Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Vicious Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Deadly Ailments Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cruelty Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sadism Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Vicious Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Elemental Damage with Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Close Combat Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Trinity Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Melee Physical Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Elemental Damage with Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Vicious Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Close Combat Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Rage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Cruelty Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sadism Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Faster Casting Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Melee Physical Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Trap and Mine Damage Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Elemental Focus Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Deadly Ailments Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Nightblade Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Trinity Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Faster Casting Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Concentrated Effect Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Elemental Damage with Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Melee Physical Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Controlled Destruction Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elemental Focus Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Shockwave Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cruelty Support",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Root of the Problem",
+      "act": "Act 2",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Volcanic Fissure",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elemental Damage with Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Vicious Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Lifetap Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Wintertide Brand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Controlled Destruction Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Efficacy Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arcane Surge Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Absolution",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Added Lightning Damage Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arcane Surge Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Minion Damage Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Static Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Elemental Damage with Attacks Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Melee Physical Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Lifetap Support",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Lost in Love",
+      "act": "Act 3",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Anger",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Determination",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Punishment",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vulnerability",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Pride",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Infernal Cry",
+            "color": "gem_red"
+          },
+          {
+            "name": "General's Cry",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Petrified Blood",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vengeful Cry",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Flammability",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Conductivity",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frostbite",
+            "color": "gem_green"
+          },
+          {
+            "name": "Elemental Weakness",
+            "color": "gem_green"
+          },
+          {
+            "name": "Despair",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Enfeeble",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Temporal Chains",
+            "color": "gem_green"
+          },
+          {
+            "name": "Discipline",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Purity of Elements",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Malevolence",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Zealotry",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bane",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Spellslinger",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Flammability",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Conductivity",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frostbite",
+            "color": "gem_green"
+          },
+          {
+            "name": "Elemental Weakness",
+            "color": "gem_green"
+          },
+          {
+            "name": "Vulnerability",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Temporal Chains",
+            "color": "gem_green"
+          },
+          {
+            "name": "Punishment",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Anger",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Wrath",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Hatred",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bane",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Malevolence",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Zealotry",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Petrified Blood",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Hatred",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Grace",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Despair",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Alchemist's Mark",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Hatred",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Grace",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Dread Banner",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Pride",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Rallying Cry",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Petrified Blood",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Flammability",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Conductivity",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frostbite",
+            "color": "gem_green"
+          },
+          {
+            "name": "Elemental Weakness",
+            "color": "gem_green"
+          },
+          {
+            "name": "Despair",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Enfeeble",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Temporal Chains",
+            "color": "gem_green"
+          },
+          {
+            "name": "Wrath",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Hatred",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bane",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Malevolence",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Plague Bearer",
+            "color": "gem_green"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Flammability",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Conductivity",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frostbite",
+            "color": "gem_green"
+          },
+          {
+            "name": "Elemental Weakness",
+            "color": "gem_green"
+          },
+          {
+            "name": "Vulnerability",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Enfeeble",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Punishment",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Zealotry",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Battlemage's Cry",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Sever the Right Hand",
+      "act": "Act 3",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Cyclone",
+            "color": "gem_green"
+          },
+          {
+            "name": "Ice Crash",
+            "color": "gem_green"
+          },
+          {
+            "name": "Earthquake",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tectonic Slam",
+            "color": "gem_red"
+          },
+          {
+            "name": "Rage Vortex",
+            "color": "gem_red"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Glacial Cascade",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flameblast",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Firestorm",
+            "color": "gem_red"
+          },
+          {
+            "name": "Ball Lightning",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Crackling Lance",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Raise Spectre",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Kinetic Blast",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cremation",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Soulrend",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Stormbind",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Hexblast",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Reaper",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Eye of Winter",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lightning Conduit",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Cyclone",
+            "color": "gem_green"
+          },
+          {
+            "name": "Tornado Shot",
+            "color": "gem_green"
+          },
+          {
+            "name": "Flameblast",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bladefall",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blade Flurry",
+            "color": "gem_green"
+          },
+          {
+            "name": "Charged Dash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tectonic Slam",
+            "color": "gem_red"
+          },
+          {
+            "name": "Divine Ire",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Soulrend",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Hexblast",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Reap",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Scourge Arrow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Tornado Shot",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blast Rain",
+            "color": "gem_green"
+          },
+          {
+            "name": "Wild Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Blade Flurry",
+            "color": "gem_green"
+          },
+          {
+            "name": "Charged Dash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Artillery Ballista",
+            "color": "gem_green"
+          },
+          {
+            "name": "Storm Rain",
+            "color": "gem_green"
+          },
+          {
+            "name": "Explosive Concoction",
+            "color": "gem_green"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Cyclone",
+            "color": "gem_green"
+          },
+          {
+            "name": "Ice Crash",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blast Rain",
+            "color": "gem_green"
+          },
+          {
+            "name": "Charged Dash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lancing Steel",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bladestorm",
+            "color": "gem_green"
+          },
+          {
+            "name": "Spectral Shield Throw",
+            "color": "gem_red"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Pyroclast Mine",
+            "color": "gem_green"
+          },
+          {
+            "name": "Ball Lightning",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flamethrower Trap",
+            "color": "gem_green"
+          },
+          {
+            "name": "Lightning Spire Trap",
+            "color": "gem_green"
+          },
+          {
+            "name": "Seismic Trap",
+            "color": "gem_green"
+          },
+          {
+            "name": "Bladefall",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blade Flurry",
+            "color": "gem_green"
+          },
+          {
+            "name": "Charged Dash",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cremation",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Soulrend",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Pestilent Strike",
+            "color": "gem_red"
+          },
+          {
+            "name": "Hexblast",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Ice Crash",
+            "color": "gem_green"
+          },
+          {
+            "name": "Stormbind",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flameblast",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Firestorm",
+            "color": "gem_red"
+          },
+          {
+            "name": "Shock Nova",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Shockwave Totem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Consecrated Path",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Dominating Blow",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Armageddon Brand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Divine Ire",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Penance Brand",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "A Fixture of Fate",
+      "act": "Act 3",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Life Leech Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fortify Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Arrogance Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "More Duration Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Pulverise Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Impale Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Urgent Orders Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bloodthirst Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Corrupting Cry Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Controlled Blaze Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Fire Penetration Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Cold Penetration Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Lightning Penetration Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Burning Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Blasphemy Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Swift Affliction Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Energy Leech Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Intensify Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Pinpoint Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Feeding Frenzy Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Meat Shield Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Archmage Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Impending Doom Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sacrifice Support",
+            "color": "gem_green"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Fire Penetration Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Cold Penetration Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Lightning Penetration Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Life Leech Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fortify Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Ice Bite Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Innervate Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Energy Leech Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Intensify Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Impending Doom Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arrogance Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bloodthirst Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Life Leech Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fork Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Fortify Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Hypothermia Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Ice Bite Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Critical Strike Affliction Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Impale Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Second Wind Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Focused Ballista Support",
+            "color": "gem_green"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Life Leech Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fortify Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Arrogance Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Hypothermia Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Pulverise Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Impale Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Urgent Orders Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bloodthirst Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Corrupting Cry Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Expert Retaliation Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Second Wind Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cold Penetration Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Lightning Penetration Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Faster Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Ice Bite Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Innervate Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Critical Strike Affliction Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Swift Affliction Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Charged Traps Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "High-Impact Mine Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Energy Leech Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Charged Mines Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Archmage Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Impending Doom Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Pinpoint Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Fire Penetration Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Cold Penetration Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Lightning Penetration Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fortify Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Burning Damage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Blasphemy Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Energy Leech Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Intensify Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Pulverise Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Archmage Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Swiftbrand Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arrogance Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Guardian's Blessing Support",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Eternal Nightmare",
+      "act": "Act 4",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Spell Echo Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Multistrike Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Greater Multiple Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Chain Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Increased Area of Effect Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Brutality Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Multiple Totems Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Fist of War Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Behead Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Eternal Blessing Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Trauma Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Overexertion Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Spell Echo Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Multistrike Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Greater Multiple Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Chain Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Increased Area of Effect Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Decay Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Immolate Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Bonechill Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Hex Bloom Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Unleash Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Spell Echo Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Multistrike Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Greater Multiple Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Chain Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Increased Area of Effect Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Decay Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Immolate Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Unleash Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Greater Volley Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Barrage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Returning Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Frigid Bond Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Spell Echo Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Multistrike Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Greater Multiple Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Chain Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Increased Area of Effect Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Withering Touch Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Greater Volley Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Barrage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Returning Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Rupture Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Spell Echo Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Multistrike Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Greater Multiple Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Chain Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Increased Area of Effect Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Greater Volley Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Barrage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Fist of War Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Behead Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Trauma Support",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Spell Echo Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Multistrike Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Greater Multiple Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Chain Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Increased Area of Effect Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Vile Toxins Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Withering Touch Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Bonechill Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cluster Traps Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Minefield Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Unleash Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Greater Volley Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Barrage Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Returning Projectiles Support",
+            "color": "gem_green"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Spell Echo Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Multistrike Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Greater Multiple Projectiles Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Chain Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Increased Area of Effect Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ignite Proliferation Support",
+            "color": "gem_red"
+          },
+          {
+            "name": "Multiple Totems Support",
+            "color": "gem_green"
+          },
+          {
+            "name": "Unleash Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Arcanist Brand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fist of War Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frigid Bond Support",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Spellblade Support",
+            "color": "gem_green"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Breaking the Seal",
+      "act": "Act 4",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Summon Chaos Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Ice Golem",
+            "color": "gem_green"
+          },
+          {
+            "name": "Summon Flame Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Stone Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Lightning Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Berserk",
+            "color": "gem_red"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Summon Chaos Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Ice Golem",
+            "color": "gem_green"
+          },
+          {
+            "name": "Summon Flame Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Stone Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Lightning Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Carrion Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sigil of Power",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Void Sphere",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frost Shield",
+            "color": "gem_red"
+          },
+          {
+            "name": "Hydrosphere",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Summon Chaos Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Ice Golem",
+            "color": "gem_green"
+          },
+          {
+            "name": "Summon Flame Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Stone Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Lightning Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Void Sphere",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frost Shield",
+            "color": "gem_red"
+          },
+          {
+            "name": "Soul Link",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Flame Link",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Intuitive Link",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Summon Chaos Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Ice Golem",
+            "color": "gem_green"
+          },
+          {
+            "name": "Summon Flame Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Stone Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Lightning Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tornado",
+            "color": "gem_green"
+          },
+          {
+            "name": "Snipe",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Summon Chaos Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Ice Golem",
+            "color": "gem_green"
+          },
+          {
+            "name": "Summon Flame Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Stone Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Lightning Golem",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Summon Chaos Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Ice Golem",
+            "color": "gem_green"
+          },
+          {
+            "name": "Summon Flame Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Stone Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Lightning Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Temporal Rift",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Void Sphere",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frost Shield",
+            "color": "gem_red"
+          },
+          {
+            "name": "Tornado",
+            "color": "gem_green"
+          },
+          {
+            "name": "Ambush",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Summon Chaos Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Ice Golem",
+            "color": "gem_green"
+          },
+          {
+            "name": "Summon Flame Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Stone Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Lightning Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Summon Carrion Golem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sigil of Power",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Void Sphere",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frost Shield",
+            "color": "gem_red"
+          },
+          {
+            "name": "Hydrosphere",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Frozen Legion",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The King's Feast",
+      "act": "Act 5",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Tomahawk",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Headsman Axe",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Barbed Club",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Steelhead",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cutlass",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Painted Tower Shield",
+            "color": "gem_red"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Coiled Wand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Military Staff",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sekhem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Butcher Knife",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Gouger",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Walnut Spirit Shield",
+            "color": "gem_red"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Military Staff",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Coiled Wand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tomahawk",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Highland Blade",
+            "color": "gem_green"
+          },
+          {
+            "name": "Decurve Bow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blunt Arrow Quiver",
+            "color": "gem_green"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Decurve Bow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blunt Arrow Quiver",
+            "color": "gem_green"
+          },
+          {
+            "name": "Burnished Foil",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Butcher Knife",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Cutlass",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Oak Buckler",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Decurve Bow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Cutlass",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Highland Blade",
+            "color": "gem_green"
+          },
+          {
+            "name": "Barbed Club",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Tomahawk",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Maple Round Shield",
+            "color": "gem_red"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Gouger",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Butcher Knife",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Coiled Wand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Decurve Bow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Blunt Arrow Quiver",
+            "color": "gem_green"
+          },
+          {
+            "name": "Redwood Spiked Shield",
+            "color": "gem_red"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Military Staff",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sekhem",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Barbed Club",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Steelhead",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Coiled Wand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Etched Kite Shield",
+            "color": "gem_red"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Essence of Umbra",
+      "act": "Act 6",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Siege Helmet",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Zealot Helmet",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fencer Helm",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Steel Circlet",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Callous Mask",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Zealot Helmet",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Siege Helmet",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Noble Tricorne",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Steel Circlet",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fencer Helm",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Zealot Helmet",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Callous Mask",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Noble Tricorne",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fencer Helm",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Callous Mask",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Siege Helmet",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Noble Tricorne",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fencer Helm",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Noble Tricorne",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Steel Circlet",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Callous Mask",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Siege Helmet",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Zealot Helmet",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Steel Circlet",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Essence of the Artist",
+      "act": "Act 7",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Goliath Greaves",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Soldier Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Wyrmscale Boots",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Conjurer Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Carnal Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Soldier Boots",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Goliath Greaves",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Shagreen Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Conjurer Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Wyrmscale Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Soldier Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Carnal Boots",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Shagreen Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Carnal Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Wyrmscale Boots",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Goliath Greaves",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Wyrmscale Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Shagreen Boots",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Shagreen Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Carnal Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Conjurer Boots",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Goliath Greaves",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Soldier Boots",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Conjurer Boots",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    },
+    {
+      "name": "The Storm Blade",
+      "act": "Act 9",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Reaver Axe",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Sundering Axe",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Gavel",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Piledriver",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Gladius",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ebony Tower Shield",
+            "color": "gem_red"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Imbued Wand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lathi",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Opal Sceptre",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ambusher",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Throat Stabber",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Fossilised Spirit Shield",
+            "color": "gem_red"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Lathi",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Imbued Wand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Reaver Axe",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ezomyte Blade",
+            "color": "gem_green"
+          },
+          {
+            "name": "Ranger Bow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Spike-Point Arrow Quiver",
+            "color": "gem_green"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Ranger Bow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Spike-Point Arrow Quiver",
+            "color": "gem_green"
+          },
+          {
+            "name": "Tempered Foil",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ambusher",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Gladius",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Lacquered Buckler",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Ranger Bow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Gladius",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ezomyte Blade",
+            "color": "gem_green"
+          },
+          {
+            "name": "Gavel",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Reaver Axe",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Teak Round Shield",
+            "color": "gem_red"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Throat Stabber",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ambusher",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Imbued Wand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Ranger Bow",
+            "color": "gem_green"
+          },
+          {
+            "name": "Spike-Point Arrow Quiver",
+            "color": "gem_green"
+          },
+          {
+            "name": "Alder Spiked Shield",
+            "color": "gem_red"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Lathi",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Opal Sceptre",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Gavel",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Piledriver",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Imbued Wand",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Branded Kite Shield",
+            "color": "gem_red"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Death and Rebirth",
+      "act": "Act 10",
+      "rewards": {
+        "Marauder": [
+          {
+            "name": "Gladiator Plate",
+            "color": "gem_blue"
+          },
+          {
+            "name": "General's Brigandine",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elegant Ringmail",
+            "color": "gem_blue"
+          }
+        ],
+        "Witch": [
+          {
+            "name": "Widowsilk Robe",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elegant Ringmail",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Blood Raiment",
+            "color": "gem_blue"
+          }
+        ],
+        "Scion": [
+          {
+            "name": "Gladiator Plate",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Zodiac Leather",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Widowsilk Robe",
+            "color": "gem_blue"
+          },
+          {
+            "name": "General's Brigandine",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elegant Ringmail",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Blood Raiment",
+            "color": "gem_blue"
+          }
+        ],
+        "Ranger": [
+          {
+            "name": "Zodiac Leather",
+            "color": "gem_blue"
+          },
+          {
+            "name": "General's Brigandine",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Blood Raiment",
+            "color": "gem_blue"
+          }
+        ],
+        "Duelist": [
+          {
+            "name": "Gladiator Plate",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Zodiac Leather",
+            "color": "gem_blue"
+          },
+          {
+            "name": "General's Brigandine",
+            "color": "gem_blue"
+          }
+        ],
+        "Shadow": [
+          {
+            "name": "Zodiac Leather",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Widowsilk Robe",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Blood Raiment",
+            "color": "gem_blue"
+          }
+        ],
+        "Templar": [
+          {
+            "name": "Gladiator Plate",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Widowsilk Robe",
+            "color": "gem_blue"
+          },
+          {
+            "name": "Elegant Ringmail",
+            "color": "gem_blue"
+          }
+        ]
+      }
+    }
+  ]
+}

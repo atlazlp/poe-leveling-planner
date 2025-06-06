@@ -10,33 +10,67 @@ import sys
 import os
 from config_manager import ConfigManager
 from language_manager import LanguageManager
+from quest_reward_crawler import QuestRewardCrawler
+import threading
 
 
 class ConfigGUI:
     def __init__(self):
         self.config_manager = ConfigManager()
         self.language_manager = LanguageManager(self.config_manager)
+        self.quest_crawler = QuestRewardCrawler()
         self.root = tk.Tk()
         self.test_window = None  # For live testing
         self.debounce_timer = None  # For debouncing slider updates
         self.drag_start_x = None  # For window dragging
         self.drag_start_y = None  # For window dragging
+        self.quest_data_loading = False  # Track if quest data is being loaded
         self.setup_window()
         self.setup_ui()
         self.load_current_settings()
         self.start_live_testing()
         
+        # Initialize quest data in background
+        self.initialize_quest_data()
+        
+    def initialize_quest_data(self):
+        """Initialize quest data in background thread"""
+        def update_quest_data():
+            try:
+                self.quest_data_loading = True
+                self.update_gem_info_loading()
+                
+                # Update quest data for current language
+                current_lang = self.language_manager.get_current_language()
+                success = self.quest_crawler.update_quest_data(current_lang)
+                
+                if success:
+                    # Update UI on main thread
+                    self.root.after(0, self.refresh_gem_info)
+                else:
+                    self.root.after(0, lambda: self.update_gem_info_error("Failed to load quest data"))
+                    
+            except Exception as e:
+                print(f"Error initializing quest data: {e}")
+                self.root.after(0, lambda: self.update_gem_info_error(f"Error: {e}"))
+            finally:
+                self.quest_data_loading = False
+        
+        # Start background thread
+        thread = threading.Thread(target=update_quest_data, daemon=True)
+        thread.start()
+        
     def setup_window(self):
         """Setup the main configuration window"""
         self.root.title(self.language_manager.get_ui_text("window_title", "PoE Leveling Planner - Configuration"))
-        self.root.geometry("500x750")  # Increased height for language section
+        self.root.geometry("600x800")  # Increased width and height for gem info
         self.root.resizable(True, True)
         
         # Center the window
         self.root.update_idletasks()
-        x = (self.root.winfo_screenwidth() // 2) - (500 // 2)
-        y = (self.root.winfo_screenheight() // 2) - (750 // 2)
-        self.root.geometry(f"500x750+{x}+{y}")
+        x = (self.root.winfo_screenwidth() // 2) - (600 // 2)
+        y = (self.root.winfo_screenheight() // 2) - (800 // 2)
+        self.root.geometry(f"600x800+{x}+{y}")
         
         # Make it stay on top initially
         self.root.attributes('-topmost', True)
@@ -258,7 +292,7 @@ class ConfigGUI:
         self.opacity_var.trace('w', update_opacity_label)
             
     def setup_gems_tab(self):
-        """Setup the Gems tab with character management"""
+        """Setup the Gems tab with character management and quest rewards"""
         gems_frame = ttk.Frame(self.notebook, padding="10")
         self.notebook.add(gems_frame, text="Gems")
         
@@ -310,16 +344,43 @@ class ConfigGUI:
                                         font=('Arial', 10))
         self.char_info_label.grid(row=0, column=0, sticky=tk.W)
         
-        # Gem information placeholder
-        gem_info_frame = ttk.LabelFrame(gems_frame, text="Gem Information", padding="10")
-        gem_info_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
+        # Quest rewards section with scrollable area
+        quest_frame = ttk.LabelFrame(gems_frame, text="Quest Gem Rewards", padding="10")
+        quest_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
         
-        self.gem_info_label = ttk.Label(gem_info_frame, 
-                                       text="Gem information will be displayed here based on selected character's class.", 
+        # Create scrollable frame for quest rewards
+        canvas = tk.Canvas(quest_frame, height=300)
+        scrollbar = ttk.Scrollbar(quest_frame, orient="vertical", command=canvas.yview)
+        self.scrollable_frame = ttk.Frame(canvas)
+        
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+        
+        # Initial gem info label
+        self.gem_info_label = ttk.Label(self.scrollable_frame, 
+                                       text="Loading quest reward data...", 
                                        font=('Arial', 10), foreground='gray')
         self.gem_info_label.grid(row=0, column=0, pady=20)
         
+        # Refresh button
+        refresh_frame = ttk.Frame(quest_frame)
+        refresh_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(10, 0))
+        
+        self.refresh_quest_btn = ttk.Button(refresh_frame, text="Refresh Quest Data", 
+                                           command=self.refresh_quest_data)
+        self.refresh_quest_btn.pack(side=tk.LEFT)
+        
         char_frame.columnconfigure(1, weight=1)
+        quest_frame.columnconfigure(0, weight=1)
+        quest_frame.rowconfigure(0, weight=1)
         gems_frame.columnconfigure(0, weight=1)
         gems_frame.rowconfigure(2, weight=1)
         
@@ -426,12 +487,13 @@ class ConfigGUI:
         if selected_name:
             self.config_manager.update_setting("characters", "selected", selected_name)
             self.update_character_info(selected_name)
+            self.refresh_gem_info()
     
     def update_character_info(self, character_name):
         """Update the character information display"""
         if not character_name:
             self.char_info_label.config(text="No character selected")
-            self.gem_info_label.config(text="Gem information will be displayed here based on selected character's class.")
+            self.update_gem_info_placeholder()
             return
             
         characters = self.config_manager.get_setting("characters", "profiles", [])
@@ -441,12 +503,160 @@ class ConfigGUI:
             info_text = f"Name: {character['name']}\nClass: {character['class']}"
             self.char_info_label.config(text=info_text)
             
-            # Update gem info placeholder with class-specific message
-            gem_text = f"Gem information for {character['class']} will be available in future updates."
-            self.gem_info_label.config(text=gem_text)
+            # Update gem info for this character's class
+            self.refresh_gem_info()
         else:
             self.char_info_label.config(text="Character not found")
-            self.gem_info_label.config(text="Gem information will be displayed here based on selected character's class.")
+            self.update_gem_info_placeholder()
+    
+    def update_gem_info_placeholder(self):
+        """Show placeholder text when no character is selected"""
+        # Clear existing widgets
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+        
+        self.gem_info_label = ttk.Label(self.scrollable_frame, 
+                                       text="Select a character to view quest gem rewards.", 
+                                       font=('Arial', 10), foreground='gray')
+        self.gem_info_label.grid(row=0, column=0, pady=20)
+    
+    def update_gem_info_loading(self):
+        """Show loading message"""
+        # Clear existing widgets
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+        
+        self.gem_info_label = ttk.Label(self.scrollable_frame, 
+                                       text="Loading quest reward data...", 
+                                       font=('Arial', 10), foreground='blue')
+        self.gem_info_label.grid(row=0, column=0, pady=20)
+    
+    def update_gem_info_error(self, error_message):
+        """Show error message"""
+        # Clear existing widgets
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+        
+        self.gem_info_label = ttk.Label(self.scrollable_frame, 
+                                       text=f"Error loading quest data:\n{error_message}", 
+                                       font=('Arial', 10), foreground='red')
+        self.gem_info_label.grid(row=0, column=0, pady=20)
+    
+    def refresh_gem_info(self):
+        """Refresh the gem information display based on selected character"""
+        selected_name = self.selected_char_var.get()
+        if not selected_name:
+            self.update_gem_info_placeholder()
+            return
+        
+        characters = self.config_manager.get_setting("characters", "profiles", [])
+        character = next((char for char in characters if char["name"] == selected_name), None)
+        
+        if not character:
+            self.update_gem_info_placeholder()
+            return
+        
+        character_class = character['class']
+        current_language = self.language_manager.get_current_language()
+        
+        # Get quest rewards for this character class
+        quest_rewards = self.quest_crawler.get_quest_rewards_for_class(current_language, character_class)
+        
+        # Clear existing widgets
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
+        
+        if not quest_rewards:
+            self.gem_info_label = ttk.Label(self.scrollable_frame, 
+                                           text=f"No quest reward data available for {character_class}.\nTry refreshing the quest data.", 
+                                           font=('Arial', 10), foreground='orange')
+            self.gem_info_label.grid(row=0, column=0, pady=20)
+            return
+        
+        # Display quest rewards
+        row = 0
+        for quest in quest_rewards:
+            # Quest header
+            quest_header = ttk.Label(self.scrollable_frame, 
+                                   text=f"{quest['name']} ({quest['act']})", 
+                                   font=('Arial', 11, 'bold'))
+            quest_header.grid(row=row, column=0, sticky=tk.W, pady=(10, 5))
+            row += 1
+            
+            # Gem rewards for this class
+            gems = quest.get('class_rewards', [])
+            if gems:
+                gem_frame = ttk.Frame(self.scrollable_frame)
+                gem_frame.grid(row=row, column=0, sticky=(tk.W, tk.E), padx=(20, 0), pady=(0, 5))
+                
+                gem_col = 0
+                for gem in gems:
+                    # Create colored gem label
+                    gem_color = gem['color']
+                    if gem_color == 'gem_red':
+                        color = '#ff6b6b'  # Red
+                    elif gem_color == 'gem_green':
+                        color = '#51cf66'  # Green
+                    elif gem_color == 'gem_blue':
+                        color = '#339af0'  # Blue
+                    else:
+                        color = '#868e96'  # Gray fallback
+                    
+                    gem_label = tk.Label(gem_frame, text=gem['name'], 
+                                       font=('Arial', 9), 
+                                       fg=color, 
+                                       bg=self.root.cget('bg'))
+                    gem_label.grid(row=0, column=gem_col, sticky=tk.W, padx=(0, 15))
+                    gem_col += 1
+                
+                row += 1
+            else:
+                no_gems_label = ttk.Label(self.scrollable_frame, 
+                                        text="No gems available", 
+                                        font=('Arial', 9), foreground='gray')
+                no_gems_label.grid(row=row, column=0, sticky=tk.W, padx=(20, 0), pady=(0, 5))
+                row += 1
+        
+        # Update scroll region
+        self.scrollable_frame.update_idletasks()
+    
+    def refresh_quest_data(self):
+        """Refresh quest data from PoEDB"""
+        if self.quest_data_loading:
+            messagebox.showinfo("Info", "Quest data is already being updated. Please wait.")
+            return
+        
+        def update_data():
+            try:
+                self.quest_data_loading = True
+                self.root.after(0, self.update_gem_info_loading)
+                
+                current_language = self.language_manager.get_current_language()
+                success = self.quest_crawler.update_quest_data(current_language, force_update=True)
+                
+                if success:
+                    self.root.after(0, lambda: [
+                        self.refresh_gem_info(),
+                        messagebox.showinfo("Success", "Quest data updated successfully!")
+                    ])
+                else:
+                    self.root.after(0, lambda: [
+                        self.update_gem_info_error("Failed to update quest data"),
+                        messagebox.showerror("Error", "Failed to update quest data. Please check your internet connection.")
+                    ])
+                    
+            except Exception as e:
+                print(f"Error updating quest data: {e}")
+                self.root.after(0, lambda: [
+                    self.update_gem_info_error(f"Error: {e}"),
+                    messagebox.showerror("Error", f"Error updating quest data: {e}")
+                ])
+            finally:
+                self.quest_data_loading = False
+        
+        # Start background thread
+        thread = threading.Thread(target=update_data, daemon=True)
+        thread.start()
     
     def on_tab_changed(self, event):
         """Handle tab change to show/hide reset button"""
@@ -776,17 +986,33 @@ class ConfigGUI:
         self.config_hidden = False
     
     def on_language_change(self, event=None):
-        """Handle language selection change"""
-        selected_language_name = self.language_var.get()
-        # Find the language code for the selected name
-        for code, name in self.language_manager.get_available_languages().items():
-            if name == selected_language_name:
-                if self.language_manager.set_language(code):
-                    # Refresh the UI with new language
-                    self.refresh_ui_text()
-                    # Update content text fields with new language defaults
-                    self.update_content_for_language()
+        """Handle language change"""
+        if not hasattr(self, 'language_combo'):
+            return
+            
+        selected_display_name = self.language_var.get()
+        
+        # Find the language code for the selected display name
+        available_languages = self.language_manager.get_available_languages()
+        selected_language = None
+        for code, display_name in available_languages.items():
+            if display_name == selected_display_name:
+                selected_language = code
                 break
+        
+        if selected_language and selected_language != self.language_manager.get_current_language():
+            # Update language
+            if self.language_manager.set_language(selected_language):
+                self.refresh_ui_text()
+                self.update_content_for_language()
+                
+                # Update quest data for new language
+                self.initialize_quest_data()
+                
+                messagebox.showinfo(
+                    self.language_manager.get_ui_text("language_changed", "Language Changed"),
+                    self.language_manager.get_ui_text("language_changed_message", "Language has been changed. Some changes may require a restart to take full effect.")
+                )
     
     def refresh_ui_text(self):
         """Refresh all UI text elements with current language"""

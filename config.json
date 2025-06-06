@@ -36,9 +36,13 @@
             {
                 "name": "Testing",
                 "class": "Marauder"
+            },
+            {
+                "name": "Penance RF Leveling",
+                "class": "Templar"
             }
         ],
-        "selected": "Testing"
+        "selected": "Penance RF Leveling"
     },
     "language": {
         "current": "en_US"
