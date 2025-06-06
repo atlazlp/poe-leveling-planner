@@ -47,7 +47,7 @@ class ConfigGUI:
         
     def setup_ui(self):
         """Create the UI elements"""
-        # Main frame with scrollbar
+        # Main frame
         main_frame = ttk.Frame(self.root, padding="10")
         main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
@@ -59,10 +59,58 @@ class ConfigGUI:
                                font=('Arial', 14, 'bold'))
         title_label.grid(row=0, column=0, columnspan=2, pady=(0, 20))
         
-        row = 1
+        # Create notebook for tabs
+        self.notebook = ttk.Notebook(main_frame)
+        self.notebook.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 20))
+        
+        # Create tabs
+        self.setup_general_tab()
+        self.setup_appearance_tab()
+        self.setup_gems_tab()
+        
+        # Preview Section (outside tabs)
+        preview_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("live_preview", "Live Preview"), padding="10")
+        preview_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
+        
+        self.preview_label = ttk.Label(preview_frame, text="Position: (0, 0)\nMonitor: Primary", 
+                                      font=('Arial', 9))
+        self.preview_label.grid(row=0, column=0, sticky=tk.W)
+        
+        # Minimize/Restore button for config window
+        minimize_frame = ttk.Frame(preview_frame)
+        minimize_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(10, 0))
+        
+        self.minimize_btn = ttk.Button(minimize_frame, text=self.language_manager.get_ui_text("hide_config_window", "Hide Config Window"), command=self.toggle_config_window)
+        self.minimize_btn.pack(side=tk.LEFT)
+        
+        self.config_hidden = False
+        
+        # Buttons frame
+        button_frame = ttk.Frame(main_frame)
+        button_frame.grid(row=3, column=0, columnspan=2, pady=(20, 0))
+        
+        # Save and Cancel buttons (always visible)
+        ttk.Button(button_frame, text=self.language_manager.get_ui_text("save_restart", "Save & Restart"), command=self.save_and_restart).pack(side=tk.LEFT, padx=(0, 10))
+        ttk.Button(button_frame, text=self.language_manager.get_ui_text("cancel", "Cancel"), command=self.cancel).pack(side=tk.LEFT, padx=(0, 10))
+        
+        # Reset to Default button (will be shown/hidden based on tab)
+        self.reset_btn = ttk.Button(button_frame, text=self.language_manager.get_ui_text("reset_to_default", "Reset to Default"), command=self.reset_defaults)
+        
+        # Bind tab change event to show/hide reset button
+        self.notebook.bind("<<NotebookTabChanged>>", self.on_tab_changed)
+        
+        main_frame.columnconfigure(0, weight=1)
+        main_frame.rowconfigure(1, weight=1)
+        
+    def setup_general_tab(self):
+        """Setup the General tab"""
+        general_frame = ttk.Frame(self.notebook, padding="10")
+        self.notebook.add(general_frame, text="General")
+        
+        row = 0
         
         # Language Selection Section
-        language_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("language_settings", "Language Settings"), padding="10")
+        language_frame = ttk.LabelFrame(general_frame, text=self.language_manager.get_ui_text("language_settings", "Language Settings"), padding="10")
         language_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         row += 1
         
@@ -76,8 +124,54 @@ class ConfigGUI:
         
         language_frame.columnconfigure(1, weight=1)
         
+        # Hotkeys Section
+        hotkey_frame = ttk.LabelFrame(general_frame, text=self.language_manager.get_ui_text("hotkeys", "Hotkeys"), padding="10")
+        hotkey_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
+        row += 1
+        
+        ttk.Label(hotkey_frame, text=self.language_manager.get_ui_text("toggle_text", "Toggle Text:")).grid(row=0, column=0, sticky=tk.W, pady=2)
+        self.toggle_key_var = tk.StringVar()
+        toggle_combo = ttk.Combobox(hotkey_frame, textvariable=self.toggle_key_var,
+                                   values=["ctrl+1", "ctrl+x", "ctrl+t", "alt+x", "alt+t", "shift+x"],
+                                   width=15)
+        toggle_combo.grid(row=0, column=1, sticky=tk.W, padx=(10, 0), pady=2)
+        
+        ttk.Label(hotkey_frame, text=self.language_manager.get_ui_text("reset_text", "Reset Text:")).grid(row=1, column=0, sticky=tk.W, pady=2)
+        self.reset_key_var = tk.StringVar()
+        reset_combo = ttk.Combobox(hotkey_frame, textvariable=self.reset_key_var,
+                                  values=["ctrl+2", "ctrl+z", "ctrl+r", "alt+z", "alt+r", "shift+z"],
+                                  width=15)
+        reset_combo.grid(row=1, column=1, sticky=tk.W, padx=(10, 0), pady=2)
+        
+        # Content Section
+        content_frame = ttk.LabelFrame(general_frame, text=self.language_manager.get_ui_text("text_content", "Text Content"), padding="10")
+        content_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
+        row += 1
+        
+        ttk.Label(content_frame, text=self.language_manager.get_ui_text("default_text", "Default Text:")).grid(row=0, column=0, sticky=(tk.W, tk.N), pady=2)
+        self.default_text_var = tk.StringVar()
+        default_text_entry = tk.Text(content_frame, height=3, width=40)
+        default_text_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
+        self.default_text_widget = default_text_entry
+        
+        ttk.Label(content_frame, text=self.language_manager.get_ui_text("alternate_text", "Alternate Text:")).grid(row=1, column=0, sticky=(tk.W, tk.N), pady=2)
+        self.alternate_text_var = tk.StringVar()
+        alternate_text_entry = tk.Text(content_frame, height=3, width=40)
+        alternate_text_entry.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
+        self.alternate_text_widget = alternate_text_entry
+        
+        content_frame.columnconfigure(1, weight=1)
+        general_frame.columnconfigure(0, weight=1)
+        
+    def setup_appearance_tab(self):
+        """Setup the Appearance tab"""
+        appearance_frame = ttk.Frame(self.notebook, padding="10")
+        self.notebook.add(appearance_frame, text="Appearance")
+        
+        row = 0
+        
         # Monitor Selection Section
-        monitor_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("monitor_settings", "Monitor Settings"), padding="10")
+        monitor_frame = ttk.LabelFrame(appearance_frame, text=self.language_manager.get_ui_text("monitor_settings", "Monitor Settings"), padding="10")
         monitor_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         row += 1
         
@@ -93,7 +187,7 @@ class ConfigGUI:
         monitor_frame.columnconfigure(1, weight=1)
         
         # Position Offset Section
-        offset_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("position_offset", "Position Offset"), padding="10")
+        offset_frame = ttk.LabelFrame(appearance_frame, text=self.language_manager.get_ui_text("position_offset", "Position Offset"), padding="10")
         offset_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         row += 1
         
@@ -115,114 +209,33 @@ class ConfigGUI:
         self.y_offset_label = ttk.Label(offset_frame, text="0")
         self.y_offset_label.grid(row=1, column=2, padx=(10, 0), pady=2)
         
-        # Update offset labels when scales change
-        def update_x_offset_label(*args):
-            self.x_offset_label.config(text=f"{self.x_offset_var.get()}")
-        def update_y_offset_label(*args):
-            self.y_offset_label.config(text=f"{self.y_offset_var.get()}")
-        
-        self.x_offset_var.trace('w', update_x_offset_label)
-        self.y_offset_var.trace('w', update_y_offset_label)
-        
         offset_frame.columnconfigure(1, weight=1)
         
-        # Appearance Section
-        appearance_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("appearance", "Appearance"), padding="10")
-        appearance_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
+        # Appearance Settings Section
+        settings_frame = ttk.LabelFrame(appearance_frame, text=self.language_manager.get_ui_text("appearance", "Appearance"), padding="10")
+        settings_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         row += 1
         
-        # Opacity
-        ttk.Label(appearance_frame, text=self.language_manager.get_ui_text("opacity", "Opacity:")).grid(row=0, column=0, sticky=tk.W, pady=2)
+        ttk.Label(settings_frame, text=self.language_manager.get_ui_text("opacity", "Opacity:")).grid(row=0, column=0, sticky=tk.W, pady=2)
         self.opacity_var = tk.DoubleVar()
-        opacity_scale = ttk.Scale(appearance_frame, from_=0.1, to=1.0, variable=self.opacity_var,
+        opacity_scale = ttk.Scale(settings_frame, from_=0.1, to=1.0, variable=self.opacity_var,
                                  orient=tk.HORIZONTAL, length=200)
         opacity_scale.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
-        self.opacity_label = ttk.Label(appearance_frame, text="0.8")
+        self.opacity_label = ttk.Label(settings_frame, text="0.8")
         self.opacity_label.grid(row=0, column=2, padx=(10, 0), pady=2)
         
-        # Update opacity label when scale changes
-        def update_opacity_label(*args):
-            self.opacity_label.config(text=f"{self.opacity_var.get():.1f}")
-        self.opacity_var.trace('w', update_opacity_label)
-        
-        # Size
-        ttk.Label(appearance_frame, text=self.language_manager.get_ui_text("width", "Width:")).grid(row=1, column=0, sticky=tk.W, pady=2)
+        ttk.Label(settings_frame, text=self.language_manager.get_ui_text("width", "Width:")).grid(row=1, column=0, sticky=tk.W, pady=2)
         self.width_var = tk.IntVar()
-        width_spin = ttk.Spinbox(appearance_frame, from_=100, to=800, textvariable=self.width_var, width=10)
+        width_spin = ttk.Spinbox(settings_frame, from_=100, to=800, textvariable=self.width_var, width=10)
         width_spin.grid(row=1, column=1, sticky=tk.W, padx=(10, 0), pady=2)
         
-        ttk.Label(appearance_frame, text=self.language_manager.get_ui_text("height", "Height:")).grid(row=2, column=0, sticky=tk.W, pady=2)
+        ttk.Label(settings_frame, text=self.language_manager.get_ui_text("height", "Height:")).grid(row=2, column=0, sticky=tk.W, pady=2)
         self.height_var = tk.IntVar()
-        height_spin = ttk.Spinbox(appearance_frame, from_=50, to=400, textvariable=self.height_var, width=10)
+        height_spin = ttk.Spinbox(settings_frame, from_=50, to=400, textvariable=self.height_var, width=10)
         height_spin.grid(row=2, column=1, sticky=tk.W, padx=(10, 0), pady=2)
         
-        appearance_frame.columnconfigure(1, weight=1)
-        
-        # Hotkeys Section
-        hotkey_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("hotkeys", "Hotkeys"), padding="10")
-        hotkey_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
-        row += 1
-        
-        ttk.Label(hotkey_frame, text=self.language_manager.get_ui_text("toggle_text", "Toggle Text:")).grid(row=0, column=0, sticky=tk.W, pady=2)
-        self.toggle_key_var = tk.StringVar()
-        toggle_combo = ttk.Combobox(hotkey_frame, textvariable=self.toggle_key_var,
-                                   values=["ctrl+1", "ctrl+x", "ctrl+t", "alt+x", "alt+t", "shift+x"],
-                                   width=15)
-        toggle_combo.grid(row=0, column=1, sticky=tk.W, padx=(10, 0), pady=2)
-        
-        ttk.Label(hotkey_frame, text=self.language_manager.get_ui_text("reset_text", "Reset Text:")).grid(row=1, column=0, sticky=tk.W, pady=2)
-        self.reset_key_var = tk.StringVar()
-        reset_combo = ttk.Combobox(hotkey_frame, textvariable=self.reset_key_var,
-                                  values=["ctrl+2", "ctrl+z", "ctrl+r", "alt+z", "alt+r", "shift+z"],
-                                  width=15)
-        reset_combo.grid(row=1, column=1, sticky=tk.W, padx=(10, 0), pady=2)
-        
-        # Content Section
-        content_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("text_content", "Text Content"), padding="10")
-        content_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
-        row += 1
-        
-        ttk.Label(content_frame, text=self.language_manager.get_ui_text("default_text", "Default Text:")).grid(row=0, column=0, sticky=(tk.W, tk.N), pady=2)
-        self.default_text_var = tk.StringVar()
-        default_text_entry = tk.Text(content_frame, height=3, width=40)
-        default_text_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
-        self.default_text_widget = default_text_entry
-        
-        ttk.Label(content_frame, text=self.language_manager.get_ui_text("alternate_text", "Alternate Text:")).grid(row=1, column=0, sticky=(tk.W, tk.N), pady=2)
-        self.alternate_text_var = tk.StringVar()
-        alternate_text_entry = tk.Text(content_frame, height=3, width=40)
-        alternate_text_entry.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
-        self.alternate_text_widget = alternate_text_entry
-        
-        content_frame.columnconfigure(1, weight=1)
-        
-        # Preview Section
-        preview_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("live_preview", "Live Preview"), padding="10")
-        preview_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
-        row += 1
-        
-        self.preview_label = ttk.Label(preview_frame, text="Position: (0, 0)\nMonitor: Primary", 
-                                      font=('Arial', 9))
-        self.preview_label.grid(row=0, column=0, sticky=tk.W)
-        
-        # Minimize/Restore button for config window
-        minimize_frame = ttk.Frame(preview_frame)
-        minimize_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(10, 0))
-        
-        self.minimize_btn = ttk.Button(minimize_frame, text=self.language_manager.get_ui_text("hide_config_window", "Hide Config Window"), command=self.toggle_config_window)
-        self.minimize_btn.pack(side=tk.LEFT)
-        
-        self.config_hidden = False
-        
-        # Buttons
-        button_frame = ttk.Frame(main_frame)
-        button_frame.grid(row=row, column=0, columnspan=2, pady=(20, 0))
-        
-        ttk.Button(button_frame, text=self.language_manager.get_ui_text("save_restart", "Save & Restart"), command=self.save_and_restart).pack(side=tk.LEFT, padx=(0, 10))
-        ttk.Button(button_frame, text=self.language_manager.get_ui_text("cancel", "Cancel"), command=self.cancel).pack(side=tk.LEFT, padx=(0, 10))
-        ttk.Button(button_frame, text=self.language_manager.get_ui_text("reset_to_default", "Reset to Default"), command=self.reset_defaults).pack(side=tk.LEFT)
-        
-        main_frame.columnconfigure(0, weight=1)
+        settings_frame.columnconfigure(1, weight=1)
+        appearance_frame.columnconfigure(0, weight=1)
         
         # Update preview when settings change - with debouncing for sliders
         for var in [self.monitor_var, self.position_var]:
@@ -231,6 +244,39 @@ class ConfigGUI:
         # Add debounced updates for sliders to prevent lag
         for var in [self.x_offset_var, self.y_offset_var, self.width_var, self.height_var, self.opacity_var]:
             var.trace('w', self.debounced_update)
+            
+        # Update labels when scales change
+        def update_x_offset_label(*args):
+            self.x_offset_label.config(text=f"{self.x_offset_var.get()}")
+        def update_y_offset_label(*args):
+            self.y_offset_label.config(text=f"{self.y_offset_var.get()}")
+        def update_opacity_label(*args):
+            self.opacity_label.config(text=f"{self.opacity_var.get():.1f}")
+        
+        self.x_offset_var.trace('w', update_x_offset_label)
+        self.y_offset_var.trace('w', update_y_offset_label)
+        self.opacity_var.trace('w', update_opacity_label)
+            
+    def setup_gems_tab(self):
+        """Setup the Gems tab (empty for now)"""
+        gems_frame = ttk.Frame(self.notebook, padding="10")
+        self.notebook.add(gems_frame, text="Gems")
+        
+        # Placeholder label
+        placeholder_label = ttk.Label(gems_frame, text="Gem configuration will be available here in the future.", 
+                                     font=('Arial', 10), foreground='gray')
+        placeholder_label.grid(row=0, column=0, pady=50)
+        
+        gems_frame.columnconfigure(0, weight=1)
+        gems_frame.rowconfigure(0, weight=1)
+        
+    def on_tab_changed(self, event):
+        """Handle tab change to show/hide reset button"""
+        selected_tab = self.notebook.tab(self.notebook.select(), "text")
+        if selected_tab == "Appearance":
+            self.reset_btn.pack(side=tk.LEFT)
+        else:
+            self.reset_btn.pack_forget()
     
     def debounced_update(self, *args):
         """Debounced update for slider changes to prevent lag"""
