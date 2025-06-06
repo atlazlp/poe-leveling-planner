@@ -258,18 +258,196 @@ class ConfigGUI:
         self.opacity_var.trace('w', update_opacity_label)
             
     def setup_gems_tab(self):
-        """Setup the Gems tab (empty for now)"""
+        """Setup the Gems tab with character management"""
         gems_frame = ttk.Frame(self.notebook, padding="10")
         self.notebook.add(gems_frame, text="Gems")
         
-        # Placeholder label
-        placeholder_label = ttk.Label(gems_frame, text="Gem configuration will be available here in the future.", 
-                                     font=('Arial', 10), foreground='gray')
-        placeholder_label.grid(row=0, column=0, pady=50)
+        # Character Management Section
+        char_frame = ttk.LabelFrame(gems_frame, text="Character Management", padding="10")
+        char_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         
+        # Character selection
+        ttk.Label(char_frame, text="Selected Character:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        self.selected_char_var = tk.StringVar()
+        self.char_combo = ttk.Combobox(char_frame, textvariable=self.selected_char_var, 
+                                      state="readonly", width=25)
+        self.char_combo.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
+        self.char_combo.bind('<<ComboboxSelected>>', self.on_character_select)
+        
+        # Delete character button
+        self.delete_char_btn = ttk.Button(char_frame, text="Delete Character", 
+                                         command=self.delete_character)
+        self.delete_char_btn.grid(row=0, column=2, padx=(10, 0), pady=2)
+        
+        # New character section
+        new_char_frame = ttk.LabelFrame(char_frame, text="Create New Character", padding="5")
+        new_char_frame.grid(row=1, column=0, columnspan=3, sticky=(tk.W, tk.E), pady=(10, 0))
+        
+        ttk.Label(new_char_frame, text="Name:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        self.new_char_name_var = tk.StringVar()
+        self.new_char_name_entry = ttk.Entry(new_char_frame, textvariable=self.new_char_name_var, width=20)
+        self.new_char_name_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
+        
+        ttk.Label(new_char_frame, text="Class:").grid(row=0, column=2, sticky=tk.W, padx=(20, 0), pady=2)
+        self.new_char_class_var = tk.StringVar()
+        self.class_combo = ttk.Combobox(new_char_frame, textvariable=self.new_char_class_var,
+                                       values=["Marauder", "Templar", "Duelist", "Shadow", "Witch", "Ranger", "Scion"],
+                                       state="readonly", width=15)
+        self.class_combo.grid(row=0, column=3, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
+        
+        self.create_char_btn = ttk.Button(new_char_frame, text="Create Character", 
+                                         command=self.create_character)
+        self.create_char_btn.grid(row=0, column=4, padx=(10, 0), pady=2)
+        
+        new_char_frame.columnconfigure(1, weight=1)
+        new_char_frame.columnconfigure(3, weight=1)
+        
+        # Character info display
+        info_frame = ttk.LabelFrame(gems_frame, text="Character Information", padding="10")
+        info_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
+        
+        self.char_info_label = ttk.Label(info_frame, text="No character selected", 
+                                        font=('Arial', 10))
+        self.char_info_label.grid(row=0, column=0, sticky=tk.W)
+        
+        # Gem information placeholder
+        gem_info_frame = ttk.LabelFrame(gems_frame, text="Gem Information", padding="10")
+        gem_info_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        self.gem_info_label = ttk.Label(gem_info_frame, 
+                                       text="Gem information will be displayed here based on selected character's class.", 
+                                       font=('Arial', 10), foreground='gray')
+        self.gem_info_label.grid(row=0, column=0, pady=20)
+        
+        char_frame.columnconfigure(1, weight=1)
         gems_frame.columnconfigure(0, weight=1)
-        gems_frame.rowconfigure(0, weight=1)
+        gems_frame.rowconfigure(2, weight=1)
         
+        # Load character data
+        self.load_character_data()
+    
+    def load_character_data(self):
+        """Load character data from config and populate the UI"""
+        try:
+            characters = self.config_manager.get_setting("characters", "profiles", [])
+            selected_char = self.config_manager.get_setting("characters", "selected", "")
+            
+            # Update character combo box
+            char_names = [char["name"] for char in characters]
+            self.char_combo['values'] = char_names
+            
+            if selected_char and selected_char in char_names:
+                self.selected_char_var.set(selected_char)
+                self.update_character_info(selected_char)
+            elif char_names:
+                # Select first character if no valid selection
+                self.selected_char_var.set(char_names[0])
+                self.update_character_info(char_names[0])
+                self.config_manager.update_setting("characters", "selected", char_names[0])
+            else:
+                self.selected_char_var.set("")
+                self.update_character_info("")
+                
+            # Enable/disable delete button
+            self.delete_char_btn.config(state="normal" if char_names else "disabled")
+            
+        except Exception as e:
+            print(f"Error loading character data: {e}")
+            self.char_combo['values'] = []
+            self.selected_char_var.set("")
+            self.update_character_info("")
+            self.delete_char_btn.config(state="disabled")
+    
+    def create_character(self):
+        """Create a new character"""
+        name = self.new_char_name_var.get().strip()
+        char_class = self.new_char_class_var.get()
+        
+        if not name:
+            messagebox.showerror("Error", "Please enter a character name.")
+            return
+            
+        if not char_class:
+            messagebox.showerror("Error", "Please select a character class.")
+            return
+        
+        # Check if character name already exists
+        characters = self.config_manager.get_setting("characters", "profiles", [])
+        if any(char["name"] == name for char in characters):
+            messagebox.showerror("Error", f"A character named '{name}' already exists.")
+            return
+        
+        # Create new character
+        new_character = {
+            "name": name,
+            "class": char_class
+        }
+        
+        characters.append(new_character)
+        self.config_manager.update_setting("characters", "profiles", characters)
+        self.config_manager.update_setting("characters", "selected", name)
+        
+        # Clear input fields
+        self.new_char_name_var.set("")
+        self.new_char_class_var.set("")
+        
+        # Reload character data
+        self.load_character_data()
+        
+        messagebox.showinfo("Success", f"Character '{name}' ({char_class}) created successfully!")
+    
+    def delete_character(self):
+        """Delete the selected character"""
+        selected_name = self.selected_char_var.get()
+        if not selected_name:
+            return
+            
+        if messagebox.askyesno("Confirm Delete", f"Are you sure you want to delete character '{selected_name}'?"):
+            characters = self.config_manager.get_setting("characters", "profiles", [])
+            characters = [char for char in characters if char["name"] != selected_name]
+            
+            self.config_manager.update_setting("characters", "profiles", characters)
+            
+            # Update selected character
+            if characters:
+                new_selected = characters[0]["name"]
+                self.config_manager.update_setting("characters", "selected", new_selected)
+            else:
+                self.config_manager.update_setting("characters", "selected", "")
+            
+            # Reload character data
+            self.load_character_data()
+            
+            messagebox.showinfo("Success", f"Character '{selected_name}' deleted successfully!")
+    
+    def on_character_select(self, event=None):
+        """Handle character selection change"""
+        selected_name = self.selected_char_var.get()
+        if selected_name:
+            self.config_manager.update_setting("characters", "selected", selected_name)
+            self.update_character_info(selected_name)
+    
+    def update_character_info(self, character_name):
+        """Update the character information display"""
+        if not character_name:
+            self.char_info_label.config(text="No character selected")
+            self.gem_info_label.config(text="Gem information will be displayed here based on selected character's class.")
+            return
+            
+        characters = self.config_manager.get_setting("characters", "profiles", [])
+        character = next((char for char in characters if char["name"] == character_name), None)
+        
+        if character:
+            info_text = f"Name: {character['name']}\nClass: {character['class']}"
+            self.char_info_label.config(text=info_text)
+            
+            # Update gem info placeholder with class-specific message
+            gem_text = f"Gem information for {character['class']} will be available in future updates."
+            self.gem_info_label.config(text=gem_text)
+        else:
+            self.char_info_label.config(text="Character not found")
+            self.gem_info_label.config(text="Gem information will be displayed here based on selected character's class.")
+    
     def on_tab_changed(self, event):
         """Handle tab change to show/hide reset button"""
         selected_tab = self.notebook.tab(self.notebook.select(), "text")

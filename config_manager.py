@@ -70,6 +70,10 @@ class ConfigManager:
                 "default_text": "PoE Leveling Planner\nReady to assist!",
                 "alternate_text": "Hotkey Activated!\nCtrl+Z to return"
             },
+            "characters": {
+                "profiles": [],
+                "selected": ""
+            },
             "language": {
                 "current": "en_US"
             },
