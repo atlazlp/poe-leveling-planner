@@ -21,7 +21,7 @@ A desktop overlay application for Path of Exile that displays helpful informatio
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/yourusername/poe-leveling-planner.git
+git clone https://github.com/atlazlp/poe-leveling-planner.git
 cd poe-leveling-planner
 ```
 
@@ -33,6 +33,8 @@ pip install -r requirements.txt
 3. Run the application:
 ```bash
 python main.py
+# OR use the convenience script:
+./run.sh
 ```
 
 ## Usage
