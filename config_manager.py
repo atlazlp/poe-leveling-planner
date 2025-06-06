@@ -70,6 +70,9 @@ class ConfigManager:
                 "default_text": "PoE Leveling Planner\nReady to assist!",
                 "alternate_text": "Hotkey Activated!\nCtrl+Z to return"
             },
+            "language": {
+                "current": "en_US"
+            },
             "behavior": {
                 "auto_hide_when_poe_not_running": False,
                 "fade_in_duration": 0,

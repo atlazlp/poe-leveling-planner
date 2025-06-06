@@ -6,8 +6,8 @@
         "custom_y": null,
         "opacity": 0.5,
         "always_on_top": true,
-        "x_offset": 831,
-        "y_offset": 479
+        "x_offset": 1586,
+        "y_offset": 757
     },
     "appearance": {
         "width": 250,
@@ -39,5 +39,8 @@
             }
         ],
         "selected": "Testing"
+    },
+    "language": {
+        "current": "en_US"
     }
 }

@@ -9,11 +9,13 @@ import subprocess
 import sys
 import os
 from config_manager import ConfigManager
+from language_manager import LanguageManager
 
 
 class ConfigGUI:
     def __init__(self):
         self.config_manager = ConfigManager()
+        self.language_manager = LanguageManager(self.config_manager)
         self.root = tk.Tk()
         self.test_window = None  # For live testing
         self.debounce_timer = None  # For debouncing slider updates
@@ -26,15 +28,15 @@ class ConfigGUI:
         
     def setup_window(self):
         """Setup the main configuration window"""
-        self.root.title("PoE Leveling Planner - Configuration")
-        self.root.geometry("500x700")
+        self.root.title(self.language_manager.get_ui_text("window_title", "PoE Leveling Planner - Configuration"))
+        self.root.geometry("500x750")  # Increased height for language section
         self.root.resizable(True, True)
         
         # Center the window
         self.root.update_idletasks()
         x = (self.root.winfo_screenwidth() // 2) - (500 // 2)
-        y = (self.root.winfo_screenheight() // 2) - (700 // 2)
-        self.root.geometry(f"500x700+{x}+{y}")
+        y = (self.root.winfo_screenheight() // 2) - (750 // 2)
+        self.root.geometry(f"500x750+{x}+{y}")
         
         # Make it stay on top initially
         self.root.attributes('-topmost', True)
@@ -53,18 +55,33 @@ class ConfigGUI:
         self.root.rowconfigure(0, weight=1)
         
         # Title
-        title_label = ttk.Label(main_frame, text="PoE Leveling Planner Configuration", 
+        title_label = ttk.Label(main_frame, text=self.language_manager.get_ui_text("main_title", "PoE Leveling Planner Configuration"), 
                                font=('Arial', 14, 'bold'))
         title_label.grid(row=0, column=0, columnspan=2, pady=(0, 20))
         
         row = 1
         
+        # Language Selection Section
+        language_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("language_settings", "Language Settings"), padding="10")
+        language_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
+        row += 1
+        
+        ttk.Label(language_frame, text=self.language_manager.get_ui_text("language", "Language:")).grid(row=0, column=0, sticky=tk.W, pady=2)
+        self.language_var = tk.StringVar()
+        language_options = list(self.language_manager.get_available_languages().values())
+        self.language_combo = ttk.Combobox(language_frame, textvariable=self.language_var, 
+                                         values=language_options, state="readonly", width=30)
+        self.language_combo.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
+        self.language_combo.bind('<<ComboboxSelected>>', self.on_language_change)
+        
+        language_frame.columnconfigure(1, weight=1)
+        
         # Monitor Selection Section
-        monitor_frame = ttk.LabelFrame(main_frame, text="Monitor Settings", padding="10")
+        monitor_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("monitor_settings", "Monitor Settings"), padding="10")
         monitor_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         row += 1
         
-        ttk.Label(monitor_frame, text="Monitor:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        ttk.Label(monitor_frame, text=self.language_manager.get_ui_text("monitor", "Monitor:")).grid(row=0, column=0, sticky=tk.W, pady=2)
         self.monitor_var = tk.StringVar()
         self.monitor_combo = ttk.Combobox(monitor_frame, textvariable=self.monitor_var, 
                                          state="readonly", width=30)
@@ -76,12 +93,12 @@ class ConfigGUI:
         monitor_frame.columnconfigure(1, weight=1)
         
         # Position Offset Section
-        offset_frame = ttk.LabelFrame(main_frame, text="Position Offset", padding="10")
+        offset_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("position_offset", "Position Offset"), padding="10")
         offset_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         row += 1
         
         # X Offset
-        ttk.Label(offset_frame, text="X Offset:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        ttk.Label(offset_frame, text=self.language_manager.get_ui_text("x_offset", "X Offset:")).grid(row=0, column=0, sticky=tk.W, pady=2)
         self.x_offset_var = tk.IntVar()
         x_offset_scale = ttk.Scale(offset_frame, from_=-1500, to=1500, variable=self.x_offset_var,
                                   orient=tk.HORIZONTAL, length=200)
@@ -90,7 +107,7 @@ class ConfigGUI:
         self.x_offset_label.grid(row=0, column=2, padx=(10, 0), pady=2)
         
         # Y Offset
-        ttk.Label(offset_frame, text="Y Offset:").grid(row=1, column=0, sticky=tk.W, pady=2)
+        ttk.Label(offset_frame, text=self.language_manager.get_ui_text("y_offset", "Y Offset:")).grid(row=1, column=0, sticky=tk.W, pady=2)
         self.y_offset_var = tk.IntVar()
         y_offset_scale = ttk.Scale(offset_frame, from_=-1500, to=1500, variable=self.y_offset_var,
                                   orient=tk.HORIZONTAL, length=200)
@@ -110,12 +127,12 @@ class ConfigGUI:
         offset_frame.columnconfigure(1, weight=1)
         
         # Appearance Section
-        appearance_frame = ttk.LabelFrame(main_frame, text="Appearance", padding="10")
+        appearance_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("appearance", "Appearance"), padding="10")
         appearance_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         row += 1
         
         # Opacity
-        ttk.Label(appearance_frame, text="Opacity:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        ttk.Label(appearance_frame, text=self.language_manager.get_ui_text("opacity", "Opacity:")).grid(row=0, column=0, sticky=tk.W, pady=2)
         self.opacity_var = tk.DoubleVar()
         opacity_scale = ttk.Scale(appearance_frame, from_=0.1, to=1.0, variable=self.opacity_var,
                                  orient=tk.HORIZONTAL, length=200)
@@ -129,12 +146,12 @@ class ConfigGUI:
         self.opacity_var.trace('w', update_opacity_label)
         
         # Size
-        ttk.Label(appearance_frame, text="Width:").grid(row=1, column=0, sticky=tk.W, pady=2)
+        ttk.Label(appearance_frame, text=self.language_manager.get_ui_text("width", "Width:")).grid(row=1, column=0, sticky=tk.W, pady=2)
         self.width_var = tk.IntVar()
         width_spin = ttk.Spinbox(appearance_frame, from_=100, to=800, textvariable=self.width_var, width=10)
         width_spin.grid(row=1, column=1, sticky=tk.W, padx=(10, 0), pady=2)
         
-        ttk.Label(appearance_frame, text="Height:").grid(row=2, column=0, sticky=tk.W, pady=2)
+        ttk.Label(appearance_frame, text=self.language_manager.get_ui_text("height", "Height:")).grid(row=2, column=0, sticky=tk.W, pady=2)
         self.height_var = tk.IntVar()
         height_spin = ttk.Spinbox(appearance_frame, from_=50, to=400, textvariable=self.height_var, width=10)
         height_spin.grid(row=2, column=1, sticky=tk.W, padx=(10, 0), pady=2)
@@ -142,18 +159,18 @@ class ConfigGUI:
         appearance_frame.columnconfigure(1, weight=1)
         
         # Hotkeys Section
-        hotkey_frame = ttk.LabelFrame(main_frame, text="Hotkeys", padding="10")
+        hotkey_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("hotkeys", "Hotkeys"), padding="10")
         hotkey_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         row += 1
         
-        ttk.Label(hotkey_frame, text="Toggle Text:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        ttk.Label(hotkey_frame, text=self.language_manager.get_ui_text("toggle_text", "Toggle Text:")).grid(row=0, column=0, sticky=tk.W, pady=2)
         self.toggle_key_var = tk.StringVar()
         toggle_combo = ttk.Combobox(hotkey_frame, textvariable=self.toggle_key_var,
                                    values=["ctrl+1", "ctrl+x", "ctrl+t", "alt+x", "alt+t", "shift+x"],
                                    width=15)
         toggle_combo.grid(row=0, column=1, sticky=tk.W, padx=(10, 0), pady=2)
         
-        ttk.Label(hotkey_frame, text="Reset Text:").grid(row=1, column=0, sticky=tk.W, pady=2)
+        ttk.Label(hotkey_frame, text=self.language_manager.get_ui_text("reset_text", "Reset Text:")).grid(row=1, column=0, sticky=tk.W, pady=2)
         self.reset_key_var = tk.StringVar()
         reset_combo = ttk.Combobox(hotkey_frame, textvariable=self.reset_key_var,
                                   values=["ctrl+2", "ctrl+z", "ctrl+r", "alt+z", "alt+r", "shift+z"],
@@ -161,17 +178,17 @@ class ConfigGUI:
         reset_combo.grid(row=1, column=1, sticky=tk.W, padx=(10, 0), pady=2)
         
         # Content Section
-        content_frame = ttk.LabelFrame(main_frame, text="Text Content", padding="10")
+        content_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("text_content", "Text Content"), padding="10")
         content_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         row += 1
         
-        ttk.Label(content_frame, text="Default Text:").grid(row=0, column=0, sticky=(tk.W, tk.N), pady=2)
+        ttk.Label(content_frame, text=self.language_manager.get_ui_text("default_text", "Default Text:")).grid(row=0, column=0, sticky=(tk.W, tk.N), pady=2)
         self.default_text_var = tk.StringVar()
         default_text_entry = tk.Text(content_frame, height=3, width=40)
         default_text_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
         self.default_text_widget = default_text_entry
         
-        ttk.Label(content_frame, text="Alternate Text:").grid(row=1, column=0, sticky=(tk.W, tk.N), pady=2)
+        ttk.Label(content_frame, text=self.language_manager.get_ui_text("alternate_text", "Alternate Text:")).grid(row=1, column=0, sticky=(tk.W, tk.N), pady=2)
         self.alternate_text_var = tk.StringVar()
         alternate_text_entry = tk.Text(content_frame, height=3, width=40)
         alternate_text_entry.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
@@ -180,7 +197,7 @@ class ConfigGUI:
         content_frame.columnconfigure(1, weight=1)
         
         # Preview Section
-        preview_frame = ttk.LabelFrame(main_frame, text="Live Preview", padding="10")
+        preview_frame = ttk.LabelFrame(main_frame, text=self.language_manager.get_ui_text("live_preview", "Live Preview"), padding="10")
         preview_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         row += 1
         
@@ -192,7 +209,7 @@ class ConfigGUI:
         minimize_frame = ttk.Frame(preview_frame)
         minimize_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(10, 0))
         
-        self.minimize_btn = ttk.Button(minimize_frame, text="Hide Config Window", command=self.toggle_config_window)
+        self.minimize_btn = ttk.Button(minimize_frame, text=self.language_manager.get_ui_text("hide_config_window", "Hide Config Window"), command=self.toggle_config_window)
         self.minimize_btn.pack(side=tk.LEFT)
         
         self.config_hidden = False
@@ -201,9 +218,9 @@ class ConfigGUI:
         button_frame = ttk.Frame(main_frame)
         button_frame.grid(row=row, column=0, columnspan=2, pady=(20, 0))
         
-        ttk.Button(button_frame, text="Save & Restart", command=self.save_and_restart).pack(side=tk.LEFT, padx=(0, 10))
-        ttk.Button(button_frame, text="Cancel", command=self.cancel).pack(side=tk.LEFT, padx=(0, 10))
-        ttk.Button(button_frame, text="Reset to Default", command=self.reset_defaults).pack(side=tk.LEFT)
+        ttk.Button(button_frame, text=self.language_manager.get_ui_text("save_restart", "Save & Restart"), command=self.save_and_restart).pack(side=tk.LEFT, padx=(0, 10))
+        ttk.Button(button_frame, text=self.language_manager.get_ui_text("cancel", "Cancel"), command=self.cancel).pack(side=tk.LEFT, padx=(0, 10))
+        ttk.Button(button_frame, text=self.language_manager.get_ui_text("reset_to_default", "Reset to Default"), command=self.reset_defaults).pack(side=tk.LEFT)
         
         main_frame.columnconfigure(0, weight=1)
         
@@ -223,9 +240,14 @@ class ConfigGUI:
     
     def load_current_settings(self):
         """Load current settings into the GUI"""
+        # Load language setting
+        current_language = self.config_manager.get_setting("language", "current", "en_US")
+        language_name = self.language_manager.get_available_languages().get(current_language, "English (US)")
+        self.language_var.set(language_name)
+        
         # Load monitor options
         monitors = self.config_manager.get_monitor_info()
-        monitor_options = ["Auto/Primary"]
+        monitor_options = [self.language_manager.get_ui_text("auto_primary", "Auto/Primary")]
         for i, monitor in enumerate(monitors):
             monitor_options.append(f"{monitor['name']} - {monitor['width']}x{monitor['height']}")
         
@@ -234,13 +256,13 @@ class ConfigGUI:
         # Set current values
         current_monitor = self.config_manager.get_setting("display", "monitor")
         if current_monitor == "auto":
-            self.monitor_var.set("Auto/Primary")
+            self.monitor_var.set(self.language_manager.get_ui_text("auto_primary", "Auto/Primary"))
         elif isinstance(current_monitor, int):
             if current_monitor < len(monitors):
                 monitor_name = f"{monitors[current_monitor]['name']} - {monitors[current_monitor]['width']}x{monitors[current_monitor]['height']}"
                 self.monitor_var.set(monitor_name)
             else:
-                self.monitor_var.set("Auto/Primary")
+                self.monitor_var.set(self.language_manager.get_ui_text("auto_primary", "Auto/Primary"))
         
         self.position_var.set(self.config_manager.get_setting("display", "position", "top-right"))
         self.x_offset_var.set(self.config_manager.get_setting("display", "x_offset", 0))
@@ -252,8 +274,8 @@ class ConfigGUI:
         self.reset_key_var.set(self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+2"))
         
         # Load text content
-        default_text = self.config_manager.get_setting("content", "default_text", "PoE Leveling Planner\nReady to assist!")
-        alternate_text = self.config_manager.get_setting("content", "alternate_text", "Hotkey Activated!\nCtrl+Z to return")
+        default_text = self.config_manager.get_setting("content", "default_text", self.language_manager.get_content("default_text", "PoE Leveling Planner\nReady to assist!"))
+        alternate_text = self.config_manager.get_setting("content", "alternate_text", self.language_manager.get_content("alternate_text", "Hotkey Activated!\nCtrl+2 to return"))
         
         self.default_text_widget.delete(1.0, tk.END)
         self.default_text_widget.insert(1.0, default_text)
@@ -423,7 +445,8 @@ class ConfigGUI:
         try:
             # Get monitor index
             monitor_selection = self.monitor_var.get()
-            if monitor_selection == "Auto/Primary":
+            auto_primary_text = self.language_manager.get_ui_text("auto_primary", "Auto/Primary")
+            if monitor_selection == auto_primary_text:
                 monitor_value = "auto"
             else:
                 monitors = self.config_manager.get_monitor_info()
@@ -433,6 +456,14 @@ class ConfigGUI:
                         break
                 else:
                     monitor_value = "auto"
+            
+            # Get language code from selected language name
+            selected_language_name = self.language_var.get()
+            language_code = "en_US"  # Default
+            for code, name in self.language_manager.get_available_languages().items():
+                if name == selected_language_name:
+                    language_code = code
+                    break
             
             # Update all settings
             self.config_manager.update_setting("display", "monitor", monitor_value)
@@ -444,6 +475,7 @@ class ConfigGUI:
             self.config_manager.update_setting("appearance", "height", self.height_var.get())
             self.config_manager.update_setting("hotkeys", "toggle_text", self.toggle_key_var.get())
             self.config_manager.update_setting("hotkeys", "reset_text", self.reset_key_var.get())
+            self.config_manager.update_setting("language", "current", language_code)
             
             # Update text content
             default_text = self.default_text_widget.get(1.0, tk.END).strip()
@@ -453,12 +485,12 @@ class ConfigGUI:
             
             # Force save to file
             self.config_manager.save_config()
-            print("Configuration saved to config.json")
+            print(self.language_manager.get_message("config_saved", "Configuration saved to config.json"))
             
             return True
             
         except Exception as e:
-            messagebox.showerror("Error", f"Could not save configuration: {e}")
+            messagebox.showerror("Error", f"{self.language_manager.get_message('error_saving_config', 'Could not save configuration:')} {e}")
             return False
     
     def cancel(self):
@@ -467,11 +499,14 @@ class ConfigGUI:
     
     def reset_defaults(self):
         """Reset all settings to defaults"""
-        if messagebox.askyesno("Confirm Reset", "Are you sure you want to reset all settings to defaults?"):
+        if messagebox.askyesno(self.language_manager.get_ui_text("reset_to_default", "Confirm Reset"), 
+                              self.language_manager.get_message("confirm_reset", "Are you sure you want to reset all settings to defaults?")):
             self.config_manager.config = self.config_manager.get_default_config()
             self.config_manager.save_config()
+            # Reload language manager with new config
+            self.language_manager = LanguageManager(self.config_manager)
             self.load_current_settings()
-            messagebox.showinfo("Success", "Settings reset to defaults!")
+            messagebox.showinfo("Success", self.language_manager.get_message("reset_success", "Settings reset to defaults!"))
     
     def on_closing(self):
         """Handle window closing"""
@@ -485,11 +520,11 @@ class ConfigGUI:
         """Toggle visibility of the config window"""
         if self.config_hidden:
             self.root.deiconify()  # Show window
-            self.minimize_btn.config(text="Hide Config Window")
+            self.minimize_btn.config(text=self.language_manager.get_ui_text("hide_config_window", "Hide Config Window"))
             self.config_hidden = False
         else:
             self.root.withdraw()  # Hide window
-            self.minimize_btn.config(text="Show Config Window")
+            self.minimize_btn.config(text=self.language_manager.get_ui_text("show_config_window", "Show Config Window"))
             self.config_hidden = True
             
             # Create a small restore button that stays visible
@@ -513,8 +548,46 @@ class ConfigGUI:
             delattr(self, 'restore_window')
         
         self.root.deiconify()
-        self.minimize_btn.config(text="Hide Config Window")
+        self.minimize_btn.config(text=self.language_manager.get_ui_text("hide_config_window", "Hide Config Window"))
         self.config_hidden = False
+    
+    def on_language_change(self, event=None):
+        """Handle language selection change"""
+        selected_language_name = self.language_var.get()
+        # Find the language code for the selected name
+        for code, name in self.language_manager.get_available_languages().items():
+            if name == selected_language_name:
+                if self.language_manager.set_language(code):
+                    # Refresh the UI with new language
+                    self.refresh_ui_text()
+                    # Update content text fields with new language defaults
+                    self.update_content_for_language()
+                break
+    
+    def refresh_ui_text(self):
+        """Refresh all UI text elements with current language"""
+        # Update window title
+        self.root.title(self.language_manager.get_ui_text("window_title", "PoE Leveling Planner - Configuration"))
+        
+        # Update button text
+        self.minimize_btn.config(text=self.language_manager.get_ui_text("hide_config_window" if not self.config_hidden else "show_config_window", "Hide Config Window"))
+        
+        # Note: For a complete refresh, we would need to recreate the entire UI
+        # For now, we'll just update the critical elements that can be changed
+        # A full implementation would store references to all labels and update them
+        
+    def update_content_for_language(self):
+        """Update content text fields with language-appropriate defaults"""
+        # Get the default content for the current language
+        default_text = self.language_manager.get_content("default_text", "PoE Leveling Planner\nReady to assist!")
+        alternate_text = self.language_manager.get_content("alternate_text", "Hotkey Activated!\nCtrl+2 to return")
+        
+        # Update the text widgets with new language defaults
+        self.default_text_widget.delete(1.0, tk.END)
+        self.default_text_widget.insert(1.0, default_text)
+        
+        self.alternate_text_widget.delete(1.0, tk.END)
+        self.alternate_text_widget.insert(1.0, alternate_text)
     
     def run(self):
         """Start the configuration GUI"""

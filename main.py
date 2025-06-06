@@ -12,11 +12,13 @@ import sys
 import os
 import subprocess
 from config_manager import ConfigManager
+from language_manager import LanguageManager
 
 
 class PoEOverlay:
     def __init__(self):
         self.config_manager = ConfigManager()
+        self.language_manager = LanguageManager(self.config_manager)
         
         # Create a hidden root window
         self.root = tk.Tk()
@@ -29,9 +31,9 @@ class PoEOverlay:
         self.setup_ui()
         self.setup_hotkeys()
         
-        # Text states from config
-        self.original_text = self.config_manager.get_setting("content", "default_text")
-        self.alternate_text = self.config_manager.get_setting("content", "alternate_text")
+        # Text states from config with language fallbacks
+        self.original_text = self.config_manager.get_setting("content", "default_text") or self.language_manager.get_content("default_text", "PoE Leveling Planner\nReady to assist!")
+        self.alternate_text = self.config_manager.get_setting("content", "alternate_text") or self.language_manager.get_content("alternate_text", "Hotkey Activated!\nCtrl+2 to return")
         self.current_state = "original"
         
         # Update initial text
@@ -256,46 +258,46 @@ class PoEOverlay:
         self.current_state = "alternate"
         self.text_label.config(text=self.alternate_text)
         toggle_key = self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+1")
-        print(f"Hotkey {toggle_key.upper()} pressed - switched to alternate text")
+        print(f"Hotkey {toggle_key.upper()} {self.language_manager.get_message('hotkey_pressed_alternate', 'pressed - switched to alternate text')}")
         
     def toggle_to_original(self):
         """Switch back to original text"""
         self.current_state = "original"
         self.text_label.config(text=self.original_text)
         reset_key = self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+2")
-        print(f"Hotkey {reset_key.upper()} pressed - switched to original text")
+        print(f"Hotkey {reset_key.upper()} {self.language_manager.get_message('hotkey_pressed_original', 'pressed - switched to original text')}")
         
     def open_config(self):
         """Open the configuration window"""
         try:
-            print("Opening configuration window...")
+            print(self.language_manager.get_message("opening_config", "Opening configuration window..."))
             subprocess.Popen([sys.executable, "config_gui.py"], 
                            cwd=os.path.dirname(os.path.abspath(__file__)))
         except Exception as e:
-            print(f"Error opening config window: {e}")
+            print(f"{self.language_manager.get_message('error_opening_config', 'Error opening config window:')} {e}")
     
     def close_application(self):
         """Close the application"""
-        print("Closing application...")
+        print(self.language_manager.get_message("closing_app", "Closing application..."))
         self.overlay.destroy()
         self.root.quit()
         
     def run(self):
         """Start the application"""
-        print("PoE Leveling Planner started!")
-        print("Configuration loaded from config.json")
+        print(self.language_manager.get_message("app_started", "PoE Leveling Planner started!"))
+        print(self.language_manager.get_message("config_loaded", "Configuration loaded from config.json"))
         
         # Display current settings
         monitor_setting = self.config_manager.get_setting("display", "monitor", "auto")
         position_setting = self.config_manager.get_setting("display", "position", "top-right")
         opacity = self.config_manager.get_setting("display", "opacity", 0.8)
         
-        print(f"Monitor: {monitor_setting}, Position: {position_setting}, Opacity: {opacity}")
+        print(f"{self.language_manager.get_message('monitor_info', 'Monitor')}: {monitor_setting}, {self.language_manager.get_message('position_info', 'Position')}: {position_setting}, Opacity: {opacity}")
         
         toggle_key = self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+1")
         reset_key = self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+2")
         print(f"Hotkeys: {toggle_key.upper()} (change text), {reset_key.upper()} (original text)")
-        print("Use overlay buttons or press Ctrl+C in terminal to exit")
+        print(self.language_manager.get_message("hotkey_instructions", "Use overlay buttons or press Ctrl+C in terminal to exit"))
         
         try:
             self.root.mainloop()
