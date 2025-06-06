@@ -1,13 +1,13 @@
 {
     "display": {
         "monitor": 0,
-        "position": "bottom-right",
+        "position": "center",
         "custom_x": null,
         "custom_y": null,
         "opacity": 0.5,
         "always_on_top": true,
-        "x_offset": 764,
-        "y_offset": 283
+        "x_offset": 831,
+        "y_offset": 479
     },
     "appearance": {
         "width": 250,

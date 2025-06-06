@@ -17,6 +17,8 @@ class ConfigGUI:
         self.root = tk.Tk()
         self.test_window = None  # For live testing
         self.debounce_timer = None  # For debouncing slider updates
+        self.drag_start_x = None  # For window dragging
+        self.drag_start_y = None  # For window dragging
         self.setup_window()
         self.setup_ui()
         self.load_current_settings()
@@ -68,13 +70,8 @@ class ConfigGUI:
                                          state="readonly", width=30)
         self.monitor_combo.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
         
-        # Position Selection
-        ttk.Label(monitor_frame, text="Position:").grid(row=1, column=0, sticky=tk.W, pady=2)
-        self.position_var = tk.StringVar()
-        position_combo = ttk.Combobox(monitor_frame, textvariable=self.position_var, 
-                                     values=["top-left", "top-right", "bottom-left", "bottom-right", "center"],
-                                     state="readonly", width=30)
-        position_combo.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
+        # Position is now hidden and always set to "center"
+        self.position_var = tk.StringVar(value="center")
         
         monitor_frame.columnconfigure(1, weight=1)
         
@@ -190,6 +187,15 @@ class ConfigGUI:
         self.preview_label = ttk.Label(preview_frame, text="Position: (0, 0)\nMonitor: Primary", 
                                       font=('Arial', 9))
         self.preview_label.grid(row=0, column=0, sticky=tk.W)
+        
+        # Minimize/Restore button for config window
+        minimize_frame = ttk.Frame(preview_frame)
+        minimize_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(10, 0))
+        
+        self.minimize_btn = ttk.Button(minimize_frame, text="Hide Config Window", command=self.toggle_config_window)
+        self.minimize_btn.pack(side=tk.LEFT)
+        
+        self.config_hidden = False
         
         # Buttons
         button_frame = ttk.Frame(main_frame)
@@ -317,9 +323,14 @@ class ConfigGUI:
                 self.test_window.attributes('-topmost', True)
                 self.test_window.configure(bg='red')
                 
-                label = tk.Label(self.test_window, text="LIVE PREVIEW\nOverlay Position", 
+                label = tk.Label(self.test_window, text="LIVE PREVIEW\nOverlay Position\nDrag to move", 
                                bg='red', fg='white', font=('Arial', 8, 'bold'), justify='center')
                 label.pack(expand=True)
+                
+                # Add drag functionality
+                label.bind('<Button-1>', self.start_drag)
+                label.bind('<B1-Motion>', self.on_drag)
+                label.bind('<ButtonRelease-1>', self.end_drag)
                 
                 # Don't let the test window be destroyed by user
                 self.test_window.protocol("WM_DELETE_WINDOW", lambda: None)
@@ -334,6 +345,61 @@ class ConfigGUI:
             
         except Exception as e:
             print(f"Error updating test overlay: {e}")
+    
+    def start_drag(self, event):
+        """Start window drag operation"""
+        self.drag_start_x = event.x_root
+        self.drag_start_y = event.y_root
+        self.window_start_x = self.test_window.winfo_x()
+        self.window_start_y = self.test_window.winfo_y()
+
+    def on_drag(self, event):
+        """Handle window dragging"""
+        if self.drag_start_x is not None:
+            # Calculate the distance moved
+            dx = event.x_root - self.drag_start_x
+            dy = event.y_root - self.drag_start_y
+            
+            # Calculate new position
+            new_x = self.window_start_x + dx
+            new_y = self.window_start_y + dy
+            
+            # Update window position
+            self.test_window.geometry(f"+{new_x}+{new_y}")
+            
+            # Update offset values based on the center position
+            monitor_selection = self.monitor_var.get()
+            if monitor_selection == "Auto/Primary":
+                monitor_index = 0
+            else:
+                monitors = self.config_manager.get_monitor_info()
+                for i, monitor in enumerate(monitors):
+                    if f"{monitor['name']} - {monitor['width']}x{monitor['height']}" == monitor_selection:
+                        monitor_index = i
+                        break
+                else:
+                    monitor_index = 0
+            
+            # Get monitor info
+            monitors = self.config_manager.get_monitor_info()
+            monitor = monitors[monitor_index]
+            
+            # Calculate center position of monitor
+            center_x = monitor["x"] + (monitor["width"] - self.width_var.get()) // 2
+            center_y = monitor["y"] + (monitor["height"] - self.height_var.get()) // 2
+            
+            # Calculate offsets from center
+            x_offset = new_x - center_x
+            y_offset = new_y - center_y
+            
+            # Update offset values
+            self.x_offset_var.set(x_offset)
+            self.y_offset_var.set(y_offset)
+
+    def end_drag(self, event):
+        """End window drag operation"""
+        self.drag_start_x = None
+        self.drag_start_y = None
     
     def save_and_restart(self):
         """Save configuration and restart the overlay"""
@@ -411,7 +477,44 @@ class ConfigGUI:
         """Handle window closing"""
         if self.test_window:
             self.test_window.destroy()
+        if hasattr(self, 'restore_window'):
+            self.restore_window.destroy()
         self.root.destroy()
+    
+    def toggle_config_window(self):
+        """Toggle visibility of the config window"""
+        if self.config_hidden:
+            self.root.deiconify()  # Show window
+            self.minimize_btn.config(text="Hide Config Window")
+            self.config_hidden = False
+        else:
+            self.root.withdraw()  # Hide window
+            self.minimize_btn.config(text="Show Config Window")
+            self.config_hidden = True
+            
+            # Create a small restore button that stays visible
+            if not hasattr(self, 'restore_window'):
+                self.restore_window = tk.Toplevel(self.root)
+                self.restore_window.title("Show Config")
+                self.restore_window.geometry("120x40+50+50")
+                self.restore_window.attributes('-topmost', True)
+                self.restore_window.resizable(False, False)
+                
+                restore_btn = tk.Button(self.restore_window, text="Show Config", 
+                                      command=self.show_config_window, font=('Arial', 8))
+                restore_btn.pack(fill='both', expand=True)
+                
+                self.restore_window.protocol("WM_DELETE_WINDOW", self.show_config_window)
+
+    def show_config_window(self):
+        """Show the config window and destroy restore button"""
+        if hasattr(self, 'restore_window'):
+            self.restore_window.destroy()
+            delattr(self, 'restore_window')
+        
+        self.root.deiconify()
+        self.minimize_btn.config(text="Hide Config Window")
+        self.config_hidden = False
     
     def run(self):
         """Start the configuration GUI"""

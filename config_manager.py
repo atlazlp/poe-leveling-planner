@@ -45,7 +45,7 @@ class ConfigManager:
         return {
             "display": {
                 "monitor": "auto",
-                "position": "top-right",
+                "position": "center",
                 "x_offset": 0,
                 "y_offset": 0,
                 "custom_x": None,
@@ -132,35 +132,18 @@ class ConfigManager:
         else:
             target_monitor = monitors[0]  # Fallback to primary
         
-        # Calculate position within the target monitor
-        position = display_config["position"]
+        # Always calculate center position
         width = appearance_config["width"]
         height = appearance_config["height"]
-        margin = 20
         
         monitor_x = target_monitor["x"]
         monitor_y = target_monitor["y"]
         monitor_width = target_monitor["width"]
         monitor_height = target_monitor["height"]
         
-        if position == "top-left":
-            x = monitor_x + margin
-            y = monitor_y + margin
-        elif position == "top-right":
-            x = monitor_x + monitor_width - width - margin
-            y = monitor_y + margin
-        elif position == "bottom-left":
-            x = monitor_x + margin
-            y = monitor_y + monitor_height - height - margin
-        elif position == "bottom-right":
-            x = monitor_x + monitor_width - width - margin
-            y = monitor_y + monitor_height - height - margin
-        elif position == "center":
-            x = monitor_x + (monitor_width - width) // 2
-            y = monitor_y + (monitor_height - height) // 2
-        else:  # Default to top-right
-            x = monitor_x + monitor_width - width - margin
-            y = monitor_y + margin
+        # Calculate center position
+        x = monitor_x + (monitor_width - width) // 2
+        y = monitor_y + (monitor_height - height) // 2
         
         # Apply X/Y offsets
         x_offset = display_config.get("x_offset", 0)

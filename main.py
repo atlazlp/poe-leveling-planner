@@ -39,10 +39,7 @@ class PoEOverlay:
         
     def setup_window(self):
         """Configure the overlay window properties"""
-        # Remove window decorations and make it stay on top
-        self.overlay.overrideredirect(True)
-        
-        # Get settings from config
+        # Get settings from config first
         always_on_top = self.config_manager.get_setting("display", "always_on_top", True)
         opacity = self.config_manager.get_setting("display", "opacity", 0.8)
         width = self.config_manager.get_setting("appearance", "width", 250)
@@ -52,18 +49,29 @@ class PoEOverlay:
         # Calculate position based on config
         x_position, y_position = self.config_manager.calculate_position()
         
-        # Set geometry first
+        # Remove window decorations first
+        self.overlay.overrideredirect(True)
+        
+        # Set geometry
         self.overlay.geometry(f"{width}x{height}+{x_position}+{y_position}")
         
         # Set window background color
         self.overlay.configure(bg=bg_color)
         
+        # Update the window to ensure it's fully created
+        self.overlay.update_idletasks()
+        
         # Set always on top
         if always_on_top:
             self.overlay.attributes('-topmost', True)
         
-        # Set opacity (alpha) - this should now work like the preview window
+        # Set opacity (alpha) - ensure this is done after window is fully configured
         try:
+            # Force the window to be displayed first
+            self.overlay.attributes('-alpha', 1.0)  # Start fully opaque
+            self.overlay.update()  # Force update
+            
+            # Now set the desired opacity
             self.overlay.attributes('-alpha', opacity)
             print(f"Transparency set to: {opacity}")
             if opacity < 1.0:
