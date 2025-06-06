@@ -19,12 +19,12 @@
         "font_weight": "bold"
     },
     "hotkeys": {
-        "toggle_text": "ctrl+x",
-        "reset_text": "ctrl+z"
+        "toggle_text": "ctrl+1",
+        "reset_text": "ctrl+2"
     },
     "content": {
         "default_text": "PoE Leveling Planner\nReady to assist!",
-        "alternate_text": "Hotkey Activated!\nCtrl+Z to return"
+        "alternate_text": "Hotkey Activated!\nCtrl+2 to return"
     },
     "behavior": {
         "auto_hide_when_poe_not_running": false,

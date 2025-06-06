@@ -86,8 +86,8 @@ The configuration window provides:
 - **Text editing** - modify default and alternate text content
 
 ### Hotkeys (Customizable)
-- **Ctrl+X** (default): Toggle to alternate text
-- **Ctrl+Z** (default): Return to original text
+- **Ctrl+1** (default): Toggle to alternate text
+- **Ctrl+2** (default): Return to original text
 
 ## Configuration File
 
@@ -113,12 +113,12 @@ Settings are stored in `config.json`:
         "font_weight": "bold"
     },
     "hotkeys": {
-        "toggle_text": "ctrl+x",
-        "reset_text": "ctrl+z"
+        "toggle_text": "ctrl+1",
+        "reset_text": "ctrl+2"
     },
     "content": {
         "default_text": "PoE Leveling Planner\nReady to assist!",
-        "alternate_text": "Hotkey Activated!\nCtrl+Z to return"
+        "alternate_text": "Hotkey Activated!\nCtrl+2 to return"
     }
 }
 ```

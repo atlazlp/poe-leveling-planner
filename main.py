@@ -17,7 +17,14 @@ from config_manager import ConfigManager
 class PoEOverlay:
     def __init__(self):
         self.config_manager = ConfigManager()
+        
+        # Create a hidden root window
         self.root = tk.Tk()
+        self.root.withdraw()  # Hide the root window
+        
+        # Create the actual overlay as a Toplevel window (like the working preview)
+        self.overlay = tk.Toplevel(self.root)
+        
         self.setup_window()
         self.setup_ui()
         self.setup_hotkeys()
@@ -33,7 +40,7 @@ class PoEOverlay:
     def setup_window(self):
         """Configure the overlay window properties"""
         # Remove window decorations and make it stay on top
-        self.root.overrideredirect(True)
+        self.overlay.overrideredirect(True)
         
         # Get settings from config
         always_on_top = self.config_manager.get_setting("display", "always_on_top", True)
@@ -42,24 +49,33 @@ class PoEOverlay:
         height = self.config_manager.get_setting("appearance", "height", 100)
         bg_color = self.config_manager.get_setting("appearance", "background_color", "#2b2b2b")
         
-        if always_on_top:
-            self.root.attributes('-topmost', True)
-        
         # Calculate position based on config
         x_position, y_position = self.config_manager.calculate_position()
         
-        self.root.geometry(f"{width}x{height}+{x_position}+{y_position}")
+        # Set geometry first
+        self.overlay.geometry(f"{width}x{height}+{x_position}+{y_position}")
         
         # Set window background color
-        self.root.configure(bg=bg_color)
+        self.overlay.configure(bg=bg_color)
         
-        # Set opacity (alpha) - this creates the transparency effect
-        # Apply this AFTER geometry and background to ensure it works properly
-        self.root.attributes('-alpha', opacity)
+        # Set always on top
+        if always_on_top:
+            self.overlay.attributes('-topmost', True)
+        
+        # Set opacity (alpha) - this should now work like the preview window
+        try:
+            self.overlay.attributes('-alpha', opacity)
+            print(f"Transparency set to: {opacity}")
+            if opacity < 1.0:
+                print("Window should appear semi-transparent")
+            else:
+                print("Window is fully opaque")
+        except tk.TclError as e:
+            print(f"Warning: Could not set transparency: {e}")
+            print("Transparency may not be supported on this system")
         
         # Print position info for debugging
         print(f"Overlay positioned at: ({x_position}, {y_position})")
-        print(f"Transparency set to: {opacity}")
         self.config_manager.print_monitor_info()
         
     def setup_ui(self):
@@ -72,7 +88,7 @@ class PoEOverlay:
         font_weight = self.config_manager.get_setting("appearance", "font_weight", "bold")
         
         # Main frame with configured background
-        main_frame = tk.Frame(self.root, bg=bg_color, padx=5, pady=5)
+        main_frame = tk.Frame(self.overlay, bg=bg_color, padx=5, pady=5)
         main_frame.pack(fill='both', expand=True)
         
         # Button frame in top-right corner
@@ -121,8 +137,8 @@ class PoEOverlay:
         self.text_label.pack(expand=True, fill='both')
         
         # Get hotkey settings for display
-        toggle_key = self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+x").upper()
-        reset_key = self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+z").upper()
+        toggle_key = self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+1").upper()
+        reset_key = self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+2").upper()
         
         # Instructions label
         instructions = tk.Label(
@@ -144,18 +160,51 @@ class PoEOverlay:
             self.toggle_to_original()
         
         # Get hotkey settings from config
-        toggle_hotkey = self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+x")
-        reset_hotkey = self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+z")
+        toggle_hotkey = self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+1")
+        reset_hotkey = self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+2")
         
         try:
-            # Create hotkey combinations with better error handling
+            # Parse hotkeys more carefully
+            def parse_hotkey_safe(hotkey_str):
+                """Safely parse hotkey string"""
+                try:
+                    # Clean the string and handle common formats
+                    hotkey_str = hotkey_str.lower().strip()
+                    if '+' in hotkey_str:
+                        parts = [part.strip() for part in hotkey_str.split('+')]
+                        # Convert to pynput format
+                        if len(parts) == 2:
+                            modifier, key = parts
+                            if modifier == 'ctrl':
+                                return f'<ctrl>+{key}'
+                            elif modifier == 'alt':
+                                return f'<alt>+{key}'
+                            elif modifier == 'shift':
+                                return f'<shift>+{key}'
+                    return hotkey_str
+                except Exception as e:
+                    print(f"Error parsing hotkey '{hotkey_str}': {e}")
+                    return None
+            
+            # Parse hotkeys
+            parsed_toggle = parse_hotkey_safe(toggle_hotkey)
+            parsed_reset = parse_hotkey_safe(reset_hotkey)
+            
+            if not parsed_toggle or not parsed_reset:
+                print("Could not parse hotkeys, using defaults")
+                parsed_toggle = "<ctrl>+1"
+                parsed_reset = "<ctrl>+2"
+            
+            print(f"Parsed hotkeys: {parsed_toggle}, {parsed_reset}")
+            
+            # Create hotkey combinations
             hotkey_toggle = keyboard.HotKey(
-                keyboard.HotKey.parse(toggle_hotkey),
+                keyboard.HotKey.parse(parsed_toggle),
                 on_hotkey_toggle
             )
             
             hotkey_reset = keyboard.HotKey(
-                keyboard.HotKey.parse(reset_hotkey),
+                keyboard.HotKey.parse(parsed_reset),
                 on_hotkey_reset
             )
             
@@ -166,14 +215,14 @@ class PoEOverlay:
                         hotkey_toggle.press(key)
                         hotkey_reset.press(key)
                     except Exception as e:
-                        print(f"Error in hotkey press: {e}")
+                        pass  # Ignore individual key press errors
                     
                 def on_release(key):
                     try:
                         hotkey_toggle.release(key)
                         hotkey_reset.release(key)
                     except Exception as e:
-                        print(f"Error in hotkey release: {e}")
+                        pass  # Ignore individual key release errors
                 
                 try:
                     with keyboard.Listener(
@@ -198,14 +247,14 @@ class PoEOverlay:
         """Switch to alternate text"""
         self.current_state = "alternate"
         self.text_label.config(text=self.alternate_text)
-        toggle_key = self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+x")
+        toggle_key = self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+1")
         print(f"Hotkey {toggle_key.upper()} pressed - switched to alternate text")
         
     def toggle_to_original(self):
         """Switch back to original text"""
         self.current_state = "original"
         self.text_label.config(text=self.original_text)
-        reset_key = self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+z")
+        reset_key = self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+2")
         print(f"Hotkey {reset_key.upper()} pressed - switched to original text")
         
     def open_config(self):
@@ -220,6 +269,7 @@ class PoEOverlay:
     def close_application(self):
         """Close the application"""
         print("Closing application...")
+        self.overlay.destroy()
         self.root.quit()
         
     def run(self):
@@ -234,8 +284,8 @@ class PoEOverlay:
         
         print(f"Monitor: {monitor_setting}, Position: {position_setting}, Opacity: {opacity}")
         
-        toggle_key = self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+x")
-        reset_key = self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+z")
+        toggle_key = self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+1")
+        reset_key = self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+2")
         print(f"Hotkeys: {toggle_key.upper()} (change text), {reset_key.upper()} (original text)")
         print("Use overlay buttons or press Ctrl+C in terminal to exit")
         

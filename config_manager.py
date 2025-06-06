@@ -63,8 +63,8 @@ class ConfigManager:
                 "font_weight": "bold"
             },
             "hotkeys": {
-                "toggle_text": "ctrl+x",
-                "reset_text": "ctrl+z"
+                "toggle_text": "ctrl+1",
+                "reset_text": "ctrl+2"
             },
             "content": {
                 "default_text": "PoE Leveling Planner\nReady to assist!",

@@ -152,14 +152,14 @@ class ConfigGUI:
         ttk.Label(hotkey_frame, text="Toggle Text:").grid(row=0, column=0, sticky=tk.W, pady=2)
         self.toggle_key_var = tk.StringVar()
         toggle_combo = ttk.Combobox(hotkey_frame, textvariable=self.toggle_key_var,
-                                   values=["ctrl+x", "ctrl+t", "alt+x", "alt+t", "shift+x"],
+                                   values=["ctrl+1", "ctrl+x", "ctrl+t", "alt+x", "alt+t", "shift+x"],
                                    width=15)
         toggle_combo.grid(row=0, column=1, sticky=tk.W, padx=(10, 0), pady=2)
         
         ttk.Label(hotkey_frame, text="Reset Text:").grid(row=1, column=0, sticky=tk.W, pady=2)
         self.reset_key_var = tk.StringVar()
         reset_combo = ttk.Combobox(hotkey_frame, textvariable=self.reset_key_var,
-                                  values=["ctrl+z", "ctrl+r", "alt+z", "alt+r", "shift+z"],
+                                  values=["ctrl+2", "ctrl+z", "ctrl+r", "alt+z", "alt+r", "shift+z"],
                                   width=15)
         reset_combo.grid(row=1, column=1, sticky=tk.W, padx=(10, 0), pady=2)
         
@@ -242,8 +242,8 @@ class ConfigGUI:
         self.opacity_var.set(self.config_manager.get_setting("display", "opacity", 0.8))
         self.width_var.set(self.config_manager.get_setting("appearance", "width", 250))
         self.height_var.set(self.config_manager.get_setting("appearance", "height", 100))
-        self.toggle_key_var.set(self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+x"))
-        self.reset_key_var.set(self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+z"))
+        self.toggle_key_var.set(self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+1"))
+        self.reset_key_var.set(self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+2"))
         
         # Load text content
         default_text = self.config_manager.get_setting("content", "default_text", "PoE Leveling Planner\nReady to assist!")
