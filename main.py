@@ -95,21 +95,19 @@ class PoEOverlay:
             on_hotkey_ctrl_z
         )
         
-        # Listener function
-        def for_canonical(f):
-            return lambda k: f(listener.canonical(k))
-            
         # Start the keyboard listener in a separate thread
         def start_listener():
+            def on_press(key):
+                hotkey_ctrl_x.press(key)
+                hotkey_ctrl_z.press(key)
+                
+            def on_release(key):
+                hotkey_ctrl_x.release(key)
+                hotkey_ctrl_z.release(key)
+            
             with keyboard.Listener(
-                on_press=for_canonical(lambda key: [
-                    hotkey_ctrl_x.press(key),
-                    hotkey_ctrl_z.press(key)
-                ]),
-                on_release=for_canonical(lambda key: [
-                    hotkey_ctrl_x.release(key),
-                    hotkey_ctrl_z.release(key)
-                ])
+                on_press=on_press,
+                on_release=on_release
             ) as listener:
                 listener.join()
         
