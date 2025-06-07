@@ -63,10 +63,11 @@
                     "Sharp and Cruel_Act 2": null,
                     "The Siren's Cadence_Act 1": null,
                     "The Root of the Problem_Act 2": null
-                }
+                },
+                "vendor_gem_selections": {}
             }
         ],
-        "selected": "Penance RF Leveling"
+        "selected": "Testing"
     },
     "language": {
         "current": "en_US"

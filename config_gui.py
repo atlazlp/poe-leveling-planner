@@ -11,6 +11,7 @@ import os
 from config_manager import ConfigManager
 from language_manager import LanguageManager
 from quest_reward_crawler import QuestRewardCrawler
+from vendor_reward_crawler import VendorRewardCrawler
 import threading
 
 
@@ -19,19 +20,22 @@ class ConfigGUI:
         self.config_manager = ConfigManager()
         self.language_manager = LanguageManager(self.config_manager)
         self.quest_crawler = QuestRewardCrawler()
+        self.vendor_crawler = VendorRewardCrawler()
         self.root = tk.Tk()
         self.test_window = None  # For live testing
         self.debounce_timer = None  # For debouncing slider updates
         self.drag_start_x = None  # For window dragging
         self.drag_start_y = None  # For window dragging
         self.quest_data_loading = False  # Track if quest data is being loaded
+        self.vendor_data_loading = False  # Track if vendor data is being loaded
         self.setup_window()
         self.setup_ui()
         self.load_current_settings()
         self.start_live_testing()
         
-        # Initialize quest data in background
+        # Initialize quest and vendor data in background
         self.initialize_quest_data()
+        self.initialize_vendor_data()
         
     def initialize_quest_data(self):
         """Initialize quest data in background thread"""
@@ -58,6 +62,32 @@ class ConfigGUI:
         
         # Start background thread
         thread = threading.Thread(target=update_quest_data, daemon=True)
+        thread.start()
+        
+    def initialize_vendor_data(self):
+        """Initialize vendor data in background thread"""
+        def update_vendor_data():
+            try:
+                self.vendor_data_loading = True
+                
+                # Update vendor data for current language
+                current_lang = self.language_manager.get_current_language()
+                success = self.vendor_crawler.update_vendor_data(current_lang)
+                
+                if success:
+                    # Update UI on main thread
+                    self.root.after(0, self.refresh_vendor_info)
+                else:
+                    self.root.after(0, lambda: self.update_vendor_info_error("Failed to load vendor data"))
+                    
+            except Exception as e:
+                print(f"Error initializing vendor data: {e}")
+                self.root.after(0, lambda: self.update_vendor_info_error(f"Error: {e}"))
+            finally:
+                self.vendor_data_loading = False
+        
+        # Start background thread
+        thread = threading.Thread(target=update_vendor_data, daemon=True)
         thread.start()
         
     def setup_window(self):
@@ -306,7 +336,7 @@ class ConfigGUI:
         self.opacity_var.trace('w', update_opacity_label)
             
     def setup_gems_tab(self):
-        """Setup the Gems tab with character management and quest rewards"""
+        """Setup the Gems tab with character management and sub-tabs for quests and vendors"""
         gems_frame = ttk.Frame(self.notebook, padding="10")
         self.notebook.add(gems_frame, text="Gems")
         
@@ -358,19 +388,41 @@ class ConfigGUI:
                                         font=('Arial', 10))
         self.char_info_label.grid(row=0, column=0, sticky=tk.W)
         
-        # Quest rewards section - no vertical scrolling needed
-        quest_frame = ttk.LabelFrame(gems_frame, text="Quest Gem Rewards", padding="10")
-        quest_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
+        # Create sub-tabs for Quests and Vendors
+        self.gems_notebook = ttk.Notebook(gems_frame)
+        self.gems_notebook.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
         
-        # Create simple frame for quest rewards (no vertical scrolling)
-        self.scrollable_frame = ttk.Frame(quest_frame)
-        self.scrollable_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        # Setup Quests tab
+        self.setup_quests_subtab()
+        
+        # Setup Vendors tab
+        self.setup_vendors_subtab()
+        
+        char_frame.columnconfigure(1, weight=1)
+        gems_frame.columnconfigure(0, weight=1)
+        gems_frame.rowconfigure(2, weight=1)
+        
+        # Load character data
+        self.load_character_data()
+    
+    def setup_quests_subtab(self):
+        """Setup the Quests sub-tab"""
+        quests_frame = ttk.Frame(self.gems_notebook, padding="10")
+        self.gems_notebook.add(quests_frame, text="Quests")
+        
+        # Quest rewards section
+        quest_frame = ttk.LabelFrame(quests_frame, text="Quest Gem Rewards", padding="10")
+        quest_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        # Create simple frame for quest rewards
+        self.quest_scrollable_frame = ttk.Frame(quest_frame)
+        self.quest_scrollable_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
         # Initial gem info label
-        self.gem_info_label = ttk.Label(self.scrollable_frame, 
-                                       text="Loading quest reward data...", 
-                                       font=('Arial', 10), foreground='gray')
-        self.gem_info_label.grid(row=0, column=0, pady=20)
+        self.quest_gem_info_label = ttk.Label(self.quest_scrollable_frame, 
+                                             text="Loading quest reward data...", 
+                                             font=('Arial', 10), foreground='gray')
+        self.quest_gem_info_label.grid(row=0, column=0, pady=20)
         
         # Refresh button
         refresh_frame = ttk.Frame(quest_frame)
@@ -380,14 +432,42 @@ class ConfigGUI:
                                            command=self.refresh_quest_data)
         self.refresh_quest_btn.pack(side=tk.LEFT)
         
-        char_frame.columnconfigure(1, weight=1)
         quest_frame.columnconfigure(0, weight=1)
         quest_frame.rowconfigure(0, weight=1)
-        gems_frame.columnconfigure(0, weight=1)
-        gems_frame.rowconfigure(2, weight=1)
+        quests_frame.columnconfigure(0, weight=1)
+        quests_frame.rowconfigure(0, weight=1)
+    
+    def setup_vendors_subtab(self):
+        """Setup the Vendors sub-tab"""
+        vendors_frame = ttk.Frame(self.gems_notebook, padding="10")
+        self.gems_notebook.add(vendors_frame, text="Vendors")
         
-        # Load character data
-        self.load_character_data()
+        # Vendor rewards section
+        vendor_frame = ttk.LabelFrame(vendors_frame, text="Vendor Gem Rewards", padding="10")
+        vendor_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        # Create simple frame for vendor rewards
+        self.vendor_scrollable_frame = ttk.Frame(vendor_frame)
+        self.vendor_scrollable_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        # Initial vendor info label
+        self.vendor_gem_info_label = ttk.Label(self.vendor_scrollable_frame, 
+                                              text="Loading vendor reward data...", 
+                                              font=('Arial', 10), foreground='gray')
+        self.vendor_gem_info_label.grid(row=0, column=0, pady=20)
+        
+        # Refresh button
+        refresh_frame = ttk.Frame(vendor_frame)
+        refresh_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
+        
+        self.refresh_vendor_btn = ttk.Button(refresh_frame, text="Refresh Vendor Data", 
+                                            command=self.refresh_vendor_data)
+        self.refresh_vendor_btn.pack(side=tk.LEFT)
+        
+        vendor_frame.columnconfigure(0, weight=1)
+        vendor_frame.rowconfigure(0, weight=1)
+        vendors_frame.columnconfigure(0, weight=1)
+        vendors_frame.rowconfigure(0, weight=1)
     
     def load_character_data(self):
         """Load character data from config and populate the UI"""
@@ -490,6 +570,7 @@ class ConfigGUI:
             self.config_manager.update_setting("characters", "selected", selected_name)
             self.update_character_info(selected_name)
             self.refresh_gem_info()
+            self.refresh_vendor_info()
     
     def update_character_info(self, character_name):
         """Update the character information display"""
@@ -513,40 +594,71 @@ class ConfigGUI:
             self.update_gem_info_placeholder()
     
     def update_gem_info_placeholder(self):
-        """Show placeholder text when no character is selected"""
-        # Clear existing widgets
-        for widget in self.scrollable_frame.winfo_children():
+        """Update gem info display with placeholder text"""
+        # Clear existing widgets in quest tab
+        for widget in self.quest_scrollable_frame.winfo_children():
             widget.destroy()
         
-        self.gem_info_label = ttk.Label(self.scrollable_frame, 
-                                       text="Select a character to view quest gem rewards.", 
-                                       font=('Arial', 10), foreground='gray')
-        self.gem_info_label.grid(row=0, column=0, pady=20)
+        self.quest_gem_info_label = ttk.Label(self.quest_scrollable_frame, 
+                                             text="Select a character to view quest gem rewards", 
+                                             font=('Arial', 10), foreground='gray')
+        self.quest_gem_info_label.grid(row=0, column=0, pady=20)
+        
+        # Clear existing widgets in vendor tab
+        for widget in self.vendor_scrollable_frame.winfo_children():
+            widget.destroy()
+        
+        self.vendor_gem_info_label = ttk.Label(self.vendor_scrollable_frame, 
+                                              text="Select a character to view vendor gem rewards", 
+                                              font=('Arial', 10), foreground='gray')
+        self.vendor_gem_info_label.grid(row=0, column=0, pady=20)
     
     def update_gem_info_loading(self):
-        """Show loading message"""
-        # Clear existing widgets
-        for widget in self.scrollable_frame.winfo_children():
+        """Update gem info display with loading text"""
+        # Clear existing widgets in quest tab
+        for widget in self.quest_scrollable_frame.winfo_children():
             widget.destroy()
         
-        self.gem_info_label = ttk.Label(self.scrollable_frame, 
-                                       text="Loading quest reward data...", 
-                                       font=('Arial', 10), foreground='blue')
-        self.gem_info_label.grid(row=0, column=0, pady=20)
+        self.quest_gem_info_label = ttk.Label(self.quest_scrollable_frame, 
+                                             text="Loading quest reward data...", 
+                                             font=('Arial', 10), foreground='gray')
+        self.quest_gem_info_label.grid(row=0, column=0, pady=20)
+    
+    def update_vendor_info_loading(self):
+        """Update vendor info display with loading text"""
+        # Clear existing widgets in vendor tab
+        for widget in self.vendor_scrollable_frame.winfo_children():
+            widget.destroy()
+        
+        self.vendor_gem_info_label = ttk.Label(self.vendor_scrollable_frame, 
+                                              text="Loading vendor reward data...", 
+                                              font=('Arial', 10), foreground='gray')
+        self.vendor_gem_info_label.grid(row=0, column=0, pady=20)
     
     def update_gem_info_error(self, error_message):
-        """Show error message"""
-        # Clear existing widgets
-        for widget in self.scrollable_frame.winfo_children():
+        """Update gem info display with error message"""
+        # Clear existing widgets in quest tab
+        for widget in self.quest_scrollable_frame.winfo_children():
             widget.destroy()
         
-        self.gem_info_label = ttk.Label(self.scrollable_frame, 
-                                       text=f"Error loading quest data:\n{error_message}", 
-                                       font=('Arial', 10), foreground='red')
-        self.gem_info_label.grid(row=0, column=0, pady=20)
+        self.quest_gem_info_label = ttk.Label(self.quest_scrollable_frame, 
+                                             text=f"Error loading quest data:\n{error_message}", 
+                                             font=('Arial', 10), foreground='red')
+        self.quest_gem_info_label.grid(row=0, column=0, pady=20)
+    
+    def update_vendor_info_error(self, error_message):
+        """Update vendor info display with error message"""
+        # Clear existing widgets in vendor tab
+        for widget in self.vendor_scrollable_frame.winfo_children():
+            widget.destroy()
+        
+        self.vendor_gem_info_label = ttk.Label(self.vendor_scrollable_frame, 
+                                              text=f"Error loading vendor data:\n{error_message}", 
+                                              font=('Arial', 10), foreground='red')
+        self.vendor_gem_info_label.grid(row=0, column=0, pady=20)
     
     def refresh_gem_info(self):
-        """Refresh the gem information display based on selected character"""
+        """Refresh the quest gem information display based on selected character"""
         selected_name = self.selected_char_var.get()
         if not selected_name:
             self.update_gem_info_placeholder()
@@ -567,20 +679,20 @@ class ConfigGUI:
         
         # Preserve horizontal scroll position if canvas exists
         scroll_position = None
-        for widget in self.scrollable_frame.winfo_children():
+        for widget in self.quest_scrollable_frame.winfo_children():
             if isinstance(widget, tk.Canvas) and hasattr(widget, 'xview'):
                 scroll_position = widget.xview()
                 break
         
         # Clear existing widgets
-        for widget in self.scrollable_frame.winfo_children():
+        for widget in self.quest_scrollable_frame.winfo_children():
             widget.destroy()
         
         if not quest_rewards:
-            self.gem_info_label = ttk.Label(self.scrollable_frame, 
-                                           text=f"No quest reward data available for {character_class}.\nTry refreshing the quest data.", 
-                                           font=('Arial', 10), foreground='orange')
-            self.gem_info_label.grid(row=0, column=0, pady=20)
+            self.quest_gem_info_label = ttk.Label(self.quest_scrollable_frame, 
+                                                 text=f"No quest reward data available for {character_class}.\nTry refreshing the quest data.", 
+                                                 font=('Arial', 10), foreground='orange')
+            self.quest_gem_info_label.grid(row=0, column=0, pady=20)
             return
         
         # Get overlay width for card sizing
@@ -592,8 +704,8 @@ class ConfigGUI:
             character['gem_selections'] = {}
         
         # Create horizontal scrollable container
-        horizontal_canvas = tk.Canvas(self.scrollable_frame, height=400)  # Increased height for more gems
-        horizontal_scrollbar = ttk.Scrollbar(self.scrollable_frame, orient="horizontal", command=horizontal_canvas.xview)
+        horizontal_canvas = tk.Canvas(self.quest_scrollable_frame, height=400)  # Increased height for more gems
+        horizontal_scrollbar = ttk.Scrollbar(self.quest_scrollable_frame, orient="horizontal", command=horizontal_canvas.xview)
         cards_frame = ttk.Frame(horizontal_canvas)
         
         cards_frame.bind(
@@ -743,39 +855,217 @@ class ConfigGUI:
             quest_card.rowconfigure(1, weight=1)
         
         # Configure grid weights for the scrollable frame
-        self.scrollable_frame.columnconfigure(0, weight=1)
-        self.scrollable_frame.rowconfigure(0, weight=1)
+        self.quest_scrollable_frame.columnconfigure(0, weight=1)
+        self.quest_scrollable_frame.rowconfigure(0, weight=1)
         
         # Update scroll region
-        self.scrollable_frame.update_idletasks()
+        self.quest_scrollable_frame.update_idletasks()
         
         # Restore horizontal scroll position if it was preserved
         if scroll_position is not None:
             # Find the horizontal canvas and restore its position
-            for widget in self.scrollable_frame.winfo_children():
+            for widget in self.quest_scrollable_frame.winfo_children():
                 if isinstance(widget, tk.Canvas) and hasattr(widget, 'xview_moveto'):
                     # Use a small delay to ensure the canvas is fully rendered
                     self.root.after(10, lambda: widget.xview_moveto(scroll_position[0]))
                     break
     
-    def on_gem_click(self, gem, quest_key, character):
-        """Handle gem selection click"""
-        gem_name = gem['name']
+    def refresh_vendor_info(self):
+        """Refresh the vendor gem information display based on selected character"""
+        selected_name = self.selected_char_var.get()
+        if not selected_name:
+            return
         
-        # Toggle selection: if already selected, deselect; otherwise select
+        characters = self.config_manager.get_setting("characters", "profiles", [])
+        character = next((char for char in characters if char["name"] == selected_name), None)
+        
+        if not character:
+            return
+        
+        character_class = character['class']
+        current_language = self.language_manager.get_current_language()
+        
+        # Get vendor rewards for this character class
+        vendor_rewards = self.vendor_crawler.get_vendor_rewards_for_class(current_language, character_class)
+        
+        # Clear existing widgets
+        for widget in self.vendor_scrollable_frame.winfo_children():
+            widget.destroy()
+        
+        if not vendor_rewards:
+            self.vendor_gem_info_label = ttk.Label(self.vendor_scrollable_frame, 
+                                                  text=f"No vendor reward data available for {character_class}.\nTry refreshing the vendor data.", 
+                                                  font=('Arial', 10), foreground='orange')
+            self.vendor_gem_info_label.grid(row=0, column=0, pady=20)
+            return
+        
+        # Get or initialize vendor gem selections for this character
+        if 'vendor_gem_selections' not in character:
+            character['vendor_gem_selections'] = {}
+        
+        # Create vertical scrollable container
+        canvas = tk.Canvas(self.vendor_scrollable_frame)
+        scrollbar = ttk.Scrollbar(self.vendor_scrollable_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Pack the scroll components
+        canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+        
+        # Display vendor rewards as full-width rows
+        for vendor_idx, vendor_quest in enumerate(vendor_rewards):
+            gems = vendor_quest.get('class_rewards', [])
+            
+            # Create vendor row frame - use full width
+            vendor_row = ttk.LabelFrame(scrollable_frame, text=f"{vendor_quest['name']} ({vendor_quest['act']})", 
+                                       padding="10", relief="raised", borderwidth=1)
+            vendor_row.grid(row=vendor_idx, column=0, sticky=(tk.W, tk.E), pady=(0 if vendor_idx == 0 else 10, 0))
+            
+            if gems:
+                vendor_key = f"{vendor_quest['name']}_{vendor_quest['act']}"
+                selected_gem = character['vendor_gem_selections'].get(vendor_key, None)
+                
+                # Create gems grid with 4 columns
+                gems_per_row = 4
+                for gem_idx, gem in enumerate(gems):
+                    row = gem_idx // gems_per_row
+                    col = gem_idx % gems_per_row
+                    
+                    # Create clickable gem button
+                    gem_color = gem['color']
+                    if gem_color == 'gem_red':
+                        color = '#ff6b6b'  # Red
+                        bg_color = '#ffebee'  # Light red background
+                    elif gem_color == 'gem_green':
+                        color = '#51cf66'  # Green
+                        bg_color = '#e8f5e8'  # Light green background
+                    elif gem_color == 'gem_blue':
+                        color = '#339af0'  # Blue
+                        bg_color = '#e3f2fd'  # Light blue background
+                    else:
+                        color = '#868e96'  # Gray fallback
+                        bg_color = '#f5f5f5'  # Light gray background
+                    
+                    # Determine if this gem is selected or grayed out
+                    is_selected = selected_gem == gem['name']
+                    is_grayed_out = selected_gem is not None and not is_selected
+                    
+                    if is_grayed_out:
+                        display_color = '#cccccc'
+                        display_bg = '#f0f0f0'
+                        relief = 'flat'
+                        border_width = 1
+                    elif is_selected:
+                        display_color = color
+                        display_bg = bg_color
+                        relief = 'solid'
+                        border_width = 3
+                    else:
+                        display_color = color
+                        display_bg = self.root.cget('bg')
+                        relief = 'raised'
+                        border_width = 1
+                    
+                    def make_vendor_gem_click_handler(gem_data, vendor_key_data, character_data):
+                        return lambda: self.on_vendor_gem_click(gem_data, vendor_key_data, character_data)
+                    
+                    gem_button = tk.Button(vendor_row, text=gem['name'], 
+                                         font=('Arial', 9, 'bold' if is_selected else 'normal'), 
+                                         fg=display_color,
+                                         bg=display_bg,
+                                         activebackground=bg_color if not is_grayed_out else display_bg,
+                                         relief=relief,
+                                         borderwidth=border_width,
+                                         cursor='hand2',
+                                         wraplength=120,  # Wrap text for better fit in grid
+                                         justify='center',
+                                         padx=5,
+                                         pady=3,
+                                         width=15,  # Fixed width for consistent grid
+                                         command=make_vendor_gem_click_handler(gem, vendor_key, character))
+                    gem_button.grid(row=row, column=col, sticky=(tk.W, tk.E), pady=2, padx=2)
+                
+                # Configure column weights for even distribution across full width
+                for col in range(gems_per_row):
+                    vendor_row.columnconfigure(col, weight=1)
+                
+            else:
+                no_gems_label = ttk.Label(vendor_row, 
+                                        text="No gems available", 
+                                        font=('Arial', 10, 'italic'), foreground='#999999',
+                                        anchor='center')
+                no_gems_label.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=10)
+                vendor_row.columnconfigure(0, weight=1)
+        
+        # Configure grid weights for the scrollable frame
+        scrollable_frame.columnconfigure(0, weight=1)
+        self.vendor_scrollable_frame.columnconfigure(0, weight=1)
+        self.vendor_scrollable_frame.rowconfigure(0, weight=1)
+        
+        # Enable mouse wheel scrolling
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        canvas.bind("<MouseWheel>", _on_mousewheel)
+        
+        # Update scroll region
+        self.vendor_scrollable_frame.update_idletasks()
+    
+    def on_gem_click(self, gem, quest_key, character):
+        """Handle gem selection for quest rewards"""
+        # Toggle gem selection
+        if 'gem_selections' not in character:
+            character['gem_selections'] = {}
+        
         current_selection = character['gem_selections'].get(quest_key, None)
-        if current_selection == gem_name:
-            # Deselect
+        
+        if current_selection == gem['name']:
+            # Deselect if clicking the same gem
             character['gem_selections'][quest_key] = None
         else:
-            # Select this gem
-            character['gem_selections'][quest_key] = gem_name
+            # Select the new gem
+            character['gem_selections'][quest_key] = gem['name']
         
-        # Save the updated character data immediately
+        # Save character data
         self.save_character_gem_selections(character)
         
-        # Refresh the display to show updated selection states
+        # Refresh the display
         self.refresh_gem_info()
+        
+        # Update character info
+        self.update_character_info(character['name'])
+    
+    def on_vendor_gem_click(self, gem, vendor_key, character):
+        """Handle gem selection for vendor rewards"""
+        # Toggle gem selection
+        if 'vendor_gem_selections' not in character:
+            character['vendor_gem_selections'] = {}
+        
+        current_selection = character['vendor_gem_selections'].get(vendor_key, None)
+        
+        if current_selection == gem['name']:
+            # Deselect if clicking the same gem
+            character['vendor_gem_selections'][vendor_key] = None
+        else:
+            # Select the new gem
+            character['vendor_gem_selections'][vendor_key] = gem['name']
+        
+        # Save character data
+        self.save_character_gem_selections(character)
+        
+        # Refresh the display
+        self.refresh_vendor_info()
+        
+        # Update character info
+        self.update_character_info(character['name'])
     
     def save_character_gem_selections(self, character):
         """Save character gem selections to config"""
@@ -801,14 +1091,27 @@ class ConfigGUI:
         characters = self.config_manager.get_setting("characters", "profiles", [])
         character = next((char for char in characters if char["name"] == character_name), None)
         
-        if not character or 'gem_selections' not in character:
-            return "No gem selections"
+        if not character:
+            return "No character data found"
         
-        selections = character['gem_selections']
-        selected_count = sum(1 for selection in selections.values() if selection is not None)
-        total_quests = len(selections)
+        quest_selections = character.get('gem_selections', {})
+        vendor_selections = character.get('vendor_gem_selections', {})
         
-        return f"Selected gems: {selected_count}/{total_quests} quests"
+        quest_count = len([v for v in quest_selections.values() if v is not None])
+        vendor_count = len([v for v in vendor_selections.values() if v is not None])
+        
+        total_count = quest_count + vendor_count
+        
+        if total_count == 0:
+            return "No gems selected"
+        
+        summary_parts = []
+        if quest_count > 0:
+            summary_parts.append(f"{quest_count} quest gems")
+        if vendor_count > 0:
+            summary_parts.append(f"{vendor_count} vendor gems")
+        
+        return f"Selected: {', '.join(summary_parts)} ({total_count} total)"
     
     def refresh_quest_data(self):
         """Refresh quest data from PoEDB"""
@@ -843,6 +1146,44 @@ class ConfigGUI:
                 ])
             finally:
                 self.quest_data_loading = False
+        
+        # Start background thread
+        thread = threading.Thread(target=update_data, daemon=True)
+        thread.start()
+    
+    def refresh_vendor_data(self):
+        """Refresh vendor data from PoE Wiki"""
+        if self.vendor_data_loading:
+            messagebox.showinfo("Info", "Vendor data is already being updated. Please wait.")
+            return
+        
+        def update_data():
+            try:
+                self.vendor_data_loading = True
+                self.root.after(0, self.update_vendor_info_loading)
+                
+                current_language = self.language_manager.get_current_language()
+                success = self.vendor_crawler.update_vendor_data(current_language, force_update=True)
+                
+                if success:
+                    self.root.after(0, lambda: [
+                        self.refresh_vendor_info(),
+                        messagebox.showinfo("Success", "Vendor data updated successfully!")
+                    ])
+                else:
+                    self.root.after(0, lambda: [
+                        self.update_vendor_info_error("Failed to update vendor data"),
+                        messagebox.showerror("Error", "Failed to update vendor data. Please check your internet connection.")
+                    ])
+                    
+            except Exception as e:
+                print(f"Error updating vendor data: {e}")
+                self.root.after(0, lambda: [
+                    self.update_vendor_info_error(f"Error: {e}"),
+                    messagebox.showerror("Error", f"Error updating vendor data: {e}")
+                ])
+            finally:
+                self.vendor_data_loading = False
         
         # Start background thread
         thread = threading.Thread(target=update_data, daemon=True)
