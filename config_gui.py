@@ -344,25 +344,13 @@ class ConfigGUI:
                                         font=('Arial', 10))
         self.char_info_label.grid(row=0, column=0, sticky=tk.W)
         
-        # Quest rewards section with scrollable area
+        # Quest rewards section - no vertical scrolling needed
         quest_frame = ttk.LabelFrame(gems_frame, text="Quest Gem Rewards", padding="10")
         quest_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
         
-        # Create scrollable frame for quest rewards
-        canvas = tk.Canvas(quest_frame, height=300)
-        scrollbar = ttk.Scrollbar(quest_frame, orient="vertical", command=canvas.yview)
-        self.scrollable_frame = ttk.Frame(canvas)
-        
-        self.scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
-        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+        # Create simple frame for quest rewards (no vertical scrolling)
+        self.scrollable_frame = ttk.Frame(quest_frame)
+        self.scrollable_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
         # Initial gem info label
         self.gem_info_label = ttk.Label(self.scrollable_frame, 
@@ -372,7 +360,7 @@ class ConfigGUI:
         
         # Refresh button
         refresh_frame = ttk.Frame(quest_frame)
-        refresh_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(10, 0))
+        refresh_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(10, 0))
         
         self.refresh_quest_btn = ttk.Button(refresh_frame, text="Refresh Quest Data", 
                                            command=self.refresh_quest_data)
@@ -500,7 +488,8 @@ class ConfigGUI:
         character = next((char for char in characters if char["name"] == character_name), None)
         
         if character:
-            info_text = f"Name: {character['name']}\nClass: {character['class']}"
+            gem_summary = self.get_character_gem_summary(character_name)
+            info_text = f"Name: {character['name']}\nClass: {character['class']}\n{gem_summary}"
             self.char_info_label.config(text=info_text)
             
             # Update gem info for this character's class
@@ -562,6 +551,13 @@ class ConfigGUI:
         # Get quest rewards for this character class
         quest_rewards = self.quest_crawler.get_quest_rewards_for_class(current_language, character_class)
         
+        # Preserve horizontal scroll position if canvas exists
+        scroll_position = None
+        for widget in self.scrollable_frame.winfo_children():
+            if isinstance(widget, tk.Canvas) and hasattr(widget, 'xview'):
+                scroll_position = widget.xview()
+                break
+        
         # Clear existing widgets
         for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
@@ -573,52 +569,232 @@ class ConfigGUI:
             self.gem_info_label.grid(row=0, column=0, pady=20)
             return
         
-        # Display quest rewards
-        row = 0
-        for quest in quest_rewards:
-            # Quest header
-            quest_header = ttk.Label(self.scrollable_frame, 
-                                   text=f"{quest['name']} ({quest['act']})", 
-                                   font=('Arial', 11, 'bold'))
-            quest_header.grid(row=row, column=0, sticky=tk.W, pady=(10, 5))
-            row += 1
+        # Get overlay width for card sizing
+        overlay_width = self.config_manager.get_setting("appearance", "width", 250)
+        card_width = max(200, min(overlay_width, 250))  # Cap at 250px, minimum 200px
+        
+        # Get or initialize gem selections for this character
+        if 'gem_selections' not in character:
+            character['gem_selections'] = {}
+        
+        # Create horizontal scrollable container
+        horizontal_canvas = tk.Canvas(self.scrollable_frame, height=400)  # Increased height for more gems
+        horizontal_scrollbar = ttk.Scrollbar(self.scrollable_frame, orient="horizontal", command=horizontal_canvas.xview)
+        cards_frame = ttk.Frame(horizontal_canvas)
+        
+        cards_frame.bind(
+            "<Configure>",
+            lambda e: horizontal_canvas.configure(scrollregion=horizontal_canvas.bbox("all"))
+        )
+        
+        horizontal_canvas.create_window((0, 0), window=cards_frame, anchor="nw")
+        horizontal_canvas.configure(xscrollcommand=horizontal_scrollbar.set)
+        
+        # Pack the horizontal scroll components to use full width
+        horizontal_canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        horizontal_scrollbar.grid(row=1, column=0, sticky=(tk.W, tk.E))
+        
+        # Display quest rewards as cards in a single horizontal row
+        for quest_idx, quest in enumerate(quest_rewards):
+            # Get gem rewards for this class first (needed for height calculation)
+            gems = quest.get('class_rewards', [])
+            
+            # Create quest card frame with border
+            quest_card = ttk.LabelFrame(cards_frame, text="", padding="10", relief="raised", borderwidth=2)
+            quest_card.grid(row=0, column=quest_idx, sticky=(tk.W, tk.E, tk.N, tk.S), 
+                           padx=(0 if quest_idx == 0 else 10, 0), pady=0)
+            
+            # Set fixed width but allow height to be dynamic based on content
+            quest_card.grid_propagate(False)
+            
+            # Calculate dynamic height based on number of gems (more compact)
+            base_height = 80   # Reduced height for title and padding
+            gem_height = 28    # Reduced height per gem button (including padding)
+            min_height = 160   # Reduced minimum height
+            max_height = 350   # Maximum height before we need vertical scroll
+            calculated_height = min(max_height, max(min_height, base_height + (len(gems) * gem_height)))
+            
+            quest_card.configure(width=card_width, height=calculated_height)
+            
+            # Quest title and act
+            title_frame = ttk.Frame(quest_card)
+            title_frame.grid(row=0, column=0, sticky=(tk.W, tk.E), pady=(0, 10))
+            
+            quest_title = ttk.Label(title_frame, text=quest['name'], 
+                                   font=('Arial', 12, 'bold'), anchor='center')
+            quest_title.grid(row=0, column=0, sticky=(tk.W, tk.E))
+            
+            quest_act = ttk.Label(title_frame, text=quest['act'], 
+                                 font=('Arial', 10), foreground='#666666', anchor='center')
+            quest_act.grid(row=1, column=0, sticky=(tk.W, tk.E))
+            
+            title_frame.columnconfigure(0, weight=1)
             
             # Gem rewards for this class
-            gems = quest.get('class_rewards', [])
             if gems:
-                gem_frame = ttk.Frame(self.scrollable_frame)
-                gem_frame.grid(row=row, column=0, sticky=(tk.W, tk.E), padx=(20, 0), pady=(0, 5))
+                # Check if we need vertical scrolling
+                needs_scroll = calculated_height >= max_height and len(gems) > 8
                 
-                gem_col = 0
-                for gem in gems:
-                    # Create colored gem label
+                if needs_scroll:
+                    # Create scrollable frame for gems when there are many
+                    gems_canvas = tk.Canvas(quest_card, height=max_height-base_height)
+                    gems_scrollbar = ttk.Scrollbar(quest_card, orient="vertical", command=gems_canvas.yview)
+                    gems_scrollable_frame = ttk.Frame(gems_canvas)
+                    
+                    gems_scrollable_frame.bind(
+                        "<Configure>",
+                        lambda e: gems_canvas.configure(scrollregion=gems_canvas.bbox("all"))
+                    )
+                    
+                    gems_canvas.create_window((0, 0), window=gems_scrollable_frame, anchor="nw")
+                    gems_canvas.configure(yscrollcommand=gems_scrollbar.set)
+                    
+                    gems_canvas.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+                    gems_scrollbar.grid(row=1, column=1, sticky=(tk.N, tk.S))
+                    
+                    gems_frame = gems_scrollable_frame
+                else:
+                    # Create simple frame for gems when scrolling is not needed
+                    gems_container = ttk.Frame(quest_card)
+                    gems_container.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+                    
+                    gems_frame = ttk.Frame(gems_container)
+                    gems_frame.pack(expand=True, fill='both')
+                
+                quest_key = f"{quest['name']}_{quest['act']}"
+                selected_gem = character['gem_selections'].get(quest_key, None)
+                
+                for gem_idx, gem in enumerate(gems):
+                    # Create clickable gem button
                     gem_color = gem['color']
                     if gem_color == 'gem_red':
                         color = '#ff6b6b'  # Red
+                        bg_color = '#ffebee'  # Light red background
                     elif gem_color == 'gem_green':
                         color = '#51cf66'  # Green
+                        bg_color = '#e8f5e8'  # Light green background
                     elif gem_color == 'gem_blue':
                         color = '#339af0'  # Blue
+                        bg_color = '#e3f2fd'  # Light blue background
                     else:
                         color = '#868e96'  # Gray fallback
+                        bg_color = '#f5f5f5'  # Light gray background
                     
-                    gem_label = tk.Label(gem_frame, text=gem['name'], 
-                                       font=('Arial', 9), 
-                                       fg=color, 
-                                       bg=self.root.cget('bg'))
-                    gem_label.grid(row=0, column=gem_col, sticky=tk.W, padx=(0, 15))
-                    gem_col += 1
+                    # Determine if this gem is selected or grayed out
+                    is_selected = selected_gem == gem['name']
+                    is_grayed_out = selected_gem is not None and not is_selected
+                    
+                    if is_grayed_out:
+                        display_color = '#cccccc'
+                        display_bg = '#f0f0f0'
+                        relief = 'flat'
+                        border_width = 1
+                    elif is_selected:
+                        display_color = color
+                        display_bg = bg_color
+                        relief = 'solid'
+                        border_width = 3
+                    else:
+                        display_color = color
+                        display_bg = self.root.cget('bg')
+                        relief = 'raised'
+                        border_width = 1
+                    
+                    def make_gem_click_handler(gem_data, quest_key_data, character_data):
+                        return lambda: self.on_gem_click(gem_data, quest_key_data, character_data)
+                    
+                    gem_button = tk.Button(gems_frame, text=gem['name'], 
+                                         font=('Arial', 9, 'bold' if is_selected else 'normal'), 
+                                         fg=display_color,
+                                         bg=display_bg,
+                                         activebackground=bg_color if not is_grayed_out else display_bg,
+                                         relief=relief,
+                                         borderwidth=border_width,
+                                         cursor='hand2',
+                                         wraplength=card_width-40,  # Wrap text if too long
+                                         justify='center',
+                                         padx=3,
+                                         pady=2,
+                                         command=make_gem_click_handler(gem, quest_key, character))
+                    gem_button.pack(fill='x', pady=1, padx=3)
                 
-                row += 1
             else:
-                no_gems_label = ttk.Label(self.scrollable_frame, 
+                no_gems_label = ttk.Label(quest_card, 
                                         text="No gems available", 
-                                        font=('Arial', 9), foreground='gray')
-                no_gems_label.grid(row=row, column=0, sticky=tk.W, padx=(20, 0), pady=(0, 5))
-                row += 1
+                                        font=('Arial', 10, 'italic'), foreground='#999999',
+                                        anchor='center')
+                no_gems_label.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=20)
+            
+            quest_card.columnconfigure(0, weight=1)
+            quest_card.rowconfigure(1, weight=1)
+        
+        # Configure grid weights for the scrollable frame
+        self.scrollable_frame.columnconfigure(0, weight=1)
+        self.scrollable_frame.rowconfigure(0, weight=1)
         
         # Update scroll region
         self.scrollable_frame.update_idletasks()
+        
+        # Restore horizontal scroll position if it was preserved
+        if scroll_position is not None:
+            # Find the horizontal canvas and restore its position
+            for widget in self.scrollable_frame.winfo_children():
+                if isinstance(widget, tk.Canvas) and hasattr(widget, 'xview_moveto'):
+                    # Use a small delay to ensure the canvas is fully rendered
+                    self.root.after(10, lambda: widget.xview_moveto(scroll_position[0]))
+                    break
+    
+    def on_gem_click(self, gem, quest_key, character):
+        """Handle gem selection click"""
+        gem_name = gem['name']
+        
+        # Toggle selection: if already selected, deselect; otherwise select
+        current_selection = character['gem_selections'].get(quest_key, None)
+        if current_selection == gem_name:
+            # Deselect
+            character['gem_selections'][quest_key] = None
+        else:
+            # Select this gem
+            character['gem_selections'][quest_key] = gem_name
+        
+        # Save the updated character data immediately
+        self.save_character_gem_selections(character)
+        
+        # Refresh the display to show updated selection states
+        self.refresh_gem_info()
+    
+    def save_character_gem_selections(self, character):
+        """Save character gem selections to config"""
+        try:
+            characters = self.config_manager.get_setting("characters", "profiles", [])
+            for i, char in enumerate(characters):
+                if char["name"] == character["name"]:
+                    characters[i] = character
+                    break
+            
+            self.config_manager.update_setting("characters", "profiles", characters)
+            
+            # Force save to file
+            self.config_manager.save_config()
+            
+            print(f"Saved gem selections for character: {character['name']}")
+            
+        except Exception as e:
+            print(f"Error saving gem selections: {e}")
+    
+    def get_character_gem_summary(self, character_name):
+        """Get a summary of selected gems for a character"""
+        characters = self.config_manager.get_setting("characters", "profiles", [])
+        character = next((char for char in characters if char["name"] == character_name), None)
+        
+        if not character or 'gem_selections' not in character:
+            return "No gem selections"
+        
+        selections = character['gem_selections']
+        selected_count = sum(1 for selection in selections.values() if selection is not None)
+        total_quests = len(selections)
+        
+        return f"Selected gems: {selected_count}/{total_quests} quests"
     
     def refresh_quest_data(self):
         """Refresh quest data from PoEDB"""

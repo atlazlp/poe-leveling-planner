@@ -35,14 +35,34 @@
         "profiles": [
             {
                 "name": "Testing",
-                "class": "Marauder"
+                "class": "Marauder",
+                "gem_selections": {
+                    "The Eternal Nightmare_Act 4": null,
+                    "A Fixture of Fate_Act 3": null,
+                    "Breaking the Seal_Act 4": null,
+                    "The King's Feast_Act 5": null,
+                    "Enemy at the Gate_Act 1": null,
+                    "Breaking Some Eggs_Act 1": null,
+                    "The Caged Brute_Act 1": null,
+                    "The Siren's Cadence_Act 1": null,
+                    "Intruders in Black_Act 2": null,
+                    "Sharp and Cruel_Act 2": null,
+                    "The Root of the Problem_Act 2": null,
+                    "Lost in Love_Act 3": null,
+                    "Sever the Right Hand_Act 3": null
+                }
             },
             {
                 "name": "Penance RF Leveling",
-                "class": "Templar"
+                "class": "Templar",
+                "gem_selections": {
+                    "Enemy at the Gate_Act 1": "Smite",
+                    "Breaking Some Eggs_Act 1": "Frost Bomb",
+                    "The Caged Brute_Act 1": "Added Fire Damage Support"
+                }
             }
         ],
-        "selected": "Penance RF Leveling"
+        "selected": "Testing"
     },
     "language": {
         "current": "en_US"
