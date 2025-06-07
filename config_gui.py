@@ -228,20 +228,20 @@ class ConfigGUI:
         # X Offset
         ttk.Label(offset_frame, text=self.language_manager.get_ui_text("x_offset", "X Offset:")).grid(row=0, column=0, sticky=tk.W, pady=2)
         self.x_offset_var = tk.IntVar()
-        x_offset_scale = ttk.Scale(offset_frame, from_=-1500, to=1500, variable=self.x_offset_var,
+        x_offset_scale = ttk.Scale(offset_frame, from_=-3000, to=3000, variable=self.x_offset_var,
                                   orient=tk.HORIZONTAL, length=200)
         x_offset_scale.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
-        self.x_offset_label = ttk.Label(offset_frame, text="0")
-        self.x_offset_label.grid(row=0, column=2, padx=(10, 0), pady=2)
+        self.x_offset_entry = ttk.Entry(offset_frame, textvariable=self.x_offset_var, width=8)
+        self.x_offset_entry.grid(row=0, column=2, padx=(10, 0), pady=2)
         
         # Y Offset
         ttk.Label(offset_frame, text=self.language_manager.get_ui_text("y_offset", "Y Offset:")).grid(row=1, column=0, sticky=tk.W, pady=2)
         self.y_offset_var = tk.IntVar()
-        y_offset_scale = ttk.Scale(offset_frame, from_=-1500, to=1500, variable=self.y_offset_var,
+        y_offset_scale = ttk.Scale(offset_frame, from_=-3000, to=3000, variable=self.y_offset_var,
                                   orient=tk.HORIZONTAL, length=200)
         y_offset_scale.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
-        self.y_offset_label = ttk.Label(offset_frame, text="0")
-        self.y_offset_label.grid(row=1, column=2, padx=(10, 0), pady=2)
+        self.y_offset_entry = ttk.Entry(offset_frame, textvariable=self.y_offset_var, width=8)
+        self.y_offset_entry.grid(row=1, column=2, padx=(10, 0), pady=2)
         
         offset_frame.columnconfigure(1, weight=1)
         
@@ -281,14 +281,28 @@ class ConfigGUI:
             
         # Update labels when scales change
         def update_x_offset_label(*args):
-            self.x_offset_label.config(text=f"{self.x_offset_var.get()}")
+            pass  # Entry widget automatically updates with IntVar
         def update_y_offset_label(*args):
-            self.y_offset_label.config(text=f"{self.y_offset_var.get()}")
+            pass  # Entry widget automatically updates with IntVar
         def update_opacity_label(*args):
             self.opacity_label.config(text=f"{self.opacity_var.get():.1f}")
         
-        self.x_offset_var.trace('w', update_x_offset_label)
-        self.y_offset_var.trace('w', update_y_offset_label)
+        # Add validation for offset entries
+        def validate_offset_entry(value, min_val=-3000, max_val=3000):
+            if value == "" or value == "-":
+                return True  # Allow empty or just minus sign during typing
+            try:
+                val = int(value)
+                return min_val <= val <= max_val
+            except ValueError:
+                return False
+        
+        # Register validation functions
+        vcmd = (self.root.register(validate_offset_entry), '%P')
+        self.x_offset_entry.config(validate='key', validatecommand=vcmd)
+        self.y_offset_entry.config(validate='key', validatecommand=vcmd)
+        
+        # Update opacity label when scale changes
         self.opacity_var.trace('w', update_opacity_label)
             
     def setup_gems_tab(self):

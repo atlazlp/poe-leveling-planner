@@ -6,7 +6,7 @@
         "custom_y": null,
         "opacity": 0.5,
         "always_on_top": true,
-        "x_offset": 1541,
+        "x_offset": 1542,
         "y_offset": 715
     },
     "appearance": {
@@ -56,13 +56,17 @@
                 "name": "Penance RF Leveling",
                 "class": "Templar",
                 "gem_selections": {
-                    "Enemy at the Gate_Act 1": "Smite",
-                    "Breaking Some Eggs_Act 1": "Frost Bomb",
-                    "The Caged Brute_Act 1": "Added Fire Damage Support"
+                    "Enemy at the Gate_Act 1": null,
+                    "Breaking Some Eggs_Act 1": null,
+                    "The Caged Brute_Act 1": null,
+                    "Intruders in Black_Act 2": null,
+                    "Sharp and Cruel_Act 2": null,
+                    "The Siren's Cadence_Act 1": null,
+                    "The Root of the Problem_Act 2": null
                 }
             }
         ],
-        "selected": "Testing"
+        "selected": "Penance RF Leveling"
     },
     "language": {
         "current": "en_US"
