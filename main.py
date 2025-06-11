@@ -100,7 +100,7 @@ class PoEOverlay:
                     break
             
             if not current_profile:
-                print("No character profile selected")
+                print("Selected character profile not found")
                 self.available_quests = []
                 self.update_overlay_display()
                 return
@@ -216,7 +216,17 @@ class PoEOverlay:
             return
             
         if not self.available_quests:
-            display_text = "No quests with selected gems\nConfigure gems in settings"
+            # Check if we have any character profiles at all
+            characters = self.config_manager.get_setting("characters", "profiles", [])
+            selected_profile = self.config_manager.get_setting("characters", "selected")
+            
+            if not characters:
+                display_text = "Welcome to PoE Leveling Planner!\n\nClick the gear button above to:\n• Create your first character\n• Configure gem selections\n• Set up your preferences"
+            elif not selected_profile:
+                display_text = f"No character selected\n\nYou have {len(characters)} character(s) created.\nClick the gear button to select one\nand configure gem selections."
+            else:
+                display_text = "No quests with selected gems\n\nClick the gear button to:\n• Configure gem selections\n• Add more characters\n• Adjust settings"
+            
             # Check if text_label still exists before updating
             if hasattr(self, 'text_label') and self.text_label and self.text_label.winfo_exists():
                 self.text_label.config(text=display_text)
@@ -278,7 +288,8 @@ class PoEOverlay:
                 text="Quest Gem: ",
                 bg=bg_color,
                 fg=text_color,
-                font=(font_family, font_size, font_weight)
+                font=(font_family, font_size-1, "normal"),
+                justify='left'
             ).pack(side='left')
             
             tk.Label(
@@ -286,48 +297,56 @@ class PoEOverlay:
                 text=gem_name,
                 bg=bg_color,
                 fg=gem_hex_color,
-                font=(font_family, font_size, font_weight)
+                font=(font_family, font_size-1, font_weight),
+                justify='left'
             ).pack(side='left')
-            
-            # Empty line
-            tk.Label(text_frame, text="", bg=bg_color).pack()
         
         # Vendor gems
-        vendor_gems = current_quest.get('vendor_gems', [])
-        if vendor_gems:
-            tk.Label(
+        if current_quest.get('vendor_gems'):
+            # Empty line
+            tk.Label(text_frame, text="", bg=bg_color).pack()
+            
+            vendor_title_label = tk.Label(
                 text_frame,
                 text="Vendor Gems:",
                 bg=bg_color,
                 fg=text_color,
-                font=(font_family, font_size, font_weight),
+                font=(font_family, font_size-1, "normal"),
                 justify='left'
-            ).pack(anchor='w')
+            )
+            vendor_title_label.pack(anchor='w')
             
-            for gem_name in vendor_gems:
-                gem_color = self.get_gem_color_from_vendor_data(current_quest['name'], gem_name)
+            for vendor_gem in current_quest['vendor_gems']:
+                gem_color = self.get_gem_color_from_vendor_data(current_quest['name'], vendor_gem)
                 gem_hex_color = self.get_gem_color_hex(gem_color)
                 
-                vendor_gem_frame = tk.Frame(text_frame, bg=bg_color)
-                vendor_gem_frame.pack(anchor='w')
-                
-                tk.Label(
-                    vendor_gem_frame,
-                    text="  ",
-                    bg=bg_color,
-                    fg=text_color,
-                    font=(font_family, font_size, font_weight)
-                ).pack(side='left')
-                
-                tk.Label(
-                    vendor_gem_frame,
-                    text=gem_name,
+                vendor_gem_label = tk.Label(
+                    text_frame,
+                    text=f"  • {vendor_gem}",
                     bg=bg_color,
                     fg=gem_hex_color,
-                    font=(font_family, font_size, font_weight)
-                ).pack(side='left')
+                    font=(font_family, font_size-2, "normal"),
+                    justify='left'
+                )
+                vendor_gem_label.pack(anchor='w')
         
-        # Store reference to the new text frame
+        # Quest counter
+        if len(self.available_quests) > 1:
+            # Empty line
+            tk.Label(text_frame, text="", bg=bg_color).pack()
+            
+            counter_text = f"Quest {self.current_quest_index + 1} of {len(self.available_quests)}"
+            counter_label = tk.Label(
+                text_frame,
+                text=counter_text,
+                bg=bg_color,
+                fg="#888888",
+                font=(font_family, font_size-2, "normal"),
+                justify='center'
+            )
+            counter_label.pack()
+        
+        # Store reference to the text frame for future updates
         self.text_label = text_frame
     
     def get_gem_color_from_data(self, quest_name, gem_name):
@@ -697,10 +716,107 @@ class PoEOverlay:
         """Open the configuration window"""
         try:
             print(self.language_manager.get_message("opening_config", "Opening configuration window..."))
+            
+            # Hide the overlay while config is open
+            if self.overlay and self.overlay.winfo_exists():
+                self.overlay.withdraw()
+            
+            # Use subprocess to avoid blocking the main thread and prevent import issues
+            # This is safer than direct import which can cause threading issues
             subprocess.Popen([sys.executable, "config_gui.py"], 
                            cwd=os.path.dirname(os.path.abspath(__file__)))
+            
+            # Set up a timer to check when config window closes and restore overlay
+            self.check_config_window()
+                
         except Exception as e:
             print(f"{self.language_manager.get_message('error_opening_config', 'Error opening config window:')} {e}")
+            # Restore overlay if there was an error
+            if self.overlay and self.overlay.winfo_exists():
+                self.overlay.deiconify()
+    
+    def check_config_window(self):
+        """Check if config window is still open and restore overlay when it closes"""
+        try:
+            # Check if any config_gui.py processes are running
+            import psutil
+            config_running = False
+            for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+                try:
+                    if proc.info['cmdline'] and 'config_gui.py' in ' '.join(proc.info['cmdline']):
+                        config_running = True
+                        break
+                except (psutil.NoSuchProcess, psutil.AccessDenied):
+                    continue
+            
+            if config_running:
+                # Config is still running, check again in 1 second
+                self.overlay.after(1000, self.check_config_window)
+            else:
+                # Config closed, restore overlay and reload settings
+                if self.overlay and self.overlay.winfo_exists():
+                    self.overlay.deiconify()
+                    # Reload configuration in case settings changed
+                    self.reload_configuration()
+                    
+        except ImportError:
+            # psutil not available, just restore overlay after 5 seconds
+            self.overlay.after(5000, lambda: self.overlay.deiconify() if self.overlay and self.overlay.winfo_exists() else None)
+        except Exception as e:
+            print(f"Error checking config window: {e}")
+            # Restore overlay on error
+            if self.overlay and self.overlay.winfo_exists():
+                self.overlay.deiconify()
+    
+    def reload_configuration(self):
+        """Reload configuration after config window closes"""
+        try:
+            # Reload config manager
+            self.config_manager = ConfigManager()
+            self.language_manager = LanguageManager(self.config_manager)
+            
+            # Reload available quests in case character selection changed
+            self.load_available_quests()
+            
+            # Update window properties
+            self.update_window_properties()
+            
+            print("Configuration reloaded successfully")
+        except Exception as e:
+            print(f"Error reloading configuration: {e}")
+    
+    def update_window_properties(self):
+        """Update window properties based on current configuration"""
+        try:
+            # Get updated settings
+            always_on_top = self.config_manager.get_setting("display", "always_on_top", True)
+            opacity = self.config_manager.get_setting("display", "opacity", 0.8)
+            width = self.config_manager.get_setting("appearance", "width", 350)
+            height = self.config_manager.get_setting("appearance", "height", 250)
+            bg_color = self.config_manager.get_setting("appearance", "background_color", "#2b2b2b")
+            
+            # Calculate new position
+            x_position, y_position = self.config_manager.calculate_position()
+            
+            # Update geometry
+            self.overlay.geometry(f"{width}x{height}+{x_position}+{y_position}")
+            
+            # Update background color
+            self.overlay.configure(bg=bg_color)
+            if hasattr(self, 'main_frame') and self.main_frame:
+                self.main_frame.configure(bg=bg_color)
+            
+            # Update always on top
+            self.overlay.attributes('-topmost', always_on_top)
+            
+            # Update opacity
+            self.overlay.attributes('-alpha', opacity)
+            
+            # Update display
+            self.update_overlay_display()
+            
+        except Exception as e:
+            print(f"Error updating window properties: {e}")
     
     def close_application(self):
         """Close the application"""
@@ -740,7 +856,7 @@ class PoEOverlay:
     def show_error_message(self, error_message):
         """Show error message without destroying the main UI structure"""
         if hasattr(self, 'text_label') and self.text_label and self.text_label.winfo_exists():
-            self.text_label.config(text=f"Error: {error_message}\nPress gear button to configure")
+            self.text_label.config(text=f"Error: {error_message}\n\nThe configuration is still accessible.\nClick the gear button to:\n• Check your settings\n• Create/select a character\n• Refresh data")
 
 
 def main():

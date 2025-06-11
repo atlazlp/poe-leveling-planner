@@ -1,10 +1,12 @@
 {
-  "last_update_check": 1749645116.6266718,
+  "last_update_check": 1749649570.2713037,
   "last_quest_update": {
-    "en_US": 1749645113.7417965
+    "en_US": 1749649564.7092147,
+    "pt_BR": 1749649568.7133398
   },
   "last_vendor_update": {
-    "en_US": 1749645116.6266687
+    "en_US": 1749649567.2615056,
+    "pt_BR": 1749649570.2712998
   },
   "first_run_completed": true
 }

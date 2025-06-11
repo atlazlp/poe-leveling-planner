@@ -1,13 +1,13 @@
 {
     "display": {
-        "monitor": 0,
-        "position": "center",
+        "monitor": "auto",
+        "position": "top-right",
         "custom_x": null,
         "custom_y": null,
         "opacity": 0.8,
         "always_on_top": true,
-        "x_offset": 1590,
-        "y_offset": 533
+        "x_offset": 0,
+        "y_offset": 0
     },
     "appearance": {
         "width": 250,
@@ -20,7 +20,8 @@
     },
     "hotkeys": {
         "previous_quest": "ctrl+1",
-        "next_quest": "ctrl+2"
+        "next_quest": "ctrl+2",
+        "copy_regex": "ctrl+3"
     },
     "behavior": {
         "auto_hide_when_poe_not_running": false,
@@ -30,59 +31,20 @@
     "characters": {
         "profiles": [
             {
-                "name": "Testing",
+                "name": "Test",
                 "class": "Marauder",
-                "gem_selections": {
-                    "The Eternal Nightmare_Act 4": null,
-                    "A Fixture of Fate_Act 3": null,
-                    "Breaking the Seal_Act 4": null,
-                    "The King's Feast_Act 5": null,
-                    "Enemy at the Gate_Act 1": "Ground Slam",
-                    "Breaking Some Eggs_Act 1": "Steelskin",
-                    "The Caged Brute_Act 1": "Added Fire Damage Support",
-                    "The Siren's Cadence_Act 1": "Static Strike",
-                    "Intruders in Black_Act 2": "Herald of Ash",
-                    "Sharp and Cruel_Act 2": null,
-                    "The Root of the Problem_Act 2": null,
-                    "Lost in Love_Act 3": null,
-                    "Sever the Right Hand_Act 3": null
-                },
-                "vendor_gem_selections": {
-                    "Enemy at the Gate_Vendor": [
-                        "Cleave",
-                        "Glacial Hammer",
-                        "Ground Slam"
-                    ],
-                    "The Caged Brute_Vendor": [
-                        "Blind Support",
-                        "Additional Accuracy Support",
-                        "Faster Attacks Support",
-                        "Enduring Cry"
-                    ]
-                },
-                "regex_patterns": [
-                    {
-                        "act": "all_acts",
-                        "pattern": "b-b-|-b-b|b-.-b|nne|rint|Flam|Earn"
-                    }
-                ]
+                "gem_selections": {},
+                "vendor_gem_selections": {}
             },
             {
-                "name": "Penance RF Leveling",
-                "class": "Templar",
-                "gem_selections": {
-                    "Enemy at the Gate_Act 1": null,
-                    "Breaking Some Eggs_Act 1": null,
-                    "The Caged Brute_Act 1": null,
-                    "Intruders in Black_Act 2": null,
-                    "Sharp and Cruel_Act 2": null,
-                    "The Siren's Cadence_Act 1": null,
-                    "The Root of the Problem_Act 2": null
-                },
-                "vendor_gem_selections": {}
+                "name": "test2",
+                "class": "Witch",
+                "gem_selections": {},
+                "vendor_gem_selections": {},
+                "regex_patterns": []
             }
         ],
-        "selected": "Testing"
+        "selected": "test2"
     },
     "language": {
         "current": "en_US"

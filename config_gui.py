@@ -24,8 +24,8 @@ class ConfigGUI:
         self.debounce_timer = None  # For debouncing slider updates
         self.data_loading = False  # Track if data is being loaded
         
-        # Kill any existing overlay processes when config opens
-        self.kill_existing_overlay()
+        # Don't kill existing overlay processes when config opens
+        # Only kill them when explicitly restarting
         
         self.setup_window()
         self.setup_ui()
@@ -35,19 +35,13 @@ class ConfigGUI:
         # Initialize data in background
         self.initialize_data()
         
-    def kill_existing_overlay(self):
-        """Kill any existing overlay processes"""
-        try:
-            subprocess.run(["pkill", "-f", "main.py"], capture_output=True)
-        except Exception as e:
-            print(f"Note: Could not kill existing overlay processes: {e}")
-        
     def initialize_data(self):
         """Initialize data in background thread"""
         def update_data():
             try:
                 self.data_loading = True
                 self.update_gem_info_loading()
+                self.update_vendor_info_loading()
                 
                 # Update data for current language
                 current_lang = self.language_manager.get_current_language()
@@ -56,12 +50,15 @@ class ConfigGUI:
                 if success:
                     # Update UI on main thread
                     self.root.after(0, self.refresh_gem_info)
+                    self.root.after(0, self.refresh_vendor_info)
                 else:
                     self.root.after(0, lambda: self.update_gem_info_error("Failed to load data"))
+                    self.root.after(0, lambda: self.update_vendor_info_error("Failed to load data"))
                     
             except Exception as e:
                 print(f"Error initializing data: {e}")
                 self.root.after(0, lambda: self.update_gem_info_error(f"Error: {e}"))
+                self.root.after(0, lambda: self.update_vendor_info_error(f"Error: {e}"))
             finally:
                 self.data_loading = False
         
@@ -504,7 +501,10 @@ class ConfigGUI:
         # Create new character
         new_character = {
             "name": name,
-            "class": char_class
+            "class": char_class,
+            "gem_selections": {},
+            "vendor_gem_selections": {},
+            "regex_patterns": []
         }
         
         characters.append(new_character)
@@ -515,14 +515,22 @@ class ConfigGUI:
         self.new_char_name_var.set("")
         self.new_char_class_var.set("")
         
-        # Reload character data
+        # Reload character data and select the new character
         self.load_character_data()
+        
+        # Ensure the new character is selected in the combobox
+        self.selected_char_var.set(name)
+        
+        # Update character info and gem displays
+        self.update_character_info(name)
+        self.refresh_gem_info()
+        self.refresh_vendor_info()
         
         # Update regex management
         self.update_regex_button_state()
         self.refresh_regex_list()
         
-        messagebox.showinfo("Success", f"Character '{name}' ({char_class}) created successfully!")
+        messagebox.showinfo("Success", f"Character '{name}' ({char_class}) created and selected successfully!")
     
     def delete_character(self):
         """Delete the selected character"""
@@ -859,7 +867,15 @@ class ConfigGUI:
             for widget in self.quest_scrollable_frame.winfo_children():
                 if isinstance(widget, tk.Canvas) and hasattr(widget, 'xview_moveto'):
                     # Use a small delay to ensure the canvas is fully rendered
-                    self.root.after(10, lambda: widget.xview_moveto(scroll_position[0]))
+                    # Add error handling to prevent TclError if widget is destroyed
+                    def safe_restore_scroll():
+                        try:
+                            if widget.winfo_exists():
+                                widget.xview_moveto(scroll_position[0])
+                        except tk.TclError:
+                            pass  # Widget was destroyed, ignore
+                    
+                    self.root.after(10, safe_restore_scroll)
                     break
     
     def refresh_vendor_info(self):
@@ -1130,6 +1146,7 @@ class ConfigGUI:
             try:
                 self.data_loading = True
                 self.root.after(0, self.update_gem_info_loading)
+                self.root.after(0, self.update_vendor_info_loading)
                 
                 current_language = self.language_manager.get_current_language()
                 success = self.data_manager.force_update_all(current_language)
@@ -1137,11 +1154,13 @@ class ConfigGUI:
                 if success:
                     self.root.after(0, lambda: [
                         self.refresh_gem_info(),
+                        self.refresh_vendor_info(),
                         messagebox.showinfo("Success", "Data updated successfully!")
                     ])
                 else:
                     self.root.after(0, lambda: [
                         self.update_gem_info_error("Failed to update data"),
+                        self.update_vendor_info_error("Failed to update data"),
                         messagebox.showerror("Error", "Failed to update data. Please check your internet connection.")
                     ])
                     
@@ -1149,6 +1168,7 @@ class ConfigGUI:
                 print(f"Error updating data: {e}")
                 self.root.after(0, lambda: [
                     self.update_gem_info_error(f"Error: {e}"),
+                    self.update_vendor_info_error(f"Error: {e}"),
                     messagebox.showerror("Error", f"Error updating data: {e}")
                 ])
             finally:
@@ -1202,12 +1222,35 @@ class ConfigGUI:
             else:
                 self.monitor_var.set(self.language_manager.get_ui_text("auto_primary", "Auto/Primary"))
         
+        # Load display settings
         self.position_var.set(self.config_manager.get_setting("display", "position", "top-right"))
         self.x_offset_var.set(self.config_manager.get_setting("display", "x_offset", 0))
         self.y_offset_var.set(self.config_manager.get_setting("display", "y_offset", 0))
         self.opacity_var.set(self.config_manager.get_setting("display", "opacity", 0.8))
+        
+        # Load appearance settings
         self.width_var.set(self.config_manager.get_setting("appearance", "width", 350))
         self.height_var.set(self.config_manager.get_setting("appearance", "height", 250))
+        
+        # Load color settings if they exist
+        if hasattr(self, 'bg_color_var'):
+            self.bg_color_var.set(self.config_manager.get_setting("appearance", "background_color", "#2b2b2b"))
+        if hasattr(self, 'text_color_var'):
+            self.text_color_var.set(self.config_manager.get_setting("appearance", "text_color", "#ffffff"))
+        
+        # Load font settings if they exist
+        if hasattr(self, 'font_family_var'):
+            self.font_family_var.set(self.config_manager.get_setting("appearance", "font_family", "Arial"))
+        if hasattr(self, 'font_size_var'):
+            self.font_size_var.set(self.config_manager.get_setting("appearance", "font_size", 10))
+        if hasattr(self, 'font_weight_var'):
+            self.font_weight_var.set(self.config_manager.get_setting("appearance", "font_weight", "bold"))
+        
+        # Load behavior settings if they exist
+        if hasattr(self, 'always_on_top_var'):
+            self.always_on_top_var.set(self.config_manager.get_setting("display", "always_on_top", True))
+        if hasattr(self, 'auto_hide_var'):
+            self.auto_hide_var.set(self.config_manager.get_setting("behavior", "auto_hide_when_poe_not_running", False))
         
         # Load hotkey settings
         self.previous_quest_var.set(self.config_manager.get_setting("hotkeys", "previous_quest", "ctrl+1"))
@@ -1216,6 +1259,9 @@ class ConfigGUI:
         
         # Load regex management
         self.load_regex_management()
+        
+        # Trigger initial live preview update
+        self.root.after(100, self.update_live_preview)
     
     def start_live_testing(self):
         """Start the live testing overlay"""
@@ -1302,7 +1348,7 @@ class ConfigGUI:
         if self.save_config():
             try:
                 # Kill any existing overlay processes
-                subprocess.run(["pkill", "-f", "main.py"], capture_output=True)
+                self.kill_existing_overlay()
                 
                 # Start new overlay process
                 subprocess.Popen([sys.executable, "main.py"], 
@@ -1313,6 +1359,13 @@ class ConfigGUI:
                 
             except Exception as e:
                 messagebox.showerror("Error", f"Could not restart overlay: {e}")
+    
+    def kill_existing_overlay(self):
+        """Kill any existing overlay processes"""
+        try:
+            subprocess.run(["pkill", "-f", "main.py"], capture_output=True)
+        except Exception as e:
+            print(f"Note: Could not kill existing overlay processes: {e}")
     
     def save_config(self):
         """Save the current configuration"""
@@ -1365,14 +1418,9 @@ class ConfigGUI:
             return False
     
     def cancel(self):
-        """Cancel without saving and restart the overlay"""
-        try:
-            # Start the overlay process again since we killed it when config opened
-            subprocess.Popen([sys.executable, "main.py"], 
-                           cwd=os.path.dirname(os.path.abspath(__file__)))
-        except Exception as e:
-            print(f"Could not restart overlay: {e}")
-        
+        """Cancel without saving"""
+        # Since we no longer kill the overlay when config opens,
+        # we don't need to restart it when canceling
         self.root.destroy()
     
     def reset_defaults(self):
