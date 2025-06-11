@@ -19,7 +19,7 @@ from data_manager import DataManager
 
 # Build configuration
 APP_NAME = "PoE Leveling Planner"
-APP_VERSION = "1.0.1"
+APP_VERSION = "1.0.2"
 APP_DESCRIPTION = "Desktop overlay application for Path of Exile leveling assistance"
 APP_AUTHOR = "PoE Leveling Planner Team"
 APP_URL = "https://github.com/atlazlp/poe-leveling-planner"

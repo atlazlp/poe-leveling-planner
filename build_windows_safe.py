@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build configuration
 APP_NAME = "PoE Leveling Planner"
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.2"
 APP_DESCRIPTION = "Desktop overlay application for Path of Exile leveling assistance"
 
 # Default configuration template (updated without position)

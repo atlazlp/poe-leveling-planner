@@ -11,8 +11,11 @@ import os
 src_path = os.path.join(os.path.dirname(__file__), 'src')
 sys.path.insert(0, src_path)
 
-# Import and run the main application
-from main import main
+# Import and run the main application - specify the src.main module explicitly
+import importlib.util
+spec = importlib.util.spec_from_file_location("src_main", os.path.join(src_path, "main.py"))
+src_main = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(src_main)
 
 if __name__ == "__main__":
-    main() 
+    src_main.main() 
