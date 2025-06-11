@@ -39,8 +39,8 @@
                     "The King's Feast_Act 5": null,
                     "Enemy at the Gate_Act 1": "Ground Slam",
                     "Breaking Some Eggs_Act 1": "Steelskin",
-                    "The Caged Brute_Act 1": "Ancestral Protector",
-                    "The Siren's Cadence_Act 1": null,
+                    "The Caged Brute_Act 1": "Added Fire Damage Support",
+                    "The Siren's Cadence_Act 1": "Static Strike",
                     "Intruders in Black_Act 2": "Herald of Ash",
                     "Sharp and Cruel_Act 2": null,
                     "The Root of the Problem_Act 2": null,
@@ -59,7 +59,13 @@
                         "Faster Attacks Support",
                         "Enduring Cry"
                     ]
-                }
+                },
+                "regex_patterns": [
+                    {
+                        "act": "all_acts",
+                        "pattern": "b-b-|-b-b|b-.-b|nne|rint|Flam|Earn"
+                    }
+                ]
             },
             {
                 "name": "Penance RF Leveling",

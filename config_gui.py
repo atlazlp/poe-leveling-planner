@@ -177,6 +177,35 @@ class ConfigGUI:
                                   width=15)
         next_combo.grid(row=1, column=1, sticky=tk.W, padx=(10, 0), pady=2)
         
+        ttk.Label(hotkey_frame, text="Copy Regex:").grid(row=2, column=0, sticky=tk.W, pady=2)
+        self.copy_regex_var = tk.StringVar()
+        copy_regex_combo = ttk.Combobox(hotkey_frame, textvariable=self.copy_regex_var,
+                                       values=["ctrl+3", "ctrl+c", "ctrl+v", "alt+c", "alt+v", "shift+c"],
+                                       width=15)
+        copy_regex_combo.grid(row=2, column=1, sticky=tk.W, padx=(10, 0), pady=2)
+        
+        # Regex Management Section
+        regex_frame = ttk.LabelFrame(general_frame, text="Regex Management", padding="10")
+        regex_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
+        row += 1
+        
+        # Add regex button and status
+        regex_button_frame = ttk.Frame(regex_frame)
+        regex_button_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
+        
+        self.add_regex_btn = ttk.Button(regex_button_frame, text="Add Regex", command=self.add_regex)
+        self.add_regex_btn.pack(side=tk.LEFT)
+        
+        self.regex_status_label = ttk.Label(regex_button_frame, text="", foreground='gray')
+        self.regex_status_label.pack(side=tk.LEFT, padx=(10, 0))
+        
+        # Regex list frame
+        self.regex_list_frame = ttk.Frame(regex_frame)
+        self.regex_list_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        regex_frame.columnconfigure(0, weight=1)
+        regex_frame.rowconfigure(1, weight=1)
+        
         general_frame.columnconfigure(0, weight=1)
         
     def setup_appearance_tab(self):
@@ -489,6 +518,10 @@ class ConfigGUI:
         # Reload character data
         self.load_character_data()
         
+        # Update regex management
+        self.update_regex_button_state()
+        self.refresh_regex_list()
+        
         messagebox.showinfo("Success", f"Character '{name}' ({char_class}) created successfully!")
     
     def delete_character(self):
@@ -513,6 +546,10 @@ class ConfigGUI:
             # Reload character data
             self.load_character_data()
             
+            # Update regex management
+            self.update_regex_button_state()
+            self.refresh_regex_list()
+            
             messagebox.showinfo("Success", f"Character '{selected_name}' deleted successfully!")
     
     def on_character_select(self, event=None):
@@ -523,6 +560,9 @@ class ConfigGUI:
             self.update_character_info(selected_name)
             self.refresh_gem_info()
             self.refresh_vendor_info()
+            # Update regex management
+            self.update_regex_button_state()
+            self.refresh_regex_list()
     
     def update_character_info(self, character_name):
         """Update the character information display"""
@@ -1172,6 +1212,10 @@ class ConfigGUI:
         # Load hotkey settings
         self.previous_quest_var.set(self.config_manager.get_setting("hotkeys", "previous_quest", "ctrl+1"))
         self.next_quest_var.set(self.config_manager.get_setting("hotkeys", "next_quest", "ctrl+2"))
+        self.copy_regex_var.set(self.config_manager.get_setting("hotkeys", "copy_regex", "ctrl+3"))
+        
+        # Load regex management
+        self.load_regex_management()
     
     def start_live_testing(self):
         """Start the live testing overlay"""
@@ -1308,6 +1352,7 @@ class ConfigGUI:
             # Update hotkey settings
             self.config_manager.update_setting("hotkeys", "previous_quest", self.previous_quest_var.get())
             self.config_manager.update_setting("hotkeys", "next_quest", self.next_quest_var.get())
+            self.config_manager.update_setting("hotkeys", "copy_regex", self.copy_regex_var.get())
             
             # Force save to file
             self.config_manager.save_config()
@@ -1375,6 +1420,322 @@ class ConfigGUI:
                     self.language_manager.get_ui_text("language_changed", "Language Changed"),
                     self.language_manager.get_ui_text("language_changed_message", "Language has been changed. Some changes may require a restart to take full effect.")
                 )
+    
+    def load_regex_management(self):
+        """Load and display regex management UI"""
+        self.update_regex_button_state()
+        self.refresh_regex_list()
+    
+    def update_regex_button_state(self):
+        """Update the add regex button state and status label"""
+        selected_char = self.selected_char_var.get() if hasattr(self, 'selected_char_var') else ""
+        
+        if not selected_char:
+            self.add_regex_btn.config(state="disabled")
+            self.regex_status_label.config(text="Create a character in the Gems section first", foreground='orange')
+            return
+        
+        # Get character's regex list
+        characters = self.config_manager.get_setting("characters", "profiles", [])
+        character = next((char for char in characters if char["name"] == selected_char), None)
+        
+        if not character:
+            self.add_regex_btn.config(state="disabled")
+            self.regex_status_label.config(text="Character not found", foreground='red')
+            return
+        
+        regex_list = character.get('regex_patterns', [])
+        used_acts = set()
+        has_all_acts = False
+        
+        for regex_item in regex_list:
+            if regex_item.get('act') == 'all_acts':
+                has_all_acts = True
+            else:
+                used_acts.add(regex_item.get('act'))
+        
+        # Check if we can add more regex patterns
+        max_regexes = 11  # 10 acts + 1 "all acts"
+        can_add = len(regex_list) < max_regexes and not (has_all_acts and len(used_acts) >= 10)
+        
+        if can_add:
+            self.add_regex_btn.config(state="normal")
+            remaining = max_regexes - len(regex_list)
+            self.regex_status_label.config(text=f"{len(regex_list)}/{max_regexes} regex patterns", foreground='gray')
+        else:
+            self.add_regex_btn.config(state="disabled")
+            self.regex_status_label.config(text="Maximum regex patterns reached (11/11)", foreground='red')
+    
+    def refresh_regex_list(self):
+        """Refresh the regex list display"""
+        # Clear existing widgets
+        for widget in self.regex_list_frame.winfo_children():
+            widget.destroy()
+        
+        selected_char = self.selected_char_var.get() if hasattr(self, 'selected_char_var') else ""
+        if not selected_char:
+            return
+        
+        characters = self.config_manager.get_setting("characters", "profiles", [])
+        character = next((char for char in characters if char["name"] == selected_char), None)
+        
+        if not character:
+            return
+        
+        regex_list = character.get('regex_patterns', [])
+        
+        if not regex_list:
+            no_regex_label = ttk.Label(self.regex_list_frame, text="No regex patterns added yet", 
+                                      font=('Arial', 10, 'italic'), foreground='gray')
+            no_regex_label.grid(row=0, column=0, pady=10)
+            return
+        
+        # Sort regex patterns: "all_acts" first, then by act number
+        def sort_key(regex_item):
+            act = regex_item.get('act', '')
+            if act == 'all_acts':
+                return (0, 0)  # First priority
+            elif act.startswith('act_'):
+                try:
+                    act_num = int(act.split('_')[1])
+                    return (1, act_num)  # Second priority, sorted by act number
+                except (IndexError, ValueError):
+                    return (2, 0)  # Unknown acts last
+            else:
+                return (2, 0)  # Unknown acts last
+        
+        sorted_regex_list = sorted(regex_list, key=sort_key)
+        
+        # Create scrollable frame for regex list
+        canvas = tk.Canvas(self.regex_list_frame, height=200)
+        scrollbar = ttk.Scrollbar(self.regex_list_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        scrollbar.grid(row=0, column=1, sticky=(tk.N, tk.S))
+        
+        # Display regex patterns
+        for idx, regex_item in enumerate(sorted_regex_list):
+            act = regex_item.get('act', '')
+            pattern = regex_item.get('pattern', '')
+            
+            # Create frame for each regex item
+            item_frame = ttk.Frame(scrollable_frame, relief="raised", borderwidth=1, padding="5")
+            item_frame.grid(row=idx, column=0, sticky=(tk.W, tk.E), pady=2, padx=2)
+            
+            # Act label
+            act_display = "All Acts" if act == 'all_acts' else f"Act {act.split('_')[1]}" if act.startswith('act_') else act
+            act_label = ttk.Label(item_frame, text=act_display, font=('Arial', 10, 'bold'))
+            act_label.grid(row=0, column=0, sticky=tk.W)
+            
+            # Pattern text (truncated if too long)
+            display_pattern = pattern if len(pattern) <= 50 else pattern[:47] + "..."
+            pattern_label = ttk.Label(item_frame, text=display_pattern, font=('Arial', 9), foreground='#666666')
+            pattern_label.grid(row=1, column=0, sticky=tk.W, pady=(2, 0))
+            
+            # Delete button
+            def make_delete_handler(regex_idx, char_data):
+                return lambda: self.delete_regex(regex_idx, char_data)
+            
+            delete_btn = ttk.Button(item_frame, text="Delete", 
+                                   command=make_delete_handler(idx, character))
+            delete_btn.grid(row=0, column=1, rowspan=2, sticky=tk.E, padx=(10, 0))
+            
+            item_frame.columnconfigure(0, weight=1)
+        
+        self.regex_list_frame.columnconfigure(0, weight=1)
+        self.regex_list_frame.rowconfigure(0, weight=1)
+        
+        # Enable mouse wheel scrolling
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        canvas.bind("<MouseWheel>", _on_mousewheel)
+    
+    def add_regex(self):
+        """Add a new regex pattern"""
+        selected_char = self.selected_char_var.get() if hasattr(self, 'selected_char_var') else ""
+        if not selected_char:
+            return
+        
+        characters = self.config_manager.get_setting("characters", "profiles", [])
+        character = next((char for char in characters if char["name"] == selected_char), None)
+        
+        if not character:
+            return
+        
+        # Initialize regex_patterns if not exists
+        if 'regex_patterns' not in character:
+            character['regex_patterns'] = []
+        
+        regex_list = character['regex_patterns']
+        
+        # Get available acts
+        used_acts = set()
+        has_all_acts = False
+        
+        for regex_item in regex_list:
+            if regex_item.get('act') == 'all_acts':
+                has_all_acts = True
+            else:
+                used_acts.add(regex_item.get('act'))
+        
+        available_acts = []
+        if not has_all_acts:
+            available_acts.append(('all_acts', 'All Acts'))
+        
+        for i in range(1, 11):
+            act_key = f'act_{i}'
+            if act_key not in used_acts:
+                available_acts.append((act_key, f'Act {i}'))
+        
+        if not available_acts:
+            messagebox.showwarning("No Acts Available", "All acts have been assigned regex patterns.")
+            return
+        
+        # Create dialog for adding regex
+        self.show_add_regex_dialog(character, available_acts)
+    
+    def show_add_regex_dialog(self, character, available_acts):
+        """Show dialog for adding a new regex pattern"""
+        dialog = tk.Toplevel(self.root)
+        dialog.title("Add Regex Pattern")
+        dialog.geometry("400x200")
+        dialog.resizable(False, False)
+        dialog.transient(self.root)
+        dialog.grab_set()
+        
+        # Center the dialog
+        dialog.update_idletasks()
+        x = (dialog.winfo_screenwidth() // 2) - (400 // 2)
+        y = (dialog.winfo_screenheight() // 2) - (200 // 2)
+        dialog.geometry(f"400x200+{x}+{y}")
+        
+        main_frame = ttk.Frame(dialog, padding="20")
+        main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        
+        # Act selection
+        ttk.Label(main_frame, text="Select Act:").grid(row=0, column=0, sticky=tk.W, pady=(0, 5))
+        act_var = tk.StringVar()
+        act_combo = ttk.Combobox(main_frame, textvariable=act_var, 
+                                values=[display for _, display in available_acts], 
+                                state="readonly", width=30)
+        act_combo.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=(0, 5))
+        
+        # Regex pattern input
+        ttk.Label(main_frame, text="Regex Pattern:").grid(row=1, column=0, sticky=tk.W, pady=(10, 5))
+        pattern_var = tk.StringVar()
+        pattern_entry = ttk.Entry(main_frame, textvariable=pattern_var, width=40)
+        pattern_entry.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=(10, 5))
+        
+        # Character limit label
+        char_count_label = ttk.Label(main_frame, text="0/250 characters", foreground='gray')
+        char_count_label.grid(row=2, column=1, sticky=tk.W, padx=(10, 0))
+        
+        def update_char_count(*args):
+            count = len(pattern_var.get())
+            char_count_label.config(text=f"{count}/250 characters", 
+                                   foreground='red' if count > 250 else 'gray')
+        
+        pattern_var.trace('w', update_char_count)
+        
+        # Buttons
+        button_frame = ttk.Frame(main_frame)
+        button_frame.grid(row=3, column=0, columnspan=2, pady=(20, 0))
+        
+        def save_regex():
+            act_display = act_var.get()
+            pattern = pattern_var.get().strip()
+            
+            if not act_display:
+                messagebox.showerror("Error", "Please select an act.")
+                return
+            
+            if not pattern:
+                messagebox.showerror("Error", "Please enter a regex pattern.")
+                return
+            
+            if len(pattern) > 250:
+                messagebox.showerror("Error", "Regex pattern must be 250 characters or less.")
+                return
+            
+            # Find the act key
+            act_key = None
+            for key, display in available_acts:
+                if display == act_display:
+                    act_key = key
+                    break
+            
+            if not act_key:
+                messagebox.showerror("Error", "Invalid act selection.")
+                return
+            
+            # Add regex to character
+            regex_item = {
+                'act': act_key,
+                'pattern': pattern
+            }
+            
+            character['regex_patterns'].append(regex_item)
+            
+            # Save character data
+            self.save_character_data(character)
+            
+            # Refresh UI
+            self.update_regex_button_state()
+            self.refresh_regex_list()
+            
+            dialog.destroy()
+            messagebox.showinfo("Success", f"Regex pattern added for {act_display}!")
+        
+        ttk.Button(button_frame, text="Save", command=save_regex).pack(side=tk.LEFT, padx=(0, 10))
+        ttk.Button(button_frame, text="Cancel", command=dialog.destroy).pack(side=tk.LEFT)
+        
+        main_frame.columnconfigure(1, weight=1)
+        dialog.columnconfigure(0, weight=1)
+        dialog.rowconfigure(0, weight=1)
+        
+        # Focus on pattern entry
+        pattern_entry.focus()
+    
+    def delete_regex(self, regex_idx, character):
+        """Delete a regex pattern"""
+        if messagebox.askyesno("Confirm Delete", "Are you sure you want to delete this regex pattern?"):
+            if 'regex_patterns' in character and 0 <= regex_idx < len(character['regex_patterns']):
+                deleted_item = character['regex_patterns'].pop(regex_idx)
+                act_display = "All Acts" if deleted_item.get('act') == 'all_acts' else f"Act {deleted_item.get('act', '').split('_')[1]}" if deleted_item.get('act', '').startswith('act_') else deleted_item.get('act', '')
+                
+                # Save character data
+                self.save_character_data(character)
+                
+                # Refresh UI
+                self.update_regex_button_state()
+                self.refresh_regex_list()
+                
+                messagebox.showinfo("Success", f"Regex pattern for {act_display} deleted!")
+    
+    def save_character_data(self, character):
+        """Save character data to config"""
+        try:
+            characters = self.config_manager.get_setting("characters", "profiles", [])
+            for i, char in enumerate(characters):
+                if char["name"] == character["name"]:
+                    characters[i] = character
+                    break
+            
+            self.config_manager.update_setting("characters", "profiles", characters)
+            self.config_manager.save_config()
+            
+        except Exception as e:
+            print(f"Error saving character data: {e}")
     
     def run(self):
         """Start the configuration GUI"""

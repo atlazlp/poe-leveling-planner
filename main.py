@@ -479,11 +479,12 @@ class PoEOverlay:
         # Get hotkey settings for display
         prev_key = self.config_manager.get_setting("hotkeys", "previous_quest", "ctrl+1").upper()
         next_key = self.config_manager.get_setting("hotkeys", "next_quest", "ctrl+2").upper()
+        copy_key = self.config_manager.get_setting("hotkeys", "copy_regex", "ctrl+3").upper()
         
         # Instructions label
         instructions = tk.Label(
             self.main_frame,
-            text=f"{prev_key} Previous | {next_key} Next",
+            text=f"{prev_key} Previous | {next_key} Next | {copy_key} Copy Regex",
             bg=bg_color,
             fg='#888888',
             font=(font_family, 7),
@@ -498,10 +499,14 @@ class PoEOverlay:
             
         def on_hotkey_next():
             self.next_quest()
+            
+        def on_hotkey_copy_regex():
+            self.copy_regex()
         
         # Get hotkey settings from config with new names
         prev_hotkey = self.config_manager.get_setting("hotkeys", "previous_quest", "ctrl+1")
         next_hotkey = self.config_manager.get_setting("hotkeys", "next_quest", "ctrl+2")
+        copy_regex_hotkey = self.config_manager.get_setting("hotkeys", "copy_regex", "ctrl+3")
         
         try:
             # Parse hotkeys more carefully
@@ -529,13 +534,15 @@ class PoEOverlay:
             # Parse hotkeys
             parsed_prev = parse_hotkey_safe(prev_hotkey)
             parsed_next = parse_hotkey_safe(next_hotkey)
+            parsed_copy_regex = parse_hotkey_safe(copy_regex_hotkey)
             
-            if not parsed_prev or not parsed_next:
+            if not parsed_prev or not parsed_next or not parsed_copy_regex:
                 print("Could not parse hotkeys, using defaults")
                 parsed_prev = "<ctrl>+1"
                 parsed_next = "<ctrl>+2"
+                parsed_copy_regex = "<ctrl>+3"
             
-            print(f"Parsed hotkeys: {parsed_prev}, {parsed_next}")
+            print(f"Parsed hotkeys: {parsed_prev}, {parsed_next}, {parsed_copy_regex}")
             
             # Create hotkey combinations
             hotkey_prev = keyboard.HotKey(
@@ -548,12 +555,18 @@ class PoEOverlay:
                 on_hotkey_next
             )
             
+            hotkey_copy_regex = keyboard.HotKey(
+                keyboard.HotKey.parse(parsed_copy_regex),
+                on_hotkey_copy_regex
+            )
+            
             # Start the keyboard listener in a separate thread
             def start_listener():
                 def on_press(key):
                     try:
                         hotkey_prev.press(key)
                         hotkey_next.press(key)
+                        hotkey_copy_regex.press(key)
                     except Exception as e:
                         pass  # Ignore individual key press errors
                     
@@ -561,6 +574,7 @@ class PoEOverlay:
                     try:
                         hotkey_prev.release(key)
                         hotkey_next.release(key)
+                        hotkey_copy_regex.release(key)
                     except Exception as e:
                         pass  # Ignore individual key release errors
                 
@@ -577,7 +591,7 @@ class PoEOverlay:
             listener_thread = threading.Thread(target=start_listener, daemon=True)
             listener_thread.start()
             
-            print(f"Hotkeys registered: {prev_hotkey.upper()}, {next_hotkey.upper()}")
+            print(f"Hotkeys registered: {prev_hotkey.upper()}, {next_hotkey.upper()}, {copy_regex_hotkey.upper()}")
             
         except Exception as e:
             print(f"Error setting up hotkeys: {e}")
@@ -602,6 +616,82 @@ class PoEOverlay:
         self.update_overlay_display()
         next_key = self.config_manager.get_setting("hotkeys", "next_quest", "ctrl+2")
         print(f"Hotkey {next_key.upper()} pressed - next quest")
+    
+    def copy_regex(self):
+        """Copy regex pattern to clipboard based on current quest and selected character"""
+        try:
+            # Get selected character
+            selected_char = self.config_manager.get_setting("characters", "selected", "")
+            if not selected_char:
+                print("No character selected - cannot copy regex")
+                return
+            
+            # Get character data
+            characters = self.config_manager.get_setting("characters", "profiles", [])
+            character = next((char for char in characters if char["name"] == selected_char), None)
+            
+            if not character:
+                print(f"Character '{selected_char}' not found - cannot copy regex")
+                return
+            
+            regex_patterns = character.get('regex_patterns', [])
+            if not regex_patterns:
+                print(f"No regex patterns defined for character '{selected_char}'")
+                return
+            
+            # Determine current act from quest data
+            current_act = None
+            if self.available_quests and 0 <= self.current_quest_index < len(self.available_quests):
+                current_quest = self.available_quests[self.current_quest_index]
+                act_text = current_quest.get('act', '')
+                # Extract act number from text like "Act 1", "Act 2", etc.
+                if act_text.startswith('Act '):
+                    try:
+                        act_num = int(act_text.split()[1])
+                        current_act = f'act_{act_num}'
+                    except (IndexError, ValueError):
+                        pass
+            
+            # Find matching regex pattern
+            regex_to_copy = None
+            
+            # First, try to find exact act match
+            if current_act:
+                for regex_item in regex_patterns:
+                    if regex_item.get('act') == current_act:
+                        regex_to_copy = regex_item.get('pattern', '')
+                        break
+            
+            # If no exact match, try "all_acts" pattern
+            if not regex_to_copy:
+                for regex_item in regex_patterns:
+                    if regex_item.get('act') == 'all_acts':
+                        regex_to_copy = regex_item.get('pattern', '')
+                        break
+            
+            if regex_to_copy:
+                # Copy to clipboard
+                import pyperclip
+                pyperclip.copy(regex_to_copy)
+                
+                copy_key = self.config_manager.get_setting("hotkeys", "copy_regex", "ctrl+3")
+                act_display = f"Act {current_act.split('_')[1]}" if current_act and current_act.startswith('act_') else "All Acts"
+                print(f"Hotkey {copy_key.upper()} pressed - copied regex for {act_display} to clipboard")
+                
+                # Show brief feedback in overlay
+                if hasattr(self, 'text_label') and self.text_label and self.text_label.winfo_exists():
+                    original_text = self.text_label.cget('text')
+                    self.text_label.config(text="Regex copied to clipboard!")
+                    # Restore original text after 2 seconds
+                    self.overlay.after(2000, lambda: self.text_label.config(text=original_text) if self.text_label.winfo_exists() else None)
+            else:
+                print(f"No regex pattern found for current context (character: {selected_char}, act: {current_act or 'unknown'})")
+                
+        except ImportError:
+            print("pyperclip module not available - cannot copy to clipboard")
+            print("Install with: pip install pyperclip")
+        except Exception as e:
+            print(f"Error copying regex: {e}")
         
     def open_config(self):
         """Open the configuration window"""
@@ -632,7 +722,8 @@ class PoEOverlay:
         
         prev_key = self.config_manager.get_setting("hotkeys", "previous_quest", "ctrl+1")
         next_key = self.config_manager.get_setting("hotkeys", "next_quest", "ctrl+2")
-        print(f"Hotkeys: {prev_key.upper()} (previous quest), {next_key.upper()} (next quest)")
+        copy_key = self.config_manager.get_setting("hotkeys", "copy_regex", "ctrl+3")
+        print(f"Hotkeys: {prev_key.upper()} (previous quest), {next_key.upper()} (next quest), {copy_key.upper()} (copy regex)")
         print(self.language_manager.get_message("hotkey_instructions", "Use overlay buttons or press Ctrl+C in terminal to exit"))
         
         try:

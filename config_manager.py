@@ -64,7 +64,8 @@ class ConfigManager:
             },
             "hotkeys": {
                 "previous_quest": "ctrl+1",
-                "next_quest": "ctrl+2"
+                "next_quest": "ctrl+2",
+                "copy_regex": "ctrl+3"
             },
             "characters": {
                 "profiles": [],

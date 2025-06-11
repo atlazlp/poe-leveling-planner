@@ -1,6 +1,10 @@
 {
-  "last_update_check": 1749642265.0089216,
-  "last_quest_update": {},
-  "last_vendor_update": {},
-  "first_run_completed": false
+  "last_update_check": 1749645116.6266718,
+  "last_quest_update": {
+    "en_US": 1749645113.7417965
+  },
+  "last_vendor_update": {
+    "en_US": 1749645116.6266687
+  },
+  "first_run_completed": true
 }
