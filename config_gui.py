@@ -28,6 +28,10 @@ class ConfigGUI:
         self.drag_start_y = None  # For window dragging
         self.quest_data_loading = False  # Track if quest data is being loaded
         self.vendor_data_loading = False  # Track if vendor data is being loaded
+        
+        # Kill any existing overlay processes when config opens
+        self.kill_existing_overlay()
+        
         self.setup_window()
         self.setup_ui()
         self.load_current_settings()
@@ -36,6 +40,13 @@ class ConfigGUI:
         # Initialize quest and vendor data in background
         self.initialize_quest_data()
         self.initialize_vendor_data()
+        
+    def kill_existing_overlay(self):
+        """Kill any existing overlay processes"""
+        try:
+            subprocess.run(["pkill", "-f", "main.py"], capture_output=True)
+        except Exception as e:
+            print(f"Note: Could not kill existing overlay processes: {e}")
         
     def initialize_quest_data(self):
         """Initialize quest data in background thread"""
@@ -139,15 +150,6 @@ class ConfigGUI:
         self.preview_label = ttk.Label(preview_frame, text="Position: (0, 0)\nMonitor: Primary", 
                                       font=('Arial', 9))
         self.preview_label.grid(row=0, column=0, sticky=tk.W)
-        
-        # Minimize/Restore button for config window
-        minimize_frame = ttk.Frame(preview_frame)
-        minimize_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(10, 0))
-        
-        self.minimize_btn = ttk.Button(minimize_frame, text=self.language_manager.get_ui_text("hide_config_window", "Hide Config Window"), command=self.toggle_config_window)
-        self.minimize_btn.pack(side=tk.LEFT)
-        
-        self.config_hidden = False
         
         # Buttons frame
         button_frame = ttk.Frame(main_frame)
@@ -258,8 +260,8 @@ class ConfigGUI:
         # X Offset
         ttk.Label(offset_frame, text=self.language_manager.get_ui_text("x_offset", "X Offset:")).grid(row=0, column=0, sticky=tk.W, pady=2)
         self.x_offset_var = tk.IntVar()
-        x_offset_scale = ttk.Scale(offset_frame, from_=-3000, to=3000, variable=self.x_offset_var,
-                                  orient=tk.HORIZONTAL, length=200)
+        x_offset_scale = tk.Scale(offset_frame, from_=-3000, to=3000, variable=self.x_offset_var,
+                                  orient=tk.HORIZONTAL, length=200, resolution=1)
         x_offset_scale.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
         self.x_offset_entry = ttk.Entry(offset_frame, textvariable=self.x_offset_var, width=8)
         self.x_offset_entry.grid(row=0, column=2, padx=(10, 0), pady=2)
@@ -267,8 +269,8 @@ class ConfigGUI:
         # Y Offset
         ttk.Label(offset_frame, text=self.language_manager.get_ui_text("y_offset", "Y Offset:")).grid(row=1, column=0, sticky=tk.W, pady=2)
         self.y_offset_var = tk.IntVar()
-        y_offset_scale = ttk.Scale(offset_frame, from_=-3000, to=3000, variable=self.y_offset_var,
-                                  orient=tk.HORIZONTAL, length=200)
+        y_offset_scale = tk.Scale(offset_frame, from_=-3000, to=3000, variable=self.y_offset_var,
+                                  orient=tk.HORIZONTAL, length=200, resolution=1)
         y_offset_scale.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
         self.y_offset_entry = ttk.Entry(offset_frame, textvariable=self.y_offset_var, width=8)
         self.y_offset_entry.grid(row=1, column=2, padx=(10, 0), pady=2)
@@ -282,8 +284,8 @@ class ConfigGUI:
         
         ttk.Label(settings_frame, text=self.language_manager.get_ui_text("opacity", "Opacity:")).grid(row=0, column=0, sticky=tk.W, pady=2)
         self.opacity_var = tk.DoubleVar()
-        opacity_scale = ttk.Scale(settings_frame, from_=0.1, to=1.0, variable=self.opacity_var,
-                                 orient=tk.HORIZONTAL, length=200)
+        opacity_scale = tk.Scale(settings_frame, from_=0.1, to=1.0, variable=self.opacity_var,
+                                 orient=tk.HORIZONTAL, length=200, resolution=0.1)
         opacity_scale.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
         self.opacity_label = ttk.Label(settings_frame, text="0.8")
         self.opacity_label.grid(row=0, column=2, padx=(10, 0), pady=2)
@@ -931,7 +933,11 @@ class ConfigGUI:
             
             if gems:
                 vendor_key = f"{vendor_quest['name']}_{vendor_quest['act']}"
-                selected_gem = character['vendor_gem_selections'].get(vendor_key, None)
+                selected_gems = character['vendor_gem_selections'].get(vendor_key, [])
+                
+                # Ensure selected_gems is a list (handle old single selection format)
+                if not isinstance(selected_gems, list):
+                    selected_gems = [selected_gems] if selected_gems else []
                 
                 # Create gems grid with 4 columns
                 gems_per_row = 4
@@ -954,16 +960,10 @@ class ConfigGUI:
                         color = '#868e96'  # Gray fallback
                         bg_color = '#f5f5f5'  # Light gray background
                     
-                    # Determine if this gem is selected or grayed out
-                    is_selected = selected_gem == gem['name']
-                    is_grayed_out = selected_gem is not None and not is_selected
+                    # Determine if this gem is selected (multiple selections allowed)
+                    is_selected = gem['name'] in selected_gems
                     
-                    if is_grayed_out:
-                        display_color = '#cccccc'
-                        display_bg = '#f0f0f0'
-                        relief = 'flat'
-                        border_width = 1
-                    elif is_selected:
+                    if is_selected:
                         display_color = color
                         display_bg = bg_color
                         relief = 'solid'
@@ -981,7 +981,7 @@ class ConfigGUI:
                                          font=('Arial', 9, 'bold' if is_selected else 'normal'), 
                                          fg=display_color,
                                          bg=display_bg,
-                                         activebackground=bg_color if not is_grayed_out else display_bg,
+                                         activebackground=bg_color,
                                          relief=relief,
                                          borderwidth=border_width,
                                          cursor='hand2',
@@ -1044,19 +1044,29 @@ class ConfigGUI:
         self.update_character_info(character['name'])
     
     def on_vendor_gem_click(self, gem, vendor_key, character):
-        """Handle gem selection for vendor rewards"""
-        # Toggle gem selection
+        """Handle gem selection for vendor rewards - allows multiple selections"""
+        # Initialize vendor gem selections as lists for multiple selections
         if 'vendor_gem_selections' not in character:
             character['vendor_gem_selections'] = {}
         
-        current_selection = character['vendor_gem_selections'].get(vendor_key, None)
+        # Get current selections for this vendor (as a list)
+        current_selections = character['vendor_gem_selections'].get(vendor_key, [])
+        if not isinstance(current_selections, list):
+            # Convert old single selection format to list format
+            current_selections = [current_selections] if current_selections else []
         
-        if current_selection == gem['name']:
-            # Deselect if clicking the same gem
-            character['vendor_gem_selections'][vendor_key] = None
+        if gem['name'] in current_selections:
+            # Deselect if clicking a selected gem
+            current_selections.remove(gem['name'])
         else:
-            # Select the new gem
-            character['vendor_gem_selections'][vendor_key] = gem['name']
+            # Add the new gem to selections
+            current_selections.append(gem['name'])
+        
+        # Update the selections (remove empty lists to keep data clean)
+        if current_selections:
+            character['vendor_gem_selections'][vendor_key] = current_selections
+        else:
+            character['vendor_gem_selections'][vendor_key] = []
         
         # Save character data
         self.save_character_gem_selections(character)
@@ -1098,7 +1108,14 @@ class ConfigGUI:
         vendor_selections = character.get('vendor_gem_selections', {})
         
         quest_count = len([v for v in quest_selections.values() if v is not None])
-        vendor_count = len([v for v in vendor_selections.values() if v is not None])
+        
+        # Count vendor gems (handle both old single selection and new list format)
+        vendor_count = 0
+        for vendor_key, selections in vendor_selections.items():
+            if isinstance(selections, list):
+                vendor_count += len([gem for gem in selections if gem])
+            elif selections:  # Old single selection format
+                vendor_count += 1
         
         total_count = quest_count + vendor_count
         
@@ -1379,9 +1396,9 @@ class ConfigGUI:
             x_offset = new_x - center_x
             y_offset = new_y - center_y
             
-            # Update offset values
-            self.x_offset_var.set(x_offset)
-            self.y_offset_var.set(y_offset)
+            # Update offset values (round to integers)
+            self.x_offset_var.set(round(x_offset))
+            self.y_offset_var.set(round(y_offset))
 
     def end_drag(self, event):
         """End window drag operation"""
@@ -1459,7 +1476,14 @@ class ConfigGUI:
             return False
     
     def cancel(self):
-        """Cancel without saving"""
+        """Cancel without saving and restart the overlay"""
+        try:
+            # Start the overlay process again since we killed it when config opened
+            subprocess.Popen([sys.executable, "main.py"], 
+                           cwd=os.path.dirname(os.path.abspath(__file__)))
+        except Exception as e:
+            print(f"Could not restart overlay: {e}")
+        
         self.root.destroy()
     
     def reset_defaults(self):
@@ -1477,44 +1501,7 @@ class ConfigGUI:
         """Handle window closing"""
         if self.test_window:
             self.test_window.destroy()
-        if hasattr(self, 'restore_window'):
-            self.restore_window.destroy()
         self.root.destroy()
-    
-    def toggle_config_window(self):
-        """Toggle visibility of the config window"""
-        if self.config_hidden:
-            self.root.deiconify()  # Show window
-            self.minimize_btn.config(text=self.language_manager.get_ui_text("hide_config_window", "Hide Config Window"))
-            self.config_hidden = False
-        else:
-            self.root.withdraw()  # Hide window
-            self.minimize_btn.config(text=self.language_manager.get_ui_text("show_config_window", "Show Config Window"))
-            self.config_hidden = True
-            
-            # Create a small restore button that stays visible
-            if not hasattr(self, 'restore_window'):
-                self.restore_window = tk.Toplevel(self.root)
-                self.restore_window.title("Show Config")
-                self.restore_window.geometry("120x40+50+50")
-                self.restore_window.attributes('-topmost', True)
-                self.restore_window.resizable(False, False)
-                
-                restore_btn = tk.Button(self.restore_window, text="Show Config", 
-                                      command=self.show_config_window, font=('Arial', 8))
-                restore_btn.pack(fill='both', expand=True)
-                
-                self.restore_window.protocol("WM_DELETE_WINDOW", self.show_config_window)
-
-    def show_config_window(self):
-        """Show the config window and destroy restore button"""
-        if hasattr(self, 'restore_window'):
-            self.restore_window.destroy()
-            delattr(self, 'restore_window')
-        
-        self.root.deiconify()
-        self.minimize_btn.config(text=self.language_manager.get_ui_text("hide_config_window", "Hide Config Window"))
-        self.config_hidden = False
     
     def on_language_change(self, event=None):
         """Handle language change"""
@@ -1534,41 +1521,27 @@ class ConfigGUI:
         if selected_language and selected_language != self.language_manager.get_current_language():
             # Update language
             if self.language_manager.set_language(selected_language):
-                self.refresh_ui_text()
-                self.update_content_for_language()
+                # Update window title
+                self.root.title(self.language_manager.get_ui_text("window_title", "PoE Leveling Planner - Configuration"))
+                
+                # Update content for new language
+                default_text = self.language_manager.get_content("default_text", "PoE Leveling Planner\nReady to assist!")
+                alternate_text = self.language_manager.get_content("alternate_text", "Hotkey Activated!\nCtrl+2 to return")
+                
+                self.default_text_widget.delete(1.0, tk.END)
+                self.default_text_widget.insert(1.0, default_text)
+                
+                self.alternate_text_widget.delete(1.0, tk.END)
+                self.alternate_text_widget.insert(1.0, alternate_text)
                 
                 # Update quest data for new language
                 self.initialize_quest_data()
+                self.initialize_vendor_data()
                 
                 messagebox.showinfo(
                     self.language_manager.get_ui_text("language_changed", "Language Changed"),
                     self.language_manager.get_ui_text("language_changed_message", "Language has been changed. Some changes may require a restart to take full effect.")
                 )
-    
-    def refresh_ui_text(self):
-        """Refresh all UI text elements with current language"""
-        # Update window title
-        self.root.title(self.language_manager.get_ui_text("window_title", "PoE Leveling Planner - Configuration"))
-        
-        # Update button text
-        self.minimize_btn.config(text=self.language_manager.get_ui_text("hide_config_window" if not self.config_hidden else "show_config_window", "Hide Config Window"))
-        
-        # Note: For a complete refresh, we would need to recreate the entire UI
-        # For now, we'll just update the critical elements that can be changed
-        # A full implementation would store references to all labels and update them
-        
-    def update_content_for_language(self):
-        """Update content text fields with language-appropriate defaults"""
-        # Get the default content for the current language
-        default_text = self.language_manager.get_content("default_text", "PoE Leveling Planner\nReady to assist!")
-        alternate_text = self.language_manager.get_content("alternate_text", "Hotkey Activated!\nCtrl+2 to return")
-        
-        # Update the text widgets with new language defaults
-        self.default_text_widget.delete(1.0, tk.END)
-        self.default_text_widget.insert(1.0, default_text)
-        
-        self.alternate_text_widget.delete(1.0, tk.END)
-        self.alternate_text_widget.insert(1.0, alternate_text)
     
     def run(self):
         """Start the configuration GUI"""

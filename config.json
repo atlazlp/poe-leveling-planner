@@ -50,6 +50,19 @@
                     "The Root of the Problem_Act 2": null,
                     "Lost in Love_Act 3": null,
                     "Sever the Right Hand_Act 3": null
+                },
+                "vendor_gem_selections": {
+                    "Enemy at the Gate_Vendor": [
+                        "Cleave",
+                        "Glacial Hammer",
+                        "Ground Slam"
+                    ],
+                    "The Caged Brute_Vendor": [
+                        "Blind Support",
+                        "Additional Accuracy Support",
+                        "Faster Attacks Support",
+                        "Enduring Cry"
+                    ]
                 }
             },
             {
