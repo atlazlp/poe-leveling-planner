@@ -4994,6 +4994,10 @@
         "color": "gem_red"
       },
       {
+        "name": "Focused Channelling Support",
+        "color": "gem_blue"
+      },
+      {
         "name": "Fork Support",
         "color": "gem_green"
       },
@@ -5118,6 +5122,10 @@
       {
         "name": "Focused Ballista Support",
         "color": "gem_green"
+      },
+      {
+        "name": "Focused Channelling Support",
+        "color": "gem_blue"
       },
       {
         "name": "Fork Support",
@@ -5476,6 +5484,10 @@
         "color": "gem_red"
       },
       {
+        "name": "Focused Channelling Support",
+        "color": "gem_blue"
+      },
+      {
         "name": "Fortify Support",
         "color": "gem_red"
       },
@@ -5640,6 +5652,10 @@
       {
         "name": "Focused Ballista Support",
         "color": "gem_green"
+      },
+      {
+        "name": "Focused Channelling Support",
+        "color": "gem_blue"
       },
       {
         "name": "Fork Support",

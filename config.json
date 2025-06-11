@@ -4,14 +4,14 @@
         "position": "center",
         "custom_x": null,
         "custom_y": null,
-        "opacity": 0.5,
+        "opacity": 0.8,
         "always_on_top": true,
-        "x_offset": 1542,
-        "y_offset": 715
+        "x_offset": 1590,
+        "y_offset": 533
     },
     "appearance": {
-        "width": 350,
-        "height": 200,
+        "width": 250,
+        "height": 250,
         "background_color": "#2b2b2b",
         "text_color": "#ffffff",
         "font_family": "Arial",
@@ -19,12 +19,8 @@
         "font_weight": "bold"
     },
     "hotkeys": {
-        "toggle_text": "ctrl+1",
-        "reset_text": "ctrl+2"
-    },
-    "content": {
-        "default_text": "PoE Leveling Planner\nReady to assist!",
-        "alternate_text": "Hotkey Activated!\nCtrl+2 to return"
+        "previous_quest": "ctrl+1",
+        "next_quest": "ctrl+2"
     },
     "behavior": {
         "auto_hide_when_poe_not_running": false,
@@ -41,11 +37,11 @@
                     "A Fixture of Fate_Act 3": null,
                     "Breaking the Seal_Act 4": null,
                     "The King's Feast_Act 5": null,
-                    "Enemy at the Gate_Act 1": null,
-                    "Breaking Some Eggs_Act 1": null,
-                    "The Caged Brute_Act 1": null,
+                    "Enemy at the Gate_Act 1": "Ground Slam",
+                    "Breaking Some Eggs_Act 1": "Steelskin",
+                    "The Caged Brute_Act 1": "Ancestral Protector",
                     "The Siren's Cadence_Act 1": null,
-                    "Intruders in Black_Act 2": null,
+                    "Intruders in Black_Act 2": "Herald of Ash",
                     "Sharp and Cruel_Act 2": null,
                     "The Root of the Problem_Act 2": null,
                     "Lost in Love_Act 3": null,

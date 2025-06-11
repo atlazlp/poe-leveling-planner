@@ -54,8 +54,8 @@ class ConfigManager:
                 "always_on_top": True
             },
             "appearance": {
-                "width": 250,
-                "height": 100,
+                "width": 350,
+                "height": 250,
                 "background_color": "#2b2b2b",
                 "text_color": "#ffffff",
                 "font_family": "Arial",
@@ -63,12 +63,8 @@ class ConfigManager:
                 "font_weight": "bold"
             },
             "hotkeys": {
-                "toggle_text": "ctrl+1",
-                "reset_text": "ctrl+2"
-            },
-            "content": {
-                "default_text": "PoE Leveling Planner\nReady to assist!",
-                "alternate_text": "Hotkey Activated!\nCtrl+Z to return"
+                "previous_quest": "ctrl+1",
+                "next_quest": "ctrl+2"
             },
             "characters": {
                 "profiles": [],
@@ -169,9 +165,14 @@ class ConfigManager:
         self.save_config()
         print(f"Updated {section}.{key} = {value} and saved to file")
     
-    def get_setting(self, section: str, key: str, default: Any = None) -> Any:
+    def get_setting(self, section: str, key: str = None, default: Any = None) -> Any:
         """Get a specific setting value"""
-        return self.config.get(section, {}).get(key, default)
+        if key is None:
+            # Return the entire section
+            return self.config.get(section, default or {})
+        else:
+            # Return specific key from section
+            return self.config.get(section, {}).get(key, default)
     
     def print_monitor_info(self) -> None:
         """Print detected monitor information"""

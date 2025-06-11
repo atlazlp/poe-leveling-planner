@@ -27,8 +27,8 @@ def main():
         print(f"  Background: {config_manager.get_setting('appearance', 'background_color')}")
         
         print(f"\nHotkeys:")
-        print(f"  Toggle: {config_manager.get_setting('hotkeys', 'toggle_text')}")
-        print(f"  Reset: {config_manager.get_setting('hotkeys', 'reset_text')}")
+        print(f"  Previous Quest: {config_manager.get_setting('hotkeys', 'previous_quest')}")
+        print(f"  Next Quest: {config_manager.get_setting('hotkeys', 'next_quest')}")
         
         print("\nOptions:")
         print("1. Change monitor")

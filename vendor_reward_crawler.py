@@ -130,37 +130,57 @@ class VendorRewardCrawler:
             soup = BeautifulSoup(response.content, 'lxml')
             gem_colors = {}
             
-            # Find gem tables - PoEDB has different sections for different gem types
-            tables = soup.find_all('table')
+            # Find all gem entries in the page
+            # PoEDB uses specific patterns for gem listings
+            gem_links = soup.find_all('a', href=True)
             
+            for link in gem_links:
+                href = link.get('href', '')
+                # Look for gem detail page links
+                if '/Gem/' in href or '/gem/' in href:
+                    gem_name = link.get_text(strip=True)
+                    if gem_name and len(gem_name) > 2:  # Filter out very short names
+                        # Try to determine color from the link context or surrounding elements
+                        parent = link.find_parent()
+                        if parent:
+                            parent_text = parent.get_text().lower()
+                            parent_html = str(parent).lower()
+                            
+                            # Look for color indicators in the surrounding HTML
+                            if any(indicator in parent_html for indicator in ['red', 'strength', 'str']):
+                                gem_colors[gem_name] = "gem_red"
+                            elif any(indicator in parent_html for indicator in ['green', 'dexterity', 'dex']):
+                                gem_colors[gem_name] = "gem_green"
+                            elif any(indicator in parent_html for indicator in ['blue', 'intelligence', 'int']):
+                                gem_colors[gem_name] = "gem_blue"
+                            else:
+                                # Use pattern matching as fallback
+                                gem_colors[gem_name] = self.get_gem_color_from_name(gem_name)
+            
+            # Also look for gems in table structures
+            tables = soup.find_all('table')
             for table in tables:
                 rows = table.find_all('tr')
                 for row in rows:
                     cells = row.find_all(['td', 'th'])
-                    if len(cells) >= 2:
-                        # Look for gem name and color information
+                    if len(cells) >= 1:
                         first_cell = cells[0]
                         gem_link = first_cell.find('a')
                         
                         if gem_link:
                             gem_name = gem_link.get_text(strip=True)
-                            
-                            # Look for gem color in the row - check for color indicators
-                            color = "gem_blue"  # default
-                            
-                            # Check for color indicators in the row
-                            row_html = str(row)
-                            if 'red' in row_html.lower() or 'strength' in row_html.lower():
-                                color = "gem_red"
-                            elif 'green' in row_html.lower() or 'dexterity' in row_html.lower():
-                                color = "gem_green"
-                            elif 'blue' in row_html.lower() or 'intelligence' in row_html.lower():
-                                color = "gem_blue"
-                            else:
-                                # Use pattern matching as fallback
-                                color = self.get_gem_color_from_name(gem_name)
-                            
-                            gem_colors[gem_name] = color
+                            if gem_name and len(gem_name) > 2:
+                                # Look for color indicators in the row
+                                row_html = str(row).lower()
+                                if any(indicator in row_html for indicator in ['red', 'strength', 'str']):
+                                    gem_colors[gem_name] = "gem_red"
+                                elif any(indicator in row_html for indicator in ['green', 'dexterity', 'dex']):
+                                    gem_colors[gem_name] = "gem_green"
+                                elif any(indicator in row_html for indicator in ['blue', 'intelligence', 'int']):
+                                    gem_colors[gem_name] = "gem_blue"
+                                else:
+                                    # Use pattern matching as fallback
+                                    gem_colors[gem_name] = self.get_gem_color_from_name(gem_name)
             
             self.gem_colors[language] = gem_colors
             print(f"Fetched {len(gem_colors)} gem colors from PoEDB ({language})")
@@ -309,37 +329,93 @@ class VendorRewardCrawler:
         
         return organized
     
+    def create_gem_translation_map(self, english_gems: Dict[str, str], portuguese_gems: Dict[str, str]) -> Dict[str, str]:
+        """Create a translation map from English to Portuguese gem names"""
+        translation_map = {}
+        
+        # First, try exact matches by removing common prefixes/suffixes
+        def normalize_name(name):
+            # Remove common prefixes and suffixes for better matching
+            normalized = name.lower()
+            # Remove "support" and "suporte" 
+            normalized = normalized.replace(" support", "").replace(" suporte:", "").replace("suporte: ", "")
+            # Remove common articles
+            normalized = normalized.replace("the ", "").replace("a ", "").replace("an ", "")
+            return normalized.strip()
+        
+        # Create normalized lookup for Portuguese gems
+        pt_normalized = {}
+        for pt_name, color in portuguese_gems.items():
+            normalized = normalize_name(pt_name)
+            if normalized not in pt_normalized:
+                pt_normalized[normalized] = []
+            pt_normalized[normalized].append((pt_name, color))
+        
+        # Try to match English gems to Portuguese gems
+        for en_name, en_color in english_gems.items():
+            en_normalized = normalize_name(en_name)
+            
+            # Look for exact normalized match with same color
+            if en_normalized in pt_normalized:
+                for pt_name, pt_color in pt_normalized[en_normalized]:
+                    if en_color == pt_color:
+                        translation_map[en_name] = pt_name
+                        break
+            
+            # If no exact match, try partial matches with same color
+            if en_name not in translation_map:
+                en_words = set(en_normalized.split())
+                best_match = None
+                best_score = 0
+                
+                for pt_name, pt_color in portuguese_gems.items():
+                    if en_color == pt_color:  # Only consider gems of the same color
+                        pt_normalized_name = normalize_name(pt_name)
+                        pt_words = set(pt_normalized_name.split())
+                        
+                        # Calculate similarity score
+                        common_words = en_words & pt_words
+                        if common_words:
+                            score = len(common_words) / max(len(en_words), len(pt_words))
+                            if score > best_score and score > 0.3:  # Minimum similarity threshold
+                                best_score = score
+                                best_match = pt_name
+                
+                if best_match:
+                    translation_map[en_name] = best_match
+        
+        return translation_map
+
     def translate_gem_names(self, vendor_rewards: List[Dict[str, Any]], target_language: str) -> List[Dict[str, Any]]:
         """Translate gem names using PoEDB data"""
         if target_language == "en_US":
             return vendor_rewards
         
-        # Fetch gem data from target language PoEDB to get translations
-        target_gem_colors = self.fetch_gem_colors_from_poedb(target_language)
-        english_gem_colors = self.fetch_gem_colors_from_poedb("en_US")
+        # Fetch gem data from both languages
+        english_gems = self.fetch_gem_colors_from_poedb("en_US")
+        target_gems = self.fetch_gem_colors_from_poedb(target_language)
         
-        # Create translation mapping based on matching colors and patterns
-        translation_map = {}
+        if not english_gems or not target_gems:
+            print(f"Warning: Could not fetch gem data for translation to {target_language}")
+            return vendor_rewards
         
-        # Simple approach: try to match gems by similar patterns
-        for en_gem, en_color in english_gem_colors.items():
-            for target_gem, target_color in target_gem_colors.items():
-                if en_color == target_color:
-                    # Check if gems have similar patterns (simplified matching)
-                    en_words = set(en_gem.lower().split())
-                    target_words = set(target_gem.lower().split())
-                    
-                    # If they share common words or have similar length, consider them matches
-                    if len(en_words & target_words) > 0 or abs(len(en_gem) - len(target_gem)) <= 3:
-                        translation_map[en_gem] = target_gem
-                        break
+        # Create translation mapping
+        translation_map = self.create_gem_translation_map(english_gems, target_gems)
+        
+        print(f"Created translation map with {len(translation_map)} entries for {target_language}")
         
         # Apply translations
         translated_rewards = []
         for reward in vendor_rewards:
             translated_reward = reward.copy()
-            if reward['gem'] in translation_map:
-                translated_reward['gem'] = translation_map[reward['gem']]
+            gem_name = reward['gem']
+            
+            if gem_name in translation_map:
+                translated_reward['gem'] = translation_map[gem_name]
+                print(f"Translated: {gem_name} -> {translation_map[gem_name]}")
+            else:
+                print(f"No translation found for: {gem_name}")
+            
             translated_rewards.append(translated_reward)
         
         return translated_rewards

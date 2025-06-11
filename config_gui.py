@@ -24,8 +24,6 @@ class ConfigGUI:
         self.root = tk.Tk()
         self.test_window = None  # For live testing
         self.debounce_timer = None  # For debouncing slider updates
-        self.drag_start_x = None  # For window dragging
-        self.drag_start_y = None  # For window dragging
         self.quest_data_loading = False  # Track if quest data is being loaded
         self.vendor_data_loading = False  # Track if vendor data is being loaded
         
@@ -190,43 +188,25 @@ class ConfigGUI:
         
         language_frame.columnconfigure(1, weight=1)
         
-        # Hotkeys Section
+        # Hotkeys Section - Updated for quest navigation
         hotkey_frame = ttk.LabelFrame(general_frame, text=self.language_manager.get_ui_text("hotkeys", "Hotkeys"), padding="10")
         hotkey_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
         row += 1
         
-        ttk.Label(hotkey_frame, text=self.language_manager.get_ui_text("toggle_text", "Toggle Text:")).grid(row=0, column=0, sticky=tk.W, pady=2)
-        self.toggle_key_var = tk.StringVar()
-        toggle_combo = ttk.Combobox(hotkey_frame, textvariable=self.toggle_key_var,
+        ttk.Label(hotkey_frame, text="Previous Quest:").grid(row=0, column=0, sticky=tk.W, pady=2)
+        self.previous_quest_var = tk.StringVar()
+        previous_combo = ttk.Combobox(hotkey_frame, textvariable=self.previous_quest_var,
                                    values=["ctrl+1", "ctrl+x", "ctrl+t", "alt+x", "alt+t", "shift+x"],
                                    width=15)
-        toggle_combo.grid(row=0, column=1, sticky=tk.W, padx=(10, 0), pady=2)
+        previous_combo.grid(row=0, column=1, sticky=tk.W, padx=(10, 0), pady=2)
         
-        ttk.Label(hotkey_frame, text=self.language_manager.get_ui_text("reset_text", "Reset Text:")).grid(row=1, column=0, sticky=tk.W, pady=2)
-        self.reset_key_var = tk.StringVar()
-        reset_combo = ttk.Combobox(hotkey_frame, textvariable=self.reset_key_var,
+        ttk.Label(hotkey_frame, text="Next Quest:").grid(row=1, column=0, sticky=tk.W, pady=2)
+        self.next_quest_var = tk.StringVar()
+        next_combo = ttk.Combobox(hotkey_frame, textvariable=self.next_quest_var,
                                   values=["ctrl+2", "ctrl+z", "ctrl+r", "alt+z", "alt+r", "shift+z"],
                                   width=15)
-        reset_combo.grid(row=1, column=1, sticky=tk.W, padx=(10, 0), pady=2)
+        next_combo.grid(row=1, column=1, sticky=tk.W, padx=(10, 0), pady=2)
         
-        # Content Section
-        content_frame = ttk.LabelFrame(general_frame, text=self.language_manager.get_ui_text("text_content", "Text Content"), padding="10")
-        content_frame.grid(row=row, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 10))
-        row += 1
-        
-        ttk.Label(content_frame, text=self.language_manager.get_ui_text("default_text", "Default Text:")).grid(row=0, column=0, sticky=(tk.W, tk.N), pady=2)
-        self.default_text_var = tk.StringVar()
-        default_text_entry = tk.Text(content_frame, height=3, width=40)
-        default_text_entry.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
-        self.default_text_widget = default_text_entry
-        
-        ttk.Label(content_frame, text=self.language_manager.get_ui_text("alternate_text", "Alternate Text:")).grid(row=1, column=0, sticky=(tk.W, tk.N), pady=2)
-        self.alternate_text_var = tk.StringVar()
-        alternate_text_entry = tk.Text(content_frame, height=3, width=40)
-        alternate_text_entry.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
-        self.alternate_text_widget = alternate_text_entry
-        
-        content_frame.columnconfigure(1, weight=1)
         general_frame.columnconfigure(0, weight=1)
         
     def setup_appearance_tab(self):
@@ -1250,20 +1230,12 @@ class ConfigGUI:
         self.x_offset_var.set(self.config_manager.get_setting("display", "x_offset", 0))
         self.y_offset_var.set(self.config_manager.get_setting("display", "y_offset", 0))
         self.opacity_var.set(self.config_manager.get_setting("display", "opacity", 0.8))
-        self.width_var.set(self.config_manager.get_setting("appearance", "width", 250))
-        self.height_var.set(self.config_manager.get_setting("appearance", "height", 100))
-        self.toggle_key_var.set(self.config_manager.get_setting("hotkeys", "toggle_text", "ctrl+1"))
-        self.reset_key_var.set(self.config_manager.get_setting("hotkeys", "reset_text", "ctrl+2"))
+        self.width_var.set(self.config_manager.get_setting("appearance", "width", 350))
+        self.height_var.set(self.config_manager.get_setting("appearance", "height", 250))
         
-        # Load text content
-        default_text = self.config_manager.get_setting("content", "default_text", self.language_manager.get_content("default_text", "PoE Leveling Planner\nReady to assist!"))
-        alternate_text = self.config_manager.get_setting("content", "alternate_text", self.language_manager.get_content("alternate_text", "Hotkey Activated!\nCtrl+2 to return"))
-        
-        self.default_text_widget.delete(1.0, tk.END)
-        self.default_text_widget.insert(1.0, default_text)
-        
-        self.alternate_text_widget.delete(1.0, tk.END)
-        self.alternate_text_widget.insert(1.0, alternate_text)
+        # Load hotkey settings
+        self.previous_quest_var.set(self.config_manager.get_setting("hotkeys", "previous_quest", "ctrl+1"))
+        self.next_quest_var.set(self.config_manager.get_setting("hotkeys", "next_quest", "ctrl+2"))
     
     def start_live_testing(self):
         """Start the live testing overlay"""
@@ -1327,14 +1299,9 @@ class ConfigGUI:
                 self.test_window.attributes('-topmost', True)
                 self.test_window.configure(bg='red')
                 
-                label = tk.Label(self.test_window, text="LIVE PREVIEW\nOverlay Position\nDrag to move", 
+                label = tk.Label(self.test_window, text="LIVE PREVIEW\nOverlay Position", 
                                bg='red', fg='white', font=('Arial', 8, 'bold'), justify='center')
                 label.pack(expand=True)
-                
-                # Add drag functionality
-                label.bind('<Button-1>', self.start_drag)
-                label.bind('<B1-Motion>', self.on_drag)
-                label.bind('<ButtonRelease-1>', self.end_drag)
                 
                 # Don't let the test window be destroyed by user
                 self.test_window.protocol("WM_DELETE_WINDOW", lambda: None)
@@ -1349,61 +1316,6 @@ class ConfigGUI:
             
         except Exception as e:
             print(f"Error updating test overlay: {e}")
-    
-    def start_drag(self, event):
-        """Start window drag operation"""
-        self.drag_start_x = event.x_root
-        self.drag_start_y = event.y_root
-        self.window_start_x = self.test_window.winfo_x()
-        self.window_start_y = self.test_window.winfo_y()
-
-    def on_drag(self, event):
-        """Handle window dragging"""
-        if self.drag_start_x is not None:
-            # Calculate the distance moved
-            dx = event.x_root - self.drag_start_x
-            dy = event.y_root - self.drag_start_y
-            
-            # Calculate new position
-            new_x = self.window_start_x + dx
-            new_y = self.window_start_y + dy
-            
-            # Update window position
-            self.test_window.geometry(f"+{new_x}+{new_y}")
-            
-            # Update offset values based on the center position
-            monitor_selection = self.monitor_var.get()
-            if monitor_selection == "Auto/Primary":
-                monitor_index = 0
-            else:
-                monitors = self.config_manager.get_monitor_info()
-                for i, monitor in enumerate(monitors):
-                    if f"{monitor['name']} - {monitor['width']}x{monitor['height']}" == monitor_selection:
-                        monitor_index = i
-                        break
-                else:
-                    monitor_index = 0
-            
-            # Get monitor info
-            monitors = self.config_manager.get_monitor_info()
-            monitor = monitors[monitor_index]
-            
-            # Calculate center position of monitor
-            center_x = monitor["x"] + (monitor["width"] - self.width_var.get()) // 2
-            center_y = monitor["y"] + (monitor["height"] - self.height_var.get()) // 2
-            
-            # Calculate offsets from center
-            x_offset = new_x - center_x
-            y_offset = new_y - center_y
-            
-            # Update offset values (round to integers)
-            self.x_offset_var.set(round(x_offset))
-            self.y_offset_var.set(round(y_offset))
-
-    def end_drag(self, event):
-        """End window drag operation"""
-        self.drag_start_x = None
-        self.drag_start_y = None
     
     def save_and_restart(self):
         """Save configuration and restart the overlay"""
@@ -1455,15 +1367,11 @@ class ConfigGUI:
             self.config_manager.update_setting("display", "opacity", self.opacity_var.get())
             self.config_manager.update_setting("appearance", "width", self.width_var.get())
             self.config_manager.update_setting("appearance", "height", self.height_var.get())
-            self.config_manager.update_setting("hotkeys", "toggle_text", self.toggle_key_var.get())
-            self.config_manager.update_setting("hotkeys", "reset_text", self.reset_key_var.get())
             self.config_manager.update_setting("language", "current", language_code)
             
-            # Update text content
-            default_text = self.default_text_widget.get(1.0, tk.END).strip()
-            alternate_text = self.alternate_text_widget.get(1.0, tk.END).strip()
-            self.config_manager.update_setting("content", "default_text", default_text)
-            self.config_manager.update_setting("content", "alternate_text", alternate_text)
+            # Update hotkey settings
+            self.config_manager.update_setting("hotkeys", "previous_quest", self.previous_quest_var.get())
+            self.config_manager.update_setting("hotkeys", "next_quest", self.next_quest_var.get())
             
             # Force save to file
             self.config_manager.save_config()
@@ -1523,16 +1431,6 @@ class ConfigGUI:
             if self.language_manager.set_language(selected_language):
                 # Update window title
                 self.root.title(self.language_manager.get_ui_text("window_title", "PoE Leveling Planner - Configuration"))
-                
-                # Update content for new language
-                default_text = self.language_manager.get_content("default_text", "PoE Leveling Planner\nReady to assist!")
-                alternate_text = self.language_manager.get_content("alternate_text", "Hotkey Activated!\nCtrl+2 to return")
-                
-                self.default_text_widget.delete(1.0, tk.END)
-                self.default_text_widget.insert(1.0, default_text)
-                
-                self.alternate_text_widget.delete(1.0, tk.END)
-                self.alternate_text_widget.insert(1.0, alternate_text)
                 
                 # Update quest data for new language
                 self.initialize_quest_data()
