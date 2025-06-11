@@ -12,11 +12,14 @@ import subprocess
 import platform
 import zipfile
 from pathlib import Path
+
+# Add src directory to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 from data_manager import DataManager
 
 # Build configuration
 APP_NAME = "PoE Leveling Planner"
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.1"
 APP_DESCRIPTION = "Desktop overlay application for Path of Exile leveling assistance"
 APP_AUTHOR = "PoE Leveling Planner Team"
 APP_URL = "https://github.com/atlazlp/poe-leveling-planner"
@@ -112,11 +115,13 @@ def create_default_config():
     """Create default configuration file"""
     print_step("Creating Default Configuration")
     
-    config_path = Path("config.json")
+    # Get the root directory (parent of scripts)
+    root_dir = Path(__file__).parent.parent
+    config_path = root_dir / "config" / "config.json"
     
     # Backup existing config if it exists
     if config_path.exists():
-        backup_path = Path("config.json.backup")
+        backup_path = config_path.parent / "config.json.backup"
         shutil.copy2(config_path, backup_path)
         print(f"Backed up existing config to {backup_path}")
     

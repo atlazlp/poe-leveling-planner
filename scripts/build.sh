@@ -27,15 +27,15 @@ pip3 install --upgrade pip
 pip3 install -r requirements.txt
 
 # Make build script executable
-chmod +x build.py
+chmod +x scripts/build.py
 
 # Run the build
 echo "Starting build process..."
-python3 build.py
+python3 scripts/build.py
 
 echo ""
 echo "Build completed! Check the 'dist' directory for your AppImage."
 echo ""
 echo "To run the AppImage:"
-echo "  chmod +x dist/PoE-Leveling-Planner-v1.0.0-x86_64.AppImage"
-echo "  ./dist/PoE-Leveling-Planner-v1.0.0-x86_64.AppImage" 
+echo "  chmod +x dist/PoE-Leveling-Planner-v1.0.1-x86_64.AppImage"
+echo "  ./dist/PoE-Leveling-Planner-v1.0.1-x86_64.AppImage" 

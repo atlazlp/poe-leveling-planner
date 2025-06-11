@@ -1,0 +1,2 @@
+4f3fcb3fb21bc245bfced06adf2a0e0269411d5de97522fe3ea99ae29e027a32  PoE-Leveling-Planner-v1.0.1-Windows-Executable.zip
+2a7fc1adb3831663aac7b4ff67e95f58a16d22c408823c5467f634ada180d939  PoE-Leveling-Planner-v1.0.1-Windows-Safe.zip

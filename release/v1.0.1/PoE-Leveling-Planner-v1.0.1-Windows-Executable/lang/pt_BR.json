@@ -1,0 +1,50 @@
+{
+    "ui": {
+        "window_title": "PoE Leveling Planner - Configuração",
+        "main_title": "Configuração do PoE Leveling Planner",
+        "monitor_settings": "Configurações do Monitor",
+        "monitor": "Monitor:",
+        "position_offset": "Deslocamento de Posição",
+        "x_offset": "Deslocamento X:",
+        "y_offset": "Deslocamento Y:",
+        "appearance": "Aparência",
+        "opacity": "Opacidade:",
+        "width": "Largura:",
+        "height": "Altura:",
+        "hotkeys": "Teclas de Atalho",
+        "toggle_text": "Alternar Texto:",
+        "reset_text": "Resetar Texto:",
+        "text_content": "Conteúdo do Texto",
+        "default_text": "Texto Padrão:",
+        "alternate_text": "Texto Alternativo:",
+        "language_settings": "Configurações de Idioma",
+        "language": "Idioma:",
+        "live_preview": "Visualização ao Vivo",
+        "hide_config_window": "Ocultar Janela de Configuração",
+        "show_config_window": "Mostrar Janela de Configuração",
+        "save_restart": "Salvar e Reiniciar",
+        "cancel": "Cancelar",
+        "reset_to_default": "Restaurar Padrão",
+        "auto_primary": "Automático/Primário"
+    },
+    "content": {
+        "default_text": "PoE Leveling Planner\nPronto para ajudar!",
+        "alternate_text": "Tecla de Atalho Ativada!\nCtrl+2 para voltar"
+    },
+    "messages": {
+        "config_saved": "Configuração salva em config.json",
+        "opening_config": "Abrindo janela de configuração...",
+        "closing_app": "Fechando aplicação...",
+        "app_started": "PoE Leveling Planner iniciado!",
+        "config_loaded": "Configuração carregada de config.json",
+        "hotkey_instructions": "Use os botões da sobreposição ou pressione Ctrl+C no terminal para sair",
+        "hotkey_pressed_alternate": "pressionada - mudou para texto alternativo",
+        "hotkey_pressed_original": "pressionada - mudou para texto original",
+        "confirm_reset": "Tem certeza de que deseja restaurar todas as configurações para o padrão?",
+        "reset_success": "Configurações restauradas para o padrão!",
+        "error_opening_config": "Erro ao abrir janela de configuração:",
+        "error_saving_config": "Não foi possível salvar a configuração:",
+        "position_info": "Posição:",
+        "monitor_info": "Monitor:"
+    }
+} 

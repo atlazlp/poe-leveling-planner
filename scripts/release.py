@@ -16,7 +16,7 @@ from datetime import datetime
 
 # Release configuration
 APP_NAME = "PoE Leveling Planner"
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.1"
 REPO_NAME = "atlazlp/poe-leveling-planner"
 
 def print_step(message):

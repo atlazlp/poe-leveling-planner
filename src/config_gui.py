@@ -56,9 +56,10 @@ class ConfigGUI:
                     self.root.after(0, lambda: self.update_vendor_info_error("Failed to load data"))
                     
             except Exception as e:
+                error_msg = f"Error: {e}"
                 print(f"Error initializing data: {e}")
-                self.root.after(0, lambda: self.update_gem_info_error(f"Error: {e}"))
-                self.root.after(0, lambda: self.update_vendor_info_error(f"Error: {e}"))
+                self.root.after(0, lambda msg=error_msg: self.update_gem_info_error(msg))
+                self.root.after(0, lambda msg=error_msg: self.update_vendor_info_error(msg))
             finally:
                 self.data_loading = False
         

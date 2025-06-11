@@ -24,13 +24,13 @@ class DataManager:
         # Path to data directory relative to src
         self.data_dir = os.path.join(os.path.dirname(__file__), "..", "data")
         self.metadata_file = os.path.join(self.data_dir, "data_metadata.json")
+        
+        # Initialize metadata
+        self.metadata = self.load_metadata()
     
     def _get_data_path(self, filename: str) -> str:
         """Get the full path to a data file"""
         return os.path.join(self.data_dir, filename)
-        
-        # Initialize metadata
-        self.metadata = self.load_metadata()
         
     def load_metadata(self) -> Dict[str, Any]:
         """Load metadata about data updates"""
