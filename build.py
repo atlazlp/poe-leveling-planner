@@ -24,7 +24,6 @@ APP_URL = "https://github.com/atlazlp/poe-leveling-planner"
 DEFAULT_CONFIG = {
     "display": {
         "monitor": "auto",
-        "position": "top-right",
         "custom_x": None,
         "custom_y": None,
         "opacity": 0.8,
@@ -179,97 +178,247 @@ def build_executable():
     run_command(cmd)
     print("✓ Executable built successfully")
 
-def create_windows_installer():
-    """Create Windows installer using NSIS"""
-    print_step("Creating Windows Installer")
+def create_windows_builds():
+    """Create both Windows builds - compiled executable and antivirus-safe source"""
+    print_step("Creating Windows Builds")
     
-    nsis_script = f"""
-!define APP_NAME "{APP_NAME}"
-!define APP_VERSION "{APP_VERSION}"
-!define APP_PUBLISHER "{APP_AUTHOR}"
-!define APP_URL "{APP_URL}"
-!define APP_DESCRIPTION "{APP_DESCRIPTION}"
-
-!include "MUI2.nsh"
-
-Name "${{APP_NAME}}"
-OutFile "dist/PoE-Leveling-Planner-Setup-v${{APP_VERSION}}.exe"
-InstallDir "$PROGRAMFILES64\\${{APP_NAME}}"
-InstallDirRegKey HKCU "Software\\${{APP_NAME}}" ""
-RequestExecutionLevel admin
-
-!define MUI_ABORTWARNING
-!define MUI_ICON "icon.ico"
-!define MUI_UNICON "icon.ico"
-
-!insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "LICENSE"
-!insertmacro MUI_PAGE_DIRECTORY
-!insertmacro MUI_PAGE_INSTFILES
-!insertmacro MUI_PAGE_FINISH
-
-!insertmacro MUI_UNPAGE_WELCOME
-!insertmacro MUI_UNPAGE_CONFIRM
-!insertmacro MUI_UNPAGE_INSTFILES
-!insertmacro MUI_UNPAGE_FINISH
-
-!insertmacro MUI_LANGUAGE "English"
-
-Section "MainSection" SEC01
-    SetOutPath "$INSTDIR"
-    File "dist\\poe-leveling-planner.exe"
-    File /r "data"
-    File /r "lang"
-    File "config.json"
-    File "quest_data_en.json"
+    # Create compiled portable executable
+    build_executable()
     
-    CreateDirectory "$SMPROGRAMS\\${{APP_NAME}}"
-    CreateShortCut "$SMPROGRAMS\\${{APP_NAME}}\\${{APP_NAME}}.lnk" "$INSTDIR\\poe-leveling-planner.exe"
-    CreateShortCut "$DESKTOP\\${{APP_NAME}}.lnk" "$INSTDIR\\poe-leveling-planner.exe"
+    # Create portable package
+    create_portable_package()
     
-    WriteRegStr HKCU "Software\\${{APP_NAME}}" "" $INSTDIR
-    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${{APP_NAME}}" "DisplayName" "${{APP_NAME}}"
-    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${{APP_NAME}}" "UninstallString" "$INSTDIR\\uninstall.exe"
-    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${{APP_NAME}}" "DisplayVersion" "${{APP_VERSION}}"
-    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${{APP_NAME}}" "Publisher" "${{APP_PUBLISHER}}"
-    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${{APP_NAME}}" "URLInfoAbout" "${{APP_URL}}"
+    # Create antivirus-safe source package
+    create_antivirus_safe_package()
     
-    WriteUninstaller "$INSTDIR\\uninstall.exe"
-SectionEnd
+    print("✓ All Windows builds created successfully")
 
-Section "Uninstall"
-    Delete "$INSTDIR\\poe-leveling-planner.exe"
-    Delete "$INSTDIR\\config.json"
-    Delete "$INSTDIR\\quest_data_en.json"
-    RMDir /r "$INSTDIR\\data"
-    RMDir /r "$INSTDIR\\lang"
-    Delete "$INSTDIR\\uninstall.exe"
-    RMDir "$INSTDIR"
+def create_portable_package():
+    """Create a portable Windows package with the executable"""
+    print_step("Creating Portable Executable Package")
     
-    Delete "$SMPROGRAMS\\${{APP_NAME}}\\${{APP_NAME}}.lnk"
-    RMDir "$SMPROGRAMS\\${{APP_NAME}}"
-    Delete "$DESKTOP\\${{APP_NAME}}.lnk"
+    package_name = f"PoE-Leveling-Planner-v{APP_VERSION}-Windows-Portable"
+    package_dir = Path("dist") / package_name
     
-    DeleteRegKey HKCU "Software\\${{APP_NAME}}"
-    DeleteRegKey HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\${{APP_NAME}}"
-SectionEnd
+    # Clean previous package
+    if package_dir.exists():
+        shutil.rmtree(package_dir)
+    
+    # Create package directory
+    package_dir.mkdir(parents=True)
+    
+    # Copy executable
+    exe_src = Path("dist") / "poe-leveling-planner.exe"
+    if exe_src.exists():
+        shutil.copy2(exe_src, package_dir / "PoE-Leveling-Planner.exe")
+    else:
+        print("Warning: Executable not found!")
+        return False
+    
+    # Copy necessary files
+    shutil.copy2("config.json", package_dir / "config.json")
+    
+    if os.path.exists("lang"):
+        shutil.copytree("lang", package_dir / "lang")
+    if os.path.exists("data"):
+        shutil.copytree("data", package_dir / "data")
+    if os.path.exists("quest_data_en.json"):
+        shutil.copy2("quest_data_en.json", package_dir / "quest_data_en.json")
+    
+    # Create README
+    readme_content = f"""# {APP_NAME} v{APP_VERSION} - Portable Windows Edition
+
+## Quick Start
+
+1. Double-click `PoE-Leveling-Planner.exe` to start
+2. Click the ⚙️ button to configure settings
+3. Set up your character and gem preferences
+
+## Features
+
+- Transparent desktop overlay for Path of Exile
+- Always centered positioning
+- Quest reward tracking and gem progression
+- Customizable hotkeys and appearance
+- Multi-monitor support
+
+## Requirements
+
+- Windows 10 or later
+- No additional software needed (standalone executable)
+
+## Default Hotkeys
+
+- Ctrl+1: Previous quest/step
+- Ctrl+2: Next quest/step
+- Ctrl+3: Copy quest search term
+
+For more information, visit: {APP_URL}
 """
     
-    # Write NSIS script
-    with open("installer.nsi", "w", encoding="utf-8") as f:
-        f.write(nsis_script)
+    with open(package_dir / "README.txt", "w", encoding="utf-8") as f:
+        f.write(readme_content)
     
-    # Create installer
-    try:
-        run_command(["makensis", "installer.nsi"])
-        print("✓ Windows installer created successfully")
-        
-        # Clean up
-        os.remove("installer.nsi")
-        
-    except Exception as e:
-        print(f"✗ Failed to create Windows installer: {e}")
-        print("Please ensure NSIS is installed and in PATH")
+    # Create ZIP archive
+    zip_path = Path("dist") / f"{package_name}.zip"
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for file_path in package_dir.rglob('*'):
+            if file_path.is_file():
+                arcname = file_path.relative_to(package_dir.parent)
+                zipf.write(file_path, arcname)
+    
+    print(f"✓ Portable package created: {zip_path}")
+    return True
+
+def create_antivirus_safe_package():
+    """Create an antivirus-safe source package for Windows"""
+    print_step("Creating Antivirus-Safe Source Package")
+    
+    package_name = f"PoE-Leveling-Planner-v{APP_VERSION}-Windows-Safe"
+    package_dir = Path("dist") / package_name
+    
+    # Clean previous package
+    if package_dir.exists():
+        shutil.rmtree(package_dir)
+    
+    # Create package directory
+    package_dir.mkdir(parents=True)
+    
+    # Copy Python source files
+    python_files = [
+        "main.py", "config_gui.py", "config_manager.py", "data_manager.py",
+        "language_manager.py", "quest_reward_crawler.py", "vendor_reward_crawler.py"
+    ]
+    
+    for file in python_files:
+        if os.path.exists(file):
+            shutil.copy2(file, package_dir / file)
+    
+    # Copy other necessary files
+    if os.path.exists("requirements.txt"):
+        shutil.copy2("requirements.txt", package_dir / "requirements.txt")
+    shutil.copy2("config.json", package_dir / "config.json")
+    
+    if os.path.exists("lang"):
+        shutil.copytree("lang", package_dir / "lang")
+    if os.path.exists("data"):
+        shutil.copytree("data", package_dir / "data")
+    if os.path.exists("quest_data_en.json"):
+        shutil.copy2("quest_data_en.json", package_dir / "quest_data_en.json")
+    
+    # Create installation script
+    install_script = f"""@echo off
+title {APP_NAME} - Installation
+echo ============================================
+echo {APP_NAME} v{APP_VERSION} - Setup
+echo ============================================
+echo.
+
+echo Checking Python installation...
+py --version >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    python --version >nul 2>&1
+    if %ERRORLEVEL% neq 0 (
+        echo ERROR: Python is not installed!
+        echo Please install Python from https://www.python.org/downloads/
+        echo Make sure to check "Add Python to PATH" during installation.
+        pause
+        exit /b 1
+    ) else (
+        set PYTHON_CMD=python
+    )
+) else (
+    set PYTHON_CMD=py
+)
+
+echo Python found! Installing dependencies...
+%PYTHON_CMD% -m pip install --user -r requirements.txt
+
+if %ERRORLEVEL% neq 0 (
+    echo ERROR: Failed to install dependencies!
+    pause
+    exit /b 1
+)
+
+echo.
+echo Setup completed successfully!
+echo Double-click "Start-PoE-Leveling-Planner.bat" to run the application.
+pause
+"""
+    
+    with open(package_dir / "Install-Dependencies.bat", "w", encoding="utf-8") as f:
+        f.write(install_script)
+    
+    # Create launcher script
+    launcher_script = f"""@echo off
+title {APP_NAME} - Antivirus Safe Edition
+echo ============================================
+echo {APP_NAME} v{APP_VERSION}
+echo ============================================
+echo.
+echo Starting application (antivirus-safe source version)...
+echo.
+
+py main.py 2>nul || python main.py
+
+if %ERRORLEVEL% neq 0 (
+    echo.
+    echo Error starting application!
+    echo Please run Install-Dependencies.bat first.
+    pause
+)
+"""
+    
+    with open(package_dir / "Start-PoE-Leveling-Planner.bat", "w", encoding="utf-8") as f:
+        f.write(launcher_script)
+    
+    # Create README
+    readme_content = f"""# {APP_NAME} v{APP_VERSION} - Antivirus-Safe Windows Edition
+
+## About This Version
+
+This is a **source-based package** designed to avoid antivirus false positives.
+Instead of a compiled executable, it runs Python source code directly.
+
+## Quick Start
+
+1. Run `Install-Dependencies.bat` (first time only)
+2. Run `Start-PoE-Leveling-Planner.bat` to start the application
+
+## Features
+
+- **Antivirus Safe**: No compiled executable to trigger false positives
+- **Same Functionality**: Identical features to the compiled version
+- **Always Centered**: Overlay appears centered on screen
+- **Multi-Monitor Support**: Choose your preferred monitor
+- **Quest Tracking**: PoE quest rewards and gem progression
+
+## Requirements
+
+- Python 3.8+ installed on your system
+- Internet connection for dependency installation
+
+## Why This Version?
+
+Some antivirus software incorrectly flags PyInstaller executables as malicious.
+This source-based version avoids that issue entirely.
+
+For more information, visit: {APP_URL}
+"""
+    
+    with open(package_dir / "README.txt", "w", encoding="utf-8") as f:
+        f.write(readme_content)
+    
+    # Create ZIP archive
+    zip_path = Path("dist") / f"{package_name}.zip"
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for file_path in package_dir.rglob('*'):
+            if file_path.is_file():
+                arcname = file_path.relative_to(package_dir.parent)
+                zipf.write(file_path, arcname)
+    
+    print(f"✓ Antivirus-safe package created: {zip_path}")
+    return True
 
 def create_linux_appimage():
     """Create Linux AppImage"""
@@ -371,7 +520,7 @@ def main():
     
     # Step 5: Create platform-specific packages
     if platform.system() == "Windows":
-        create_windows_installer()
+        create_windows_builds()
     else:
         create_linux_appimage()
     

@@ -39,11 +39,10 @@ if errorlevel 1 (
 )
 
 echo.
-echo Build completed! Check the 'dist' directory for your installer.
+echo Build completed! Check the 'dist' directory for Windows packages:
 echo.
-echo The installer will be named: PoE-Leveling-Planner-Setup-v1.0.0.exe
-echo.
-echo Note: NSIS must be installed for Windows installer creation.
-echo Download from: https://nsis.sourceforge.io/Download
+echo - PoE-Leveling-Planner-v1.0.0-Windows-Portable.zip (Executable package)
+echo - PoE-Leveling-Planner-v1.0.0-Windows-Safe.zip (Antivirus-safe source)
+echo - poe-leveling-planner.exe (Standalone executable)
 echo.
 pause 

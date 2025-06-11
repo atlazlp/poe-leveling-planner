@@ -144,18 +144,23 @@ def get_build_artifacts():
         artifacts["linux_appimage"] = appimage_files[0]
         print(f"✓ Found Linux AppImage: {appimage_files[0]}")
     
-    # Look for Windows installer (for future builds)
-    installer_files = list(dist_path.glob("*Setup*.exe"))
-    if installer_files:
-        artifacts["windows_installer"] = installer_files[0]
-        print(f"✓ Found Windows installer: {installer_files[0]}")
+    # Look for Windows portable package
+    portable_zips = list(dist_path.glob("*Windows-Portable*.zip"))
+    if portable_zips:
+        artifacts["windows_portable"] = portable_zips[0]
+        print(f"✓ Found Windows portable package: {portable_zips[0]}")
     
-    # Look for Windows portable executable (for future builds)
-    exe_files = list(dist_path.glob("*.exe"))
-    exe_files = [f for f in exe_files if "Setup" not in f.name]
+    # Look for Windows antivirus-safe package
+    safe_zips = list(dist_path.glob("*Windows-Safe*.zip"))
+    if safe_zips:
+        artifacts["windows_safe"] = safe_zips[0]
+        print(f"✓ Found Windows antivirus-safe package: {safe_zips[0]}")
+    
+    # Look for standalone Windows executable
+    exe_files = list(dist_path.glob("poe-leveling-planner.exe"))
     if exe_files:
-        artifacts["windows_portable"] = exe_files[0]
-        print(f"✓ Found Windows portable: {exe_files[0]}")
+        artifacts["windows_exe"] = exe_files[0]
+        print(f"✓ Found Windows executable: {exe_files[0]}")
     
     # Look for macOS app bundle (for future builds)
     app_files = list(dist_path.glob("*.app"))
@@ -192,11 +197,14 @@ def generate_release_notes(version, artifacts):
         notes += f"- **AppImage**: `{artifacts['linux_appimage'].name}` - Portable Linux application\n"
     
     notes += "\n### Windows\n"
-    if "windows_installer" in artifacts:
-        notes += f"- **Installer**: `{artifacts['windows_installer'].name}` - Windows installer with automatic updates\n"
     if "windows_portable" in artifacts:
-        notes += f"- **Portable**: `{artifacts['windows_portable'].name}` - Portable Windows executable\n"
-    else:
+        notes += f"- **Portable Package**: `{artifacts['windows_portable'].name}` - Standalone executable with all dependencies\n"
+    if "windows_safe" in artifacts:
+        notes += f"- **Antivirus-Safe**: `{artifacts['windows_safe'].name}` - Source package to avoid false positives\n"
+    if "windows_exe" in artifacts:
+        notes += f"- **Standalone Executable**: `{artifacts['windows_exe'].name}` - Single executable file\n"
+    
+    if not any(key.startswith("windows_") for key in artifacts):
         notes += "- Windows builds will be available in future releases\n"
     
     notes += "\n### macOS\n"
@@ -219,8 +227,9 @@ def generate_release_notes(version, artifacts):
 3. Run: `./PoE-Leveling-Planner-*.AppImage`
 
 ### Windows
-- Use the installer for automatic installation and updates
-- Or download the portable executable for standalone use
+- **Portable Package**: Extract ZIP and run `PoE-Leveling-Planner.exe`
+- **Antivirus-Safe**: Extract ZIP, run `Install-Dependencies.bat`, then use `Start-PoE-Leveling-Planner.bat`
+- **Standalone**: Download and run `poe-leveling-planner.exe` directly
 
 ### From Source
 1. Download and extract the source archive
@@ -229,9 +238,9 @@ def generate_release_notes(version, artifacts):
 
 ## System Requirements
 - **Linux**: X11 or Wayland desktop environment
-- **Windows**: Windows 10 or later (future releases)
+- **Windows**: Windows 10 or later
 - **macOS**: macOS 10.14 or later (future releases)
-- **Python**: 3.8+ (for source builds)
+- **Python**: 3.8+ (for source builds and antivirus-safe version)
 
 ## Features
 - Transparent desktop overlay with customizable opacity

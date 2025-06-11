@@ -1,0 +1,201 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag name for the release'
+        required: true
+        default: 'v1.0.0'
+      prerelease:
+        description: 'Mark as prerelease'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  APP_NAME: "PoE Leveling Planner"
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+    
+    - name: Download appimagetool
+      run: |
+        wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+        chmod +x appimagetool-x86_64.AppImage
+        mv appimagetool-x86_64.AppImage appimagetool
+    
+    - name: Build Linux AppImage
+      run: python build.py
+    
+    - name: Upload Linux artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: linux-builds
+        path: |
+          dist/*.AppImage
+          dist/*source*.zip
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+    
+    - name: Build Windows packages
+      run: python build.py
+    
+    - name: Upload Windows artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-builds
+        path: |
+          dist/*.zip
+          dist/*.exe
+
+  create-release:
+    needs: [build-linux, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install GitHub CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install gh
+    
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: dist/
+    
+    - name: Organize artifacts
+      run: |
+        mkdir -p dist_final
+        find dist/ -name "*.AppImage" -exec cp {} dist_final/ \;
+        find dist/ -name "*.zip" -exec cp {} dist_final/ \;
+        find dist/ -name "*.exe" -exec cp {} dist_final/ \;
+        ls -la dist_final/
+    
+    - name: Determine release tag
+      id: tag
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "tag_name=${{ github.event.inputs.tag_name }}" >> $GITHUB_OUTPUT
+          echo "prerelease=${{ github.event.inputs.prerelease }}" >> $GITHUB_OUTPUT
+        else
+          echo "tag_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          echo "prerelease=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Generate release notes
+      id: release_notes
+      run: |
+        cat > release_notes.md << 'EOF'
+        # ${{ env.APP_NAME }} ${{ steps.tag.outputs.tag_name }}
+
+        ## What's New
+        - Desktop overlay application for Path of Exile leveling assistance
+        - Semi-transparent overlay with always-centered positioning
+        - Multi-monitor support with automatic detection
+        - Global hotkey support for quest navigation
+        - Visual configuration interface with live preview
+        - Support for multiple languages (English, Portuguese)
+
+        ## Downloads
+
+        ### Linux
+        - **AppImage**: Portable Linux application - Download, make executable, and run
+
+        ### Windows
+        - **Portable Package**: Standalone executable with all dependencies
+        - **Antivirus-Safe**: Source package to avoid false positives
+        - **Standalone Executable**: Single executable file
+
+        ## Installation
+
+        ### Linux (AppImage)
+        1. Download the AppImage file
+        2. Make it executable: `chmod +x PoE-Leveling-Planner-*.AppImage`
+        3. Run: `./PoE-Leveling-Planner-*.AppImage`
+
+        ### Windows
+        - **Portable Package**: Extract ZIP and run `PoE-Leveling-Planner.exe`
+        - **Antivirus-Safe**: Extract ZIP, run `Install-Dependencies.bat`, then use `Start-PoE-Leveling-Planner.bat`
+        - **Standalone**: Download and run `poe-leveling-planner.exe` directly
+
+        ### From Source
+        1. Download and extract the source archive
+        2. Install Python 3.8+ and dependencies: `pip install -r requirements.txt`
+        3. Run: `python main.py`
+
+        ## System Requirements
+        - **Linux**: X11 or Wayland desktop environment
+        - **Windows**: Windows 10 or later
+        - **Python**: 3.8+ (for source builds and antivirus-safe version)
+
+        ## Features
+        - Transparent desktop overlay with customizable opacity
+        - Always-centered positioning for consistent gameplay experience
+        - Multi-monitor support with automatic detection
+        - Global hotkeys for quest navigation (Ctrl+1, Ctrl+2, Ctrl+3)
+        - Visual configuration interface with live preview
+        - Support for multiple languages
+        - Always-on-top positioning for gameplay visibility
+        - Antivirus-safe source distribution option
+
+        For detailed usage instructions, see the README.md file.
+        EOF
+
+    - name: Create GitHub Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        PRERELEASE_FLAG=""
+        if [ "${{ steps.tag.outputs.prerelease }}" = "true" ]; then
+          PRERELEASE_FLAG="--prerelease"
+        fi
+        
+        gh release create "${{ steps.tag.outputs.tag_name }}" \
+          --title "${{ env.APP_NAME }} ${{ steps.tag.outputs.tag_name }}" \
+          --notes-file release_notes.md \
+          $PRERELEASE_FLAG \
+          dist_final/*
+
+    - name: Output release info
+      run: |
+        echo "Release created: ${{ steps.tag.outputs.tag_name }}"
+        echo "Files uploaded:"
+        ls -la dist_final/ 
