@@ -29,22 +29,8 @@
         "fade_out_duration": 0
     },
     "characters": {
-        "profiles": [
-            {
-                "name": "Test",
-                "class": "Marauder",
-                "gem_selections": {},
-                "vendor_gem_selections": {}
-            },
-            {
-                "name": "test2",
-                "class": "Witch",
-                "gem_selections": {},
-                "vendor_gem_selections": {},
-                "regex_patterns": []
-            }
-        ],
-        "selected": "test2"
+        "profiles": [],
+        "selected": null
     },
     "language": {
         "current": "en_US"
