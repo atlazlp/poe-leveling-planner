@@ -13,7 +13,7 @@ import os
 import subprocess
 from config_manager import ConfigManager
 from language_manager import LanguageManager
-from quest_reward_crawler import QuestRewardCrawler
+from data_manager import DataManager
 import json
 
 
@@ -21,7 +21,7 @@ class PoEOverlay:
     def __init__(self):
         self.config_manager = ConfigManager()
         self.language_manager = LanguageManager(self.config_manager)
-        self.quest_crawler = QuestRewardCrawler()
+        self.data_manager = DataManager()
         
         # Create a hidden root window
         self.root = tk.Tk()
@@ -34,34 +34,51 @@ class PoEOverlay:
         self.current_quest_index = 0
         self.available_quests = []
         
+        # Data loading state
+        self.data_loading = False
+        self.data_loaded = False
+        
         self.setup_window()
         self.setup_ui()
         self.setup_hotkeys()
         
-        # Initialize quest data in background
-        self.initialize_quest_data()
+        # Initialize data with the new data manager
+        self.initialize_data()
         
-    def initialize_quest_data(self):
-        """Initialize quest data in background thread"""
-        def update_quest_data():
-            try:
-                print("Initializing quest reward data...")
-                current_lang = self.language_manager.get_current_language()
-                success = self.quest_crawler.update_quest_data(current_lang)
-                
-                if success:
-                    print("Quest reward data initialized successfully")
-                    # Load available quests after data is ready
-                    self.root.after(0, self.load_available_quests)
-                else:
-                    print("Failed to initialize quest reward data")
-                    
-            except Exception as e:
-                print(f"Error initializing quest data: {e}")
+    def initialize_data(self):
+        """Initialize data using the centralized data manager"""
+        if self.data_loading:
+            return
+            
+        self.data_loading = True
+        current_lang = self.language_manager.get_current_language()
         
-        # Start background thread
-        thread = threading.Thread(target=update_quest_data, daemon=True)
-        thread.start()
+        # Show loading status without destroying the main UI structure
+        self.show_loading_message("Checking data...")
+        
+        def on_data_ready(success):
+            """Callback when data initialization is complete"""
+            self.data_loading = False
+            self.data_loaded = success
+            
+            if success:
+                print("Data initialization completed successfully")
+                # Load available quests after data is ready
+                self.root.after(0, self.load_available_quests)
+            else:
+                print("Data initialization failed")
+                self.root.after(0, lambda: self.show_error_message("Failed to load data"))
+        
+        def progress_callback(message, current, total):
+            """Progress callback for data loading"""
+            self.root.after(0, lambda: self.show_loading_message(f"{message} ({current}/{total})"))
+        
+        # Start data initialization in background
+        self.data_manager.initialize_data_async(
+            current_lang, 
+            callback=on_data_ready,
+            progress_callback=progress_callback
+        )
         
     def load_available_quests(self):
         """Load quests that have selected gems from the current character profile"""
@@ -88,10 +105,10 @@ class PoEOverlay:
                 self.update_overlay_display()
                 return
             
-            # Load quest data
+            # Load data using the data manager
             current_lang = self.language_manager.get_current_language()
-            quest_data = self.quest_crawler.load_quest_data(current_lang)
-            vendor_data = self.load_vendor_data(current_lang)
+            quest_data = self.data_manager.get_quest_data(current_lang)
+            vendor_data = self.data_manager.get_vendor_data(current_lang)
             
             if not quest_data:
                 print("No quest data available")
@@ -180,18 +197,8 @@ class PoEOverlay:
             import traceback
             traceback.print_exc()
             self.available_quests = []
-            self.update_overlay_display()
-    
-    def load_vendor_data(self, language):
-        """Load vendor reward data"""
-        try:
-            vendor_file = f"data/vendor_rewards_{language}.json"
-            if os.path.exists(vendor_file):
-                with open(vendor_file, 'r', encoding='utf-8') as f:
-                    return json.load(f)
-        except Exception as e:
-            print(f"Error loading vendor data: {e}")
-        return None
+            # Use the safer error display method instead of update_overlay_display
+            self.show_error_message("Failed to load quest data")
     
     def get_gem_color_hex(self, color):
         """Get hex color code for gem color"""
@@ -204,9 +211,15 @@ class PoEOverlay:
     
     def update_overlay_display(self):
         """Update the overlay display with current quest information"""
+        # Check if overlay still exists
+        if not self.overlay or not self.overlay.winfo_exists():
+            return
+            
         if not self.available_quests:
             display_text = "No quests with selected gems\nConfigure gems in settings"
-            self.text_label.config(text=display_text)
+            # Check if text_label still exists before updating
+            if hasattr(self, 'text_label') and self.text_label and self.text_label.winfo_exists():
+                self.text_label.config(text=display_text)
             return
         
         if self.current_quest_index >= len(self.available_quests):
@@ -215,7 +228,12 @@ class PoEOverlay:
         current_quest = self.available_quests[self.current_quest_index]
         
         # Clear the current label and create a new frame for colored text
-        self.text_label.destroy()
+        if hasattr(self, 'text_label') and self.text_label and self.text_label.winfo_exists():
+            self.text_label.destroy()
+        
+        # Check if main_frame still exists
+        if not hasattr(self, 'main_frame') or not self.main_frame or not self.main_frame.winfo_exists():
+            return
         
         # Get appearance settings
         bg_color = self.config_manager.get_setting("appearance", "background_color", "#2b2b2b")
@@ -316,65 +334,39 @@ class PoEOverlay:
         """Get gem color from quest data"""
         try:
             current_lang = self.language_manager.get_current_language()
-            quest_data = self.quest_crawler.load_quest_data(current_lang)
+            quest_data = self.data_manager.get_quest_data(current_lang)
             
             if quest_data:
                 for quest in quest_data:
                     if quest.get("name") == quest_name:
-                        # Get current character class
-                        characters = self.config_manager.get_setting("characters", "profiles")
-                        selected_profile = self.config_manager.get_setting("characters", "selected")
-                        
-                        current_class = None
-                        if characters and selected_profile:
-                            for profile in characters:
-                                if profile.get("name") == selected_profile:
-                                    current_class = profile.get("class")
-                                    break
-                        
-                        if current_class:
-                            class_rewards = quest.get("rewards", {}).get(current_class, [])
-                            for gem in class_rewards:
+                        # Look through all class rewards for this gem
+                        for class_name, rewards in quest.get("rewards", {}).items():
+                            for gem in rewards:
                                 if gem.get("name") == gem_name:
-                                    return gem.get("color", "gem_blue")
+                                    return gem.get("color", "gem_red")
         except Exception as e:
             print(f"Error getting gem color from data: {e}")
         
         # Fallback to crawler's color detection
-        return self.quest_crawler.get_gem_color(gem_name)
+        return self.data_manager.quest_crawler.get_gem_color(gem_name)
     
     def get_gem_color_from_vendor_data(self, quest_name, gem_name):
         """Get gem color from vendor data"""
         try:
             current_lang = self.language_manager.get_current_language()
-            vendor_data = self.load_vendor_data(current_lang)
+            vendor_data = self.data_manager.get_vendor_data(current_lang)
             
             if vendor_data:
-                # Get current character class
-                characters = self.config_manager.get_setting("characters", "profiles")
-                selected_profile = self.config_manager.get_setting("characters", "selected")
-                
-                current_class = None
-                if characters and selected_profile:
-                    for profile in characters:
-                        if profile.get("name") == selected_profile:
-                            current_class = profile.get("class")
-                            break
-                
-                if current_class:
-                    # Look for vendor quest matching quest name and class
-                    vendor_quest_name = f"{quest_name} ({current_class})"
-                    for vendor_quest in vendor_data:
-                        if vendor_quest.get("name") == vendor_quest_name:
-                            class_rewards = vendor_quest.get("class_rewards", [])
-                            for gem in class_rewards:
-                                if gem.get("name") == gem_name:
-                                    return gem.get("color", "gem_blue")
+                for quest in vendor_data:
+                    if quest_name in quest.get("name", ""):
+                        for gem in quest.get("class_rewards", []):
+                            if gem.get("name") == gem_name:
+                                return gem.get("color", "gem_red")
         except Exception as e:
             print(f"Error getting gem color from vendor data: {e}")
         
         # Fallback to crawler's color detection
-        return self.quest_crawler.get_gem_color(gem_name)
+        return self.data_manager.quest_crawler.get_gem_color(gem_name)
         
     def setup_window(self):
         """Configure the overlay window properties"""
@@ -648,6 +640,16 @@ class PoEOverlay:
         except KeyboardInterrupt:
             print("\nShutting down...")
             self.root.quit()
+
+    def show_loading_message(self, message):
+        """Show loading message without destroying the main UI structure"""
+        if hasattr(self, 'text_label') and self.text_label and self.text_label.winfo_exists():
+            self.text_label.config(text=f"{message}\nPlease wait...")
+    
+    def show_error_message(self, error_message):
+        """Show error message without destroying the main UI structure"""
+        if hasattr(self, 'text_label') and self.text_label and self.text_label.winfo_exists():
+            self.text_label.config(text=f"Error: {error_message}\nPress gear button to configure")
 
 
 def main():

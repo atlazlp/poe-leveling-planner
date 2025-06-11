@@ -10,8 +10,7 @@ import sys
 import os
 from config_manager import ConfigManager
 from language_manager import LanguageManager
-from quest_reward_crawler import QuestRewardCrawler
-from vendor_reward_crawler import VendorRewardCrawler
+from data_manager import DataManager
 import threading
 
 
@@ -19,13 +18,11 @@ class ConfigGUI:
     def __init__(self):
         self.config_manager = ConfigManager()
         self.language_manager = LanguageManager(self.config_manager)
-        self.quest_crawler = QuestRewardCrawler()
-        self.vendor_crawler = VendorRewardCrawler()
+        self.data_manager = DataManager()
         self.root = tk.Tk()
         self.test_window = None  # For live testing
         self.debounce_timer = None  # For debouncing slider updates
-        self.quest_data_loading = False  # Track if quest data is being loaded
-        self.vendor_data_loading = False  # Track if vendor data is being loaded
+        self.data_loading = False  # Track if data is being loaded
         
         # Kill any existing overlay processes when config opens
         self.kill_existing_overlay()
@@ -35,9 +32,8 @@ class ConfigGUI:
         self.load_current_settings()
         self.start_live_testing()
         
-        # Initialize quest and vendor data in background
-        self.initialize_quest_data()
-        self.initialize_vendor_data()
+        # Initialize data in background
+        self.initialize_data()
         
     def kill_existing_overlay(self):
         """Kill any existing overlay processes"""
@@ -46,57 +42,31 @@ class ConfigGUI:
         except Exception as e:
             print(f"Note: Could not kill existing overlay processes: {e}")
         
-    def initialize_quest_data(self):
-        """Initialize quest data in background thread"""
-        def update_quest_data():
+    def initialize_data(self):
+        """Initialize data in background thread"""
+        def update_data():
             try:
-                self.quest_data_loading = True
+                self.data_loading = True
                 self.update_gem_info_loading()
                 
-                # Update quest data for current language
+                # Update data for current language
                 current_lang = self.language_manager.get_current_language()
-                success = self.quest_crawler.update_quest_data(current_lang)
+                success = self.data_manager.check_and_update_data(current_lang)
                 
                 if success:
                     # Update UI on main thread
                     self.root.after(0, self.refresh_gem_info)
                 else:
-                    self.root.after(0, lambda: self.update_gem_info_error("Failed to load quest data"))
+                    self.root.after(0, lambda: self.update_gem_info_error("Failed to load data"))
                     
             except Exception as e:
-                print(f"Error initializing quest data: {e}")
+                print(f"Error initializing data: {e}")
                 self.root.after(0, lambda: self.update_gem_info_error(f"Error: {e}"))
             finally:
-                self.quest_data_loading = False
+                self.data_loading = False
         
         # Start background thread
-        thread = threading.Thread(target=update_quest_data, daemon=True)
-        thread.start()
-        
-    def initialize_vendor_data(self):
-        """Initialize vendor data in background thread"""
-        def update_vendor_data():
-            try:
-                self.vendor_data_loading = True
-                
-                # Update vendor data for current language
-                current_lang = self.language_manager.get_current_language()
-                success = self.vendor_crawler.update_vendor_data(current_lang)
-                
-                if success:
-                    # Update UI on main thread
-                    self.root.after(0, self.refresh_vendor_info)
-                else:
-                    self.root.after(0, lambda: self.update_vendor_info_error("Failed to load vendor data"))
-                    
-            except Exception as e:
-                print(f"Error initializing vendor data: {e}")
-                self.root.after(0, lambda: self.update_vendor_info_error(f"Error: {e}"))
-            finally:
-                self.vendor_data_loading = False
-        
-        # Start background thread
-        thread = threading.Thread(target=update_vendor_data, daemon=True)
+        thread = threading.Thread(target=update_data, daemon=True)
         thread.start()
         
     def setup_window(self):
@@ -657,7 +627,7 @@ class ConfigGUI:
         current_language = self.language_manager.get_current_language()
         
         # Get quest rewards for this character class
-        quest_rewards = self.quest_crawler.get_quest_rewards_for_class(current_language, character_class)
+        quest_rewards = self.data_manager.get_quest_rewards_for_class(current_language, character_class)
         
         # Preserve horizontal scroll position if canvas exists
         scroll_position = None
@@ -868,7 +838,7 @@ class ConfigGUI:
         current_language = self.language_manager.get_current_language()
         
         # Get vendor rewards for this character class
-        vendor_rewards = self.vendor_crawler.get_vendor_rewards_for_class(current_language, character_class)
+        vendor_rewards = self.data_manager.get_vendor_rewards_for_class(current_language, character_class)
         
         # Clear existing widgets
         for widget in self.vendor_scrollable_frame.winfo_children():
@@ -1112,79 +1082,45 @@ class ConfigGUI:
     
     def refresh_quest_data(self):
         """Refresh quest data from PoEDB"""
-        if self.quest_data_loading:
-            messagebox.showinfo("Info", "Quest data is already being updated. Please wait.")
+        if self.data_loading:
+            messagebox.showinfo("Info", "Data is already being updated. Please wait.")
             return
         
         def update_data():
             try:
-                self.quest_data_loading = True
+                self.data_loading = True
                 self.root.after(0, self.update_gem_info_loading)
                 
                 current_language = self.language_manager.get_current_language()
-                success = self.quest_crawler.update_quest_data(current_language, force_update=True)
+                success = self.data_manager.force_update_all(current_language)
                 
                 if success:
                     self.root.after(0, lambda: [
                         self.refresh_gem_info(),
-                        messagebox.showinfo("Success", "Quest data updated successfully!")
+                        messagebox.showinfo("Success", "Data updated successfully!")
                     ])
                 else:
                     self.root.after(0, lambda: [
-                        self.update_gem_info_error("Failed to update quest data"),
-                        messagebox.showerror("Error", "Failed to update quest data. Please check your internet connection.")
+                        self.update_gem_info_error("Failed to update data"),
+                        messagebox.showerror("Error", "Failed to update data. Please check your internet connection.")
                     ])
                     
             except Exception as e:
-                print(f"Error updating quest data: {e}")
+                print(f"Error updating data: {e}")
                 self.root.after(0, lambda: [
                     self.update_gem_info_error(f"Error: {e}"),
-                    messagebox.showerror("Error", f"Error updating quest data: {e}")
+                    messagebox.showerror("Error", f"Error updating data: {e}")
                 ])
             finally:
-                self.quest_data_loading = False
+                self.data_loading = False
         
         # Start background thread
         thread = threading.Thread(target=update_data, daemon=True)
         thread.start()
     
     def refresh_vendor_data(self):
-        """Refresh vendor data from PoE Wiki"""
-        if self.vendor_data_loading:
-            messagebox.showinfo("Info", "Vendor data is already being updated. Please wait.")
-            return
-        
-        def update_data():
-            try:
-                self.vendor_data_loading = True
-                self.root.after(0, self.update_vendor_info_loading)
-                
-                current_language = self.language_manager.get_current_language()
-                success = self.vendor_crawler.update_vendor_data(current_language, force_update=True)
-                
-                if success:
-                    self.root.after(0, lambda: [
-                        self.refresh_vendor_info(),
-                        messagebox.showinfo("Success", "Vendor data updated successfully!")
-                    ])
-                else:
-                    self.root.after(0, lambda: [
-                        self.update_vendor_info_error("Failed to update vendor data"),
-                        messagebox.showerror("Error", "Failed to update vendor data. Please check your internet connection.")
-                    ])
-                    
-            except Exception as e:
-                print(f"Error updating vendor data: {e}")
-                self.root.after(0, lambda: [
-                    self.update_vendor_info_error(f"Error: {e}"),
-                    messagebox.showerror("Error", f"Error updating vendor data: {e}")
-                ])
-            finally:
-                self.vendor_data_loading = False
-        
-        # Start background thread
-        thread = threading.Thread(target=update_data, daemon=True)
-        thread.start()
+        """Refresh vendor data - now uses the same method as quest data"""
+        self.refresh_quest_data()  # Both quest and vendor data are updated together now
     
     def on_tab_changed(self, event):
         """Handle tab change to show/hide reset button"""
@@ -1432,9 +1368,8 @@ class ConfigGUI:
                 # Update window title
                 self.root.title(self.language_manager.get_ui_text("window_title", "PoE Leveling Planner - Configuration"))
                 
-                # Update quest data for new language
-                self.initialize_quest_data()
-                self.initialize_vendor_data()
+                # Update data for new language
+                self.initialize_data()
                 
                 messagebox.showinfo(
                     self.language_manager.get_ui_text("language_changed", "Language Changed"),
