@@ -137,7 +137,7 @@ jobs:
         import sys
         
         # Add src directory to path
-        sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+        sys.path.insert(0, os.path.join(os.getcwd(), 'src'))
         
         block_cipher = None
         
@@ -191,7 +191,7 @@ jobs:
             debug=False,
             bootloader_ignore_signals=False,
             strip=False,
-            upx=True,
+            upx=False,
             upx_exclude=[],
             runtime_tmpdir=None,
             console=False,
