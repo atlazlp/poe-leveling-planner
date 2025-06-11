@@ -223,8 +223,7 @@ class ConfigGUI:
                                          state="readonly", width=30)
         self.monitor_combo.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=2)
         
-        # Position is now hidden and always set to "center"
-        self.position_var = tk.StringVar(value="center")
+        # Position is always center - no UI control needed
         
         monitor_frame.columnconfigure(1, weight=1)
         
@@ -280,8 +279,7 @@ class ConfigGUI:
         appearance_frame.columnconfigure(0, weight=1)
         
         # Update preview when settings change - with debouncing for sliders
-        for var in [self.monitor_var, self.position_var]:
-            var.trace('w', self.update_live_preview)
+        self.monitor_var.trace('w', self.update_live_preview)
         
         # Add debounced updates for sliders to prevent lag
         for var in [self.x_offset_var, self.y_offset_var, self.width_var, self.height_var, self.opacity_var]:
@@ -1223,7 +1221,6 @@ class ConfigGUI:
                 self.monitor_var.set(self.language_manager.get_ui_text("auto_primary", "Auto/Primary"))
         
         # Load display settings
-        self.position_var.set(self.config_manager.get_setting("display", "position", "top-right"))
         self.x_offset_var.set(self.config_manager.get_setting("display", "x_offset", 0))
         self.y_offset_var.set(self.config_manager.get_setting("display", "y_offset", 0))
         self.opacity_var.set(self.config_manager.get_setting("display", "opacity", 0.8))
@@ -1286,12 +1283,10 @@ class ConfigGUI:
             
             # Temporarily update config for preview
             old_monitor = self.config_manager.config["display"]["monitor"]
-            old_position = self.config_manager.config["display"]["position"]
             old_x_offset = self.config_manager.config["display"].get("x_offset", 0)
             old_y_offset = self.config_manager.config["display"].get("y_offset", 0)
             
             self.config_manager.config["display"]["monitor"] = monitor_index
-            self.config_manager.config["display"]["position"] = self.position_var.get()
             self.config_manager.config["display"]["x_offset"] = self.x_offset_var.get()
             self.config_manager.config["display"]["y_offset"] = self.y_offset_var.get()
             
@@ -1299,7 +1294,6 @@ class ConfigGUI:
             
             # Restore original values
             self.config_manager.config["display"]["monitor"] = old_monitor
-            self.config_manager.config["display"]["position"] = old_position
             self.config_manager.config["display"]["x_offset"] = old_x_offset
             self.config_manager.config["display"]["y_offset"] = old_y_offset
             
@@ -1350,6 +1344,10 @@ class ConfigGUI:
                 # Kill any existing overlay processes
                 self.kill_existing_overlay()
                 
+                # Wait a moment for processes to fully terminate
+                import time
+                time.sleep(0.5)
+                
                 # Start new overlay process
                 subprocess.Popen([sys.executable, "main.py"], 
                                cwd=os.path.dirname(os.path.abspath(__file__)))
@@ -1362,8 +1360,39 @@ class ConfigGUI:
     
     def kill_existing_overlay(self):
         """Kill any existing overlay processes"""
+        import os
+        import signal
+        import psutil
+        
         try:
-            subprocess.run(["pkill", "-f", "main.py"], capture_output=True)
+            # Windows-compatible process killing
+            current_pid = os.getpid()
+            processes_killed = 0
+            
+            for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+                try:
+                    if proc.info['pid'] == current_pid:
+                        continue  # Don't kill the config process itself
+                    
+                    if proc.info['cmdline'] and any('main.py' in str(arg) for arg in proc.info['cmdline']):
+                        print(f"Terminating overlay process PID: {proc.info['pid']}")
+                        proc.terminate()
+                        processes_killed += 1
+                        
+                        # Wait for process to terminate, then force kill if needed
+                        try:
+                            proc.wait(timeout=2)
+                        except psutil.TimeoutExpired:
+                            proc.kill()
+                            
+                except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                    continue
+                    
+            if processes_killed > 0:
+                print(f"Terminated {processes_killed} overlay processes")
+            else:
+                print("No overlay processes found to terminate")
+                
         except Exception as e:
             print(f"Note: Could not kill existing overlay processes: {e}")
     
@@ -1394,7 +1423,6 @@ class ConfigGUI:
             
             # Update all settings
             self.config_manager.update_setting("display", "monitor", monitor_value)
-            self.config_manager.update_setting("display", "position", self.position_var.get())
             self.config_manager.update_setting("display", "x_offset", self.x_offset_var.get())
             self.config_manager.update_setting("display", "y_offset", self.y_offset_var.get())
             self.config_manager.update_setting("display", "opacity", self.opacity_var.get())

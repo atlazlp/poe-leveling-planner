@@ -45,7 +45,6 @@ class ConfigManager:
         return {
             "display": {
                 "monitor": "auto",
-                "position": "center",
                 "x_offset": 0,
                 "y_offset": 0,
                 "custom_x": None,
@@ -116,7 +115,7 @@ class ConfigManager:
             return [{"id": 0, "name": "Default Monitor", "x": 0, "y": 0, "width": 1920, "height": 1080}]
     
     def calculate_position(self) -> Tuple[int, int]:
-        """Calculate overlay position based on configuration"""
+        """Calculate overlay position based on configuration - always centered"""
         monitors = self.get_monitor_info()
         display_config = self.config["display"]
         appearance_config = self.config["appearance"]
@@ -136,7 +135,7 @@ class ConfigManager:
         else:
             target_monitor = monitors[0]  # Fallback to primary
         
-        # Always calculate center position
+        # Always calculate center position (no position setting needed)
         width = appearance_config["width"]
         height = appearance_config["height"]
         
@@ -182,7 +181,7 @@ class ConfigManager:
         for i, monitor in enumerate(monitors):
             print(f"  {i}: {monitor['name']} - {monitor['width']}x{monitor['height']} at ({monitor['x']}, {monitor['y']})")
         print(f"\nCurrent monitor setting: {self.config['display']['monitor']}")
-        print(f"Current position: {self.config['display']['position']}")
+        print("Position: Always centered")
         
         x, y = self.calculate_position()
         print(f"Calculated overlay position: ({x}, {y})") 

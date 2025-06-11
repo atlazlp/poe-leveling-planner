@@ -130,7 +130,7 @@ def test_settings(config_manager):
     
     print(f"Overlay will appear at position: ({x}, {y})")
     print(f"Monitor setting: {monitor_setting}")
-    print(f"Position setting: {config_manager.get_setting('display', 'position')}")
+    print("Position setting: Always centered")
     
     # Determine which monitor this position is on
     for i, monitor in enumerate(monitors):
