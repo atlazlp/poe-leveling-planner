@@ -11,6 +11,7 @@ import os
 import re
 from typing import Dict, List, Any, Optional
 import time
+from html_parser_utils import get_soup
 
 
 class VendorRewardCrawler:
@@ -127,7 +128,7 @@ class VendorRewardCrawler:
             response = self.session.get(url, timeout=30)
             response.raise_for_status()
             
-            soup = BeautifulSoup(response.content, 'lxml')
+            soup = get_soup(response.content)
             gem_colors = {}
             
             # Find all gem entries in the page
@@ -192,7 +193,7 @@ class VendorRewardCrawler:
     
     def parse_vendor_rewards(self, html_content: str) -> List[Dict[str, Any]]:
         """Parse the HTML content to extract vendor reward information"""
-        soup = BeautifulSoup(html_content, 'lxml')
+        soup = get_soup(html_content)
         
         try:
             # Find the main vendor reward table

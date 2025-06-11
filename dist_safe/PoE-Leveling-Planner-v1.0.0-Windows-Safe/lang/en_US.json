@@ -1,0 +1,50 @@
+{
+    "ui": {
+        "window_title": "PoE Leveling Planner - Configuration",
+        "main_title": "PoE Leveling Planner Configuration",
+        "monitor_settings": "Monitor Settings",
+        "monitor": "Monitor:",
+        "position_offset": "Position Offset",
+        "x_offset": "X Offset:",
+        "y_offset": "Y Offset:",
+        "appearance": "Appearance",
+        "opacity": "Opacity:",
+        "width": "Width:",
+        "height": "Height:",
+        "hotkeys": "Hotkeys",
+        "toggle_text": "Toggle Text:",
+        "reset_text": "Reset Text:",
+        "text_content": "Text Content",
+        "default_text": "Default Text:",
+        "alternate_text": "Alternate Text:",
+        "language_settings": "Language Settings",
+        "language": "Language:",
+        "live_preview": "Live Preview",
+        "hide_config_window": "Hide Config Window",
+        "show_config_window": "Show Config Window",
+        "save_restart": "Save & Restart",
+        "cancel": "Cancel",
+        "reset_to_default": "Reset to Default",
+        "auto_primary": "Auto/Primary"
+    },
+    "content": {
+        "default_text": "PoE Leveling Planner\nReady to assist!",
+        "alternate_text": "Hotkey Activated!\nCtrl+2 to return"
+    },
+    "messages": {
+        "config_saved": "Configuration saved to config.json",
+        "opening_config": "Opening configuration window...",
+        "closing_app": "Closing application...",
+        "app_started": "PoE Leveling Planner started!",
+        "config_loaded": "Configuration loaded from config.json",
+        "hotkey_instructions": "Use overlay buttons or press Ctrl+C in terminal to exit",
+        "hotkey_pressed_alternate": "pressed - switched to alternate text",
+        "hotkey_pressed_original": "pressed - switched to original text",
+        "confirm_reset": "Are you sure you want to reset all settings to defaults?",
+        "reset_success": "Settings reset to defaults!",
+        "error_opening_config": "Error opening config window:",
+        "error_saving_config": "Could not save configuration:",
+        "position_info": "Position:",
+        "monitor_info": "Monitor:"
+    }
+} 

@@ -11,6 +11,7 @@ import os
 import re
 from typing import Dict, List, Any, Optional
 import time
+from html_parser_utils import get_soup
 
 
 class QuestRewardCrawler:
@@ -111,7 +112,7 @@ class QuestRewardCrawler:
     
     def parse_quest_rewards(self, html_content: str, language: str) -> List[Dict[str, Any]]:
         """Parse the HTML content to extract quest reward information"""
-        soup = BeautifulSoup(html_content, 'lxml')
+        soup = get_soup(html_content)
         quests = []
         
         try:

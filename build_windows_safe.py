@@ -102,7 +102,9 @@ def create_antivirus_safe_package():
         "data_manager.py",
         "language_manager.py",
         "quest_reward_crawler.py",
-        "vendor_reward_crawler.py"
+        "vendor_reward_crawler.py",
+        "html_parser_utils.py",
+        "diagnose_installation.py"
     ]
     
     print("Copying Python source files...")
@@ -115,6 +117,11 @@ def create_antivirus_safe_package():
     if os.path.exists("requirements.txt"):
         shutil.copy2("requirements.txt", package_dir / "requirements.txt")
         print("  ✓ requirements.txt")
+    
+    # Copy safe requirements
+    if os.path.exists("requirements-safe.txt"):
+        shutil.copy2("requirements-safe.txt", package_dir / "requirements-safe.txt")
+        print("  ✓ requirements-safe.txt")
     
     # Copy configuration files
     shutil.copy2("config.json", package_dir / "config.json")
@@ -163,13 +170,44 @@ if %ERRORLEVEL% neq 0 (
 echo Python found! Installing dependencies...
 echo.
 
+REM First try to install with the main requirements file
+echo Attempting to install with main requirements.txt...
 %PYTHON_CMD% -m pip install --user -r requirements.txt
 
 if %ERRORLEVEL% neq 0 (
-    echo ERROR: Failed to install dependencies!
-    echo Please check your internet connection and try again.
-    pause
-    exit /b 1
+    echo.
+    echo WARNING: Main requirements.txt installation failed!
+    echo This is likely due to missing Visual C++ Build Tools.
+    echo.
+    echo Trying safe requirements (without lxml)...
+    
+    if exist requirements-safe.txt (
+        %PYTHON_CMD% -m pip install --user -r requirements-safe.txt
+        
+        if %ERRORLEVEL% neq 0 (
+            echo.
+            echo ERROR: Failed to install even safe dependencies!
+            echo Please check your internet connection and try again.
+            echo.
+            echo You may need to install Microsoft Visual C++ Build Tools
+            echo Download from: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+            pause
+            exit /b 1
+        ) else (
+            echo.
+            echo SUCCESS: Safe dependencies installed!
+            echo Note: This version uses a slower HTML parser but should work fine.
+        )
+    ) else (
+        echo.
+        echo ERROR: requirements-safe.txt not found!
+        echo Please ensure all files are extracted properly.
+        pause
+        exit /b 1
+    )
+) else (
+    echo.
+    echo SUCCESS: All dependencies installed successfully!
 )
 
 echo.
@@ -282,6 +320,11 @@ Instead of a compiled executable, it runs the Python source code directly.
 
 ## Troubleshooting
 
+### Installation Issues
+- **FIRST**: Run `python diagnose_installation.py` to identify problems
+- **Visual C++ Errors**: Use `Install-Dependencies.bat` (it will try safe fallbacks)
+- **Still having issues**: Follow the diagnostic tool's recommendations
+
 ### Python Not Found
 - Install Python from https://www.python.org/downloads/
 - Make sure to check "Add Python to PATH" during installation
@@ -291,6 +334,7 @@ Instead of a compiled executable, it runs the Python source code directly.
 - Run `Install-Dependencies.bat` again
 - Check internet connection
 - Try running as administrator
+- **If lxml fails**: This is normal on some systems - the app will work fine without it
 
 ### Overlay Not Visible
 - Check if overlay is behind other windows

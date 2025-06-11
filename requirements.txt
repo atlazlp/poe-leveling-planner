@@ -1,6 +1,6 @@
 pynput==1.7.6
 requests==2.31.0
 beautifulsoup4==4.12.2
-lxml==4.9.3
+lxml>=4.9.3,<5.0.0
 pyperclip==1.8.2
-psutil 
+psutil>=5.8.0 

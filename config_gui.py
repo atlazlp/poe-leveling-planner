@@ -1349,8 +1349,17 @@ class ConfigGUI:
                 time.sleep(0.5)
                 
                 # Start new overlay process
-                subprocess.Popen([sys.executable, "main.py"], 
-                               cwd=os.path.dirname(os.path.abspath(__file__)))
+                # Check if we're running from a packaged executable
+                if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+                    # We're running from PyInstaller package
+                    # Get the executable path (remove --config flag by running without args)
+                    exe_path = sys.executable
+                    subprocess.Popen([exe_path], 
+                                   cwd=os.path.dirname(os.path.abspath(exe_path)))
+                else:
+                    # We're running from source
+                    subprocess.Popen([sys.executable, "main.py"], 
+                                   cwd=os.path.dirname(os.path.abspath(__file__)))
                 
                 messagebox.showinfo("Success", "Configuration saved and overlay restarted!")
                 self.root.destroy()

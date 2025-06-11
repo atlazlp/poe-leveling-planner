@@ -1,0 +1,15 @@
+# Safe Windows Requirements - Prioritizes packages with good wheel support
+# Use this if requirements.txt fails due to compilation errors
+
+# Core dependencies (well-supported wheels)
+pynput==1.7.6
+requests>=2.31.0
+pyperclip>=1.8.2
+psutil>=5.8.0
+
+# Web scraping - try BeautifulSoup with html.parser first (no lxml needed)
+beautifulsoup4>=4.12.2
+
+# Optional: lxml only if available (fallback to html.parser)
+# Uncomment next line only if you have Visual C++ Build Tools installed
+# lxml>=4.9.3,<5.0.0 
