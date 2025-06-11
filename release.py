@@ -273,7 +273,7 @@ def create_github_release(version, artifacts, source_archive, prerelease=False):
     try:
         # Create the release
         cmd = [
-            "gh", "release", "create", tag_name,
+            r"C:\Program Files\GitHub CLI\gh.exe", "release", "create", tag_name,
             "--title", release_title,
             "--notes-file", str(notes_file),
             "--repo", REPO_NAME
@@ -305,7 +305,7 @@ def create_github_release(version, artifacts, source_archive, prerelease=False):
             print(f"✓ Uploaded {len(upload_files)} files")
             
             # Print release URL
-            url_result = run_command(["gh", "release", "view", tag_name, "--repo", REPO_NAME, "--web"])
+            url_result = run_command([r"C:\Program Files\GitHub CLI\gh.exe", "release", "view", tag_name, "--repo", REPO_NAME, "--web"])
             
         else:
             print(f"✗ Failed to create release")

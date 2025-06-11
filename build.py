@@ -10,6 +10,7 @@ import json
 import shutil
 import subprocess
 import platform
+import zipfile
 from pathlib import Path
 from data_manager import DataManager
 
