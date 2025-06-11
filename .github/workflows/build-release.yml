@@ -6,53 +6,12 @@ on:
       - 'v*'
   workflow_dispatch:
     inputs:
-      tag_name:
-        description: 'Tag name for the release'
+      version:
+        description: 'Version to build (e.g., v1.0.1)'
         required: true
-        default: 'v1.0.0'
-      prerelease:
-        description: 'Mark as prerelease'
-        required: false
-        default: false
-        type: boolean
-
-env:
-  APP_NAME: "PoE Leveling Planner"
+        default: 'v1.0.1'
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pyinstaller
-    
-    - name: Download appimagetool
-      run: |
-        wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-        chmod +x appimagetool-x86_64.AppImage
-        mv appimagetool-x86_64.AppImage appimagetool
-    
-    - name: Build Linux AppImage
-      run: python build.py
-    
-    - name: Upload Linux artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: linux-builds
-        path: |
-          dist/*.AppImage
-          dist/*source*.zip
-
   build-windows:
     runs-on: windows-latest
     steps:
@@ -63,25 +22,87 @@ jobs:
       with:
         python-version: '3.11'
     
-    - name: Install dependencies
+    - name: Install dependencies (safe)
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r requirements-safe.txt
         pip install pyinstaller
     
-    - name: Build Windows packages
-      run: python build.py
+    - name: Build Windows executable
+      run: |
+        pyinstaller config/poe-leveling-planner.spec --clean
+    
+    - name: Build Windows safe package
+      run: |
+        python scripts/build_windows_safe.py
+    
+    - name: Create Windows executable package
+      run: |
+        $version = "${{ github.ref_name }}"
+        if ("${{ github.event_name }}" -eq "workflow_dispatch") {
+          $version = "${{ github.event.inputs.version }}"
+        }
+        $packageName = "PoE-Leveling-Planner-$version-Windows-Executable"
+        $packageDir = "dist-release/$packageName"
+        
+        # Create package directory
+        New-Item -ItemType Directory -Force -Path $packageDir
+        
+        # Copy executable
+        Copy-Item "dist/poe-leveling-planner.exe" "$packageDir/PoE-Leveling-Planner.exe"
+        
+        # Copy necessary files
+        Copy-Item -Recurse "data" "$packageDir/data"
+        Copy-Item -Recurse "lang" "$packageDir/lang"
+        Copy-Item -Recurse "config" "$packageDir/config"
+        
+        # Create README
+        @"
+        # PoE Leveling Planner $version - Windows Executable
+        
+        ## Quick Start
+        
+        1. Double-click ``PoE-Leveling-Planner.exe`` to start the application
+        2. The application will appear as a transparent overlay
+        3. Use the configuration window to set up your preferences
+        
+        ## Features
+        
+        - ✅ Standalone executable (no Python required)
+        - ✅ Transparent desktop overlay for Path of Exile
+        - ✅ Quest reward tracking and gem progression
+        - ✅ Customizable hotkeys and appearance
+        - ✅ Multi-monitor support
+        - ✅ Multiple language support
+        
+        ## Default Hotkeys
+        
+        - **Ctrl+1**: Previous quest/step
+        - **Ctrl+2**: Next quest/step  
+        - **Ctrl+3**: Copy quest search term
+        - **Right-click**: Open configuration
+        
+        ## Requirements
+        
+        - Windows 10 or later
+        - No additional software needed
+        
+        For more help, visit: https://github.com/atlazlp/poe-leveling-planner
+        "@ | Out-File -FilePath "$packageDir/README.md" -Encoding UTF8
+        
+        # Create ZIP
+        Compress-Archive -Path $packageDir -DestinationPath "dist-release/$packageName.zip"
+      shell: powershell
     
     - name: Upload Windows artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: windows-builds
         path: |
-          dist/*.zip
-          dist/*.exe
+          dist-release/*.zip
+          dist_safe/*.zip
 
-  create-release:
-    needs: [build-linux, build-windows]
+  build-linux:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -91,111 +112,280 @@ jobs:
       with:
         python-version: '3.11'
     
-    - name: Install GitHub CLI
+    - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install gh
+        sudo apt-get install -y python3-tk python3-dev build-essential
+        
+        # Install AppImage tools
+        wget -O appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+        chmod +x appimagetool
+        sudo mv appimagetool /usr/local/bin/
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-safe.txt
+        pip install pyinstaller
+    
+    - name: Build Linux executable
+      run: |
+        # Create PyInstaller spec for Linux
+        cat > poe-leveling-planner-linux.spec << 'EOF'
+        # -*- mode: python ; coding: utf-8 -*-
+        import os
+        import sys
+        
+        # Add src directory to path
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+        
+        block_cipher = None
+        
+        a = Analysis(
+            ['main.py'],
+            pathex=['.', 'src'],
+            binaries=[],
+            datas=[
+                ('data', 'data'),
+                ('lang', 'lang'),
+                ('config', 'config'),
+            ],
+            hiddenimports=[
+                'tkinter',
+                'tkinter.ttk',
+                'pynput',
+                'pynput.keyboard',
+                'pynput.mouse',
+                'requests',
+                'beautifulsoup4',
+                'pyperclip',
+                'psutil',
+                'threading',
+                'json',
+                'os',
+                'sys',
+                'time',
+                'subprocess',
+                'argparse'
+            ],
+            hookspath=[],
+            hooksconfig={},
+            runtime_hooks=[],
+            excludes=[],
+            win_no_prefer_redirects=False,
+            win_private_assemblies=False,
+            cipher=block_cipher,
+            noarchive=False,
+        )
+        
+        pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+        
+        exe = EXE(
+            pyz,
+            a.scripts,
+            a.binaries,
+            a.zipfiles,
+            a.datas,
+            [],
+            name='poe-leveling-planner',
+            debug=False,
+            bootloader_ignore_signals=False,
+            strip=False,
+            upx=True,
+            upx_exclude=[],
+            runtime_tmpdir=None,
+            console=False,
+            disable_windowed_traceback=False,
+            argv_emulation=False,
+            target_arch=None,
+            codesign_identity=None,
+            entitlements_file=None,
+        )
+        EOF
+        
+        pyinstaller poe-leveling-planner-linux.spec --clean
+    
+    - name: Create AppImage
+      run: |
+        version="${{ github.ref_name }}"
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          version="${{ github.event.inputs.version }}"
+        fi
+        
+        # Create AppDir structure
+        mkdir -p AppDir/usr/bin
+        mkdir -p AppDir/usr/share/applications
+        mkdir -p AppDir/usr/share/icons/hicolor/256x256/apps
+        
+        # Copy executable
+        cp dist/poe-leveling-planner AppDir/usr/bin/
+        
+        # Create desktop file
+        cat > AppDir/usr/share/applications/poe-leveling-planner.desktop << EOF
+        [Desktop Entry]
+        Type=Application
+        Name=PoE Leveling Planner
+        Comment=Desktop overlay application for Path of Exile leveling assistance
+        Exec=poe-leveling-planner
+        Icon=poe-leveling-planner
+        Categories=Game;Utility;
+        Terminal=false
+        EOF
+        
+        # Create a simple icon (you can replace this with a real icon later)
+        convert -size 256x256 xc:transparent -fill "#4a90e2" -draw "circle 128,128 128,200" AppDir/usr/share/icons/hicolor/256x256/apps/poe-leveling-planner.png || echo "ImageMagick not available, skipping icon"
+        
+        # Create AppRun
+        cat > AppDir/AppRun << 'EOF'
+        #!/bin/bash
+        HERE="$(dirname "$(readlink -f "${0}")")"
+        export PATH="${HERE}/usr/bin:${PATH}"
+        exec "${HERE}/usr/bin/poe-leveling-planner" "$@"
+        EOF
+        chmod +x AppDir/AppRun
+        
+        # Build AppImage
+        appimagetool AppDir "PoE-Leveling-Planner-$version-x86_64.AppImage"
+    
+    - name: Upload Linux artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-builds
+        path: "*.AppImage"
+
+  create-release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+    steps:
+    - uses: actions/checkout@v4
     
     - name: Download all artifacts
-      uses: actions/download-artifact@v3
-      with:
-        path: dist/
+      uses: actions/download-artifact@v4
     
-    - name: Organize artifacts
+    - name: Create release notes
       run: |
-        mkdir -p dist_final
-        find dist/ -name "*.AppImage" -exec cp {} dist_final/ \;
-        find dist/ -name "*.zip" -exec cp {} dist_final/ \;
-        find dist/ -name "*.exe" -exec cp {} dist_final/ \;
-        ls -la dist_final/
-    
-    - name: Determine release tag
-      id: tag
-      run: |
+        version="${{ github.ref_name }}"
         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          echo "tag_name=${{ github.event.inputs.tag_name }}" >> $GITHUB_OUTPUT
-          echo "prerelease=${{ github.event.inputs.prerelease }}" >> $GITHUB_OUTPUT
-        else
-          echo "tag_name=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-          echo "prerelease=false" >> $GITHUB_OUTPUT
+          version="${{ github.event.inputs.version }}"
         fi
-    
-    - name: Generate release notes
-      id: release_notes
-      run: |
-        cat > release_notes.md << 'EOF'
-        # ${{ env.APP_NAME }} ${{ steps.tag.outputs.tag_name }}
-
-        ## What's New
-        - Desktop overlay application for Path of Exile leveling assistance
-        - Semi-transparent overlay with always-centered positioning
-        - Multi-monitor support with automatic detection
-        - Global hotkey support for quest navigation
-        - Visual configuration interface with live preview
-        - Support for multiple languages (English, Portuguese)
-
-        ## Downloads
-
-        ### Linux
-        - **AppImage**: Portable Linux application - Download, make executable, and run
-
-        ### Windows
-        - **Portable Package**: Standalone executable with all dependencies
-        - **Antivirus-Safe**: Source package to avoid false positives
-        - **Standalone Executable**: Single executable file
-
-        ## Installation
-
-        ### Linux (AppImage)
-        1. Download the AppImage file
-        2. Make it executable: `chmod +x PoE-Leveling-Planner-*.AppImage`
-        3. Run: `./PoE-Leveling-Planner-*.AppImage`
-
-        ### Windows
-        - **Portable Package**: Extract ZIP and run `PoE-Leveling-Planner.exe`
-        - **Antivirus-Safe**: Extract ZIP, run `Install-Dependencies.bat`, then use `Start-PoE-Leveling-Planner.bat`
-        - **Standalone**: Download and run `poe-leveling-planner.exe` directly
-
-        ### From Source
-        1. Download and extract the source archive
-        2. Install Python 3.8+ and dependencies: `pip install -r requirements.txt`
-        3. Run: `python main.py`
-
-        ## System Requirements
-        - **Linux**: X11 or Wayland desktop environment
+        
+        cat > release_notes.md << EOF
+        # PoE Leveling Planner $version Release Notes
+        
+        **Release Date**: $(date +%Y-%m-%d)
+        
+        ## 🎉 What's New in $version
+        
+        ### 🗂️ **Major Code Reorganization**
+        - **Cleaner Project Structure**: Reorganized the entire codebase into logical directories
+          - \`src/\` - All source code
+          - \`scripts/\` - Build and run scripts
+          - \`docs/\` - Documentation
+          - \`config/\` - Configuration files
+          - \`tests/\` - Test files
+          - \`tools/\` - Utility tools
+        - **Better Maintainability**: Much easier to navigate and modify the codebase
+        - **Professional Layout**: Follows industry best practices
+        
+        ### 🔧 **Bug Fixes**
+        - Fixed DataManager metadata initialization issue
+        - Fixed config GUI error handling with lambda functions
+        - Improved error handling throughout the application
+        - Updated all file paths to work with new directory structure
+        
+        ### 🛡️ **Enhanced Windows Support**
+        - **Visual C++ Fix**: Improved handling of lxml dependency issues
+        - **Safe Installation**: Automatic fallback to html.parser when lxml fails
+        - **Better Error Messages**: More helpful diagnostic information
+        - **Installation Diagnostics**: New diagnostic tool to help troubleshoot issues
+        
+        ### 🌐 **Improved HTML Parsing**
+        - **Graceful Fallback**: Automatically falls back from lxml to html.parser
+        - **Better Compatibility**: Works on systems without Visual C++ build tools
+        - **Performance**: Still uses lxml when available for best performance
+        
+        ## 📦 **Available Downloads**
+        
+        ### Windows Users (Recommended)
+        - **\`PoE-Leveling-Planner-$version-Windows-Executable.zip\`**
+          - ✅ Standalone executable (no Python required)
+          - ✅ Just download, extract, and run
+          - ✅ Best for most users
+        
+        ### Windows Users (Alternative)
+        - **\`PoE-Leveling-Planner-$version-Windows-Safe.zip\`**
+          - ✅ Source code version (requires Python)
+          - ✅ Antivirus-friendly (no compiled executable)
+          - ✅ Includes automatic dependency installation
+          - ✅ Good for users who prefer source code
+        
+        ### Linux Users
+        - **\`PoE-Leveling-Planner-$version-x86_64.AppImage\`**
+          - ✅ Portable application for Linux
+          - ✅ No installation required
+          - ✅ Works on most Linux distributions
+        
+        ## 🚀 **Installation Instructions**
+        
+        ### Windows Executable Version
+        1. Download \`PoE-Leveling-Planner-$version-Windows-Executable.zip\`
+        2. Extract the ZIP file
+        3. Run \`PoE-Leveling-Planner.exe\`
+        4. Right-click the overlay to configure
+        
+        ### Windows Safe Version
+        1. Download \`PoE-Leveling-Planner-$version-Windows-Safe.zip\`
+        2. Extract the ZIP file
+        3. Run \`Install-Dependencies.bat\` (first time only)
+        4. Run \`Start-PoE-Leveling-Planner.bat\`
+        
+        ### Linux AppImage
+        1. Download \`PoE-Leveling-Planner-$version-x86_64.AppImage\`
+        2. Make it executable: \`chmod +x PoE-Leveling-Planner-$version-x86_64.AppImage\`
+        3. Run: \`./PoE-Leveling-Planner-$version-x86_64.AppImage\`
+        
+        ## 🔧 **System Requirements**
+        
         - **Windows**: Windows 10 or later
-        - **Python**: 3.8+ (for source builds and antivirus-safe version)
-
-        ## Features
-        - Transparent desktop overlay with customizable opacity
-        - Always-centered positioning for consistent gameplay experience
-        - Multi-monitor support with automatic detection
-        - Global hotkeys for quest navigation (Ctrl+1, Ctrl+2, Ctrl+3)
-        - Visual configuration interface with live preview
-        - Support for multiple languages
-        - Always-on-top positioning for gameplay visibility
-        - Antivirus-safe source distribution option
-
-        For detailed usage instructions, see the README.md file.
+        - **Linux**: Most modern distributions (64-bit)
+        - **For executable versions**: No additional requirements
+        - **For safe version**: Python 3.8+ (automatically installed if needed)
+        
+        ## 🐛 **Known Issues**
+        
+        - None currently known
+        
+        ## 🙏 **Acknowledgments**
+        
+        Thanks to all users who reported issues and provided feedback!
+        
+        ## 📞 **Support**
+        
+        - **GitHub Issues**: https://github.com/atlazlp/poe-leveling-planner/issues
+        - **Documentation**: Check the included README files
         EOF
-
+    
     - name: Create GitHub Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        PRERELEASE_FLAG=""
-        if [ "${{ steps.tag.outputs.prerelease }}" = "true" ]; then
-          PRERELEASE_FLAG="--prerelease"
+        version="${{ github.ref_name }}"
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          version="${{ github.event.inputs.version }}"
         fi
         
-        gh release create "${{ steps.tag.outputs.tag_name }}" \
-          --title "${{ env.APP_NAME }} ${{ steps.tag.outputs.tag_name }}" \
+        # Create release
+        gh release create "$version" \
+          --title "PoE Leveling Planner $version" \
           --notes-file release_notes.md \
-          $PRERELEASE_FLAG \
-          dist_final/*
-
-    - name: Output release info
-      run: |
-        echo "Release created: ${{ steps.tag.outputs.tag_name }}"
-        echo "Files uploaded:"
-        ls -la dist_final/ 
+          --draft=false \
+          --prerelease=false
+        
+        # Upload Windows builds
+        find windows-builds -name "*.zip" -exec gh release upload "$version" {} \;
+        
+        # Upload Linux builds
+        find linux-builds -name "*.AppImage" -exec gh release upload "$version" {} \;
+        
+        echo "✅ Release $version created successfully!" 
